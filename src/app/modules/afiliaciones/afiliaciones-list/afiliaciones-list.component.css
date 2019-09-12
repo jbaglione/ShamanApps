@@ -1,0 +1,132 @@
+.mat-success {
+    background-color: #fff;
+    color: #27ae60;
+}
+
+table {
+    width: 100%;
+}
+
+.mobile-label {
+    display: none;
+}
+
+::ng-deep .my-panel {
+    overflow: hidden !important;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+::ng-deep .mat-dialog-container {
+    overflow: hidden !important;
+    padding-right: 1px;
+}
+
+.mat-column-nombreComercial {
+  flex: 0 0 15%;
+}
+
+.mat-column-rubro {
+    flex: 0 0 13%;
+}
+
+.mat-column-razonSocial {
+    flex: 0 0 15%;
+}
+
+.mat-column-cuit {
+    flex: 0 0 8%;
+}
+
+.mat-column-domicilio {
+    flex: 0 0 *px;
+}
+
+.mat-column-localidad {
+    flex: 0 0 9%;
+}
+
+.mat-column-credencialID {
+    flex: 0 0 8%;
+}
+
+.mat-column-estado {
+    flex: 0 0 4%;
+}
+
+.mat-column-actividad {
+    flex: 0 0 4%;
+    /* display: none; */
+}
+
+.mat-column-importeMensual {
+    flex: 0 0 6%;
+}
+
+.mat-column-motivoSuspension {
+    flex: 0 0 *px;
+    /* display: none; */
+}
+
+.mat-column-potencialExito {
+    flex: 0 0 4%;
+    /* display: none; */
+}
+
+ /* ::ng-deep .mat-tooltip {
+    position: absolute !important;
+} */
+
+@media(max-width: 600px) {
+    .mobile-label {
+        width: 85px;
+        display: inline-block;
+        font-weight: bold;
+    }
+    .mat-header-row {
+        display: none;
+    }
+    .mat-footer-row,
+    .mat-row {
+        min-height: 26px !important;
+    }
+    .mat-row {
+        flex-direction: column;
+        align-items: start;
+        padding: 8px 24px;
+    }
+    .mat-cell-first {
+        padding-left: 0px !important;
+    }
+    .mat-cell-button {
+        width: auto !important;
+    }
+    .mat-column-nombreComercial {
+        flex: auto !important;
+    }
+    .mat-column-rubro {
+        flex: auto !important;
+    }
+    .mat-column-razonSocial {
+        flex: auto !important;
+    }
+    .mat-column-cuit {
+        flex: auto !important;
+    }
+    .mat-column-domicilio {
+        flex: auto !important;
+    }
+    .mat-column-localidad {
+        flex: auto !important;
+    }
+    .mat-column-credencialID {
+        flex: auto !important;
+    }
+    .mat-column-estado {
+        flex: auto !important;
+    }
+    .mat-column-actividad {
+        flex: auto !important;
+        /* display: none; */
+    }
+}

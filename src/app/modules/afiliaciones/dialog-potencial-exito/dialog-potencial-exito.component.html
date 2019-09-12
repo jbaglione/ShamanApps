@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Potencial de Exito</h1>
+<mat-dialog-content style="border-top: 1px solid #dadce0;">
+    <br />
+
+    <table style="text-align: center;" cellspacing="0">
+        <tr>
+            <td>
+                <h3 class="sub-title primary-color">Indique el potencial de exito para {{ clientePotencial.nombreComercial}}</h3>
+                <mat-slider [displayWith]="formatLabel" [max]=100 [min]=0 [step]=1 [thumbLabel]=true [(ngModel)]="clientePotencial.potencialExito"></mat-slider>
+                <mat-error *ngIf="clientePotencial.potencialExito == 0" class="accent-color-A300">
+                    Un cliente con potencial de exito cero se considera Suspendido.
+                </mat-error>
+                <mat-error *ngIf="clientePotencial.potencialExito == 100" class="primary-color-A300">
+                    Un cliente con potencial de exito cien se considera listo para afiliar.
+                </mat-error>
+            </td>
+        </tr>
+        <br />
+        <tr [hidden]="clientePotencial.potencialExito != 0">
+            <td>
+                <form class="example-form" [formGroup]="potencialExitoForm" novalidate="novalidate">
+                    <mat-form-field>
+                        <mat-select placeholder="Motivo de Suspension" formControlName="motivoSuspension">
+                            <mat-option *ngFor="let item of motivosSuspension" [value]="item.id ">
+                                {{item.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="!potencialExitoForm.controls.motivoSuspension.valid">
+                            Debe seleccionar un motivo.
+                        </mat-error>
+                    </mat-form-field>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</mat-dialog-content>
+<mat-dialog-actions style="float:right ">
+    <button  mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+    <button mat-raised-button type="submit" (click)="guardarPotencialExito()">Guardar</button>
+</mat-dialog-actions>

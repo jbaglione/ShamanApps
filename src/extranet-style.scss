@@ -1,0 +1,179 @@
+@import '~@angular/material/theming';
+$mat-paramedic-blue: ( 50: #e3f2fd, 100: #bbdefb, 200: #90caf9, 300: #64b5f6, 400: #42a5f5, 500: #2196f3, 600: #1e88e5, 700: #357ebd, 800: #314896, 900: #0e4496, A100: #82b1ff, A200: #448aff, A400: #2979ff, A700: #2962ff, contrast: ( 50: $dark-primary-text, 100: $dark-primary-text, 200: $dark-primary-text, 300: $dark-primary-text, 400: $dark-primary-text, 500: $light-primary-text, 600: $light-primary-text, 700: $light-primary-text, 800: $light-primary-text, 900: $light-primary-text, A100: $dark-primary-text, A200: $light-primary-text, A400: $light-primary-text, A700: $light-primary-text, ));
+// Plus imports for other components in your app.
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$extranet-app-primary: mat-palette($mat-paramedic-blue, 800);
+$extranet-app-accent: mat-palette($mat-deep-orange, A200, A100, A400);
+// The warn palette is optional (defaults to red).
+$extranet-app-warn: mat-palette($mat-red);
+// Create the theme object (a Sass map containing all of the palettes).
+$extranet-app-theme: mat-light-theme($extranet-app-primary, $extranet-app-accent, $extranet-app-warn);
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($extranet-app-theme);
+.mat-sidenav-container,
+.mat-sidenav-content,
+.mat-tab-body-content {
+    transform: none !important;
+}
+
+.mat-raised-button {
+    background-color: mat-color($extranet-app-primary);
+    color: mat-color($extranet-app-primary, default-contrast);
+    margin: 3px !important;
+}
+
+// .mat-raised-button {
+//     color: mat-color($extranet-app-primary);
+//     background-color: mat-color($extranet-app-primary, default-contrast);
+//     margin: 3px !important;
+// }
+.mat-button {
+    background-color: mat-color($extranet-app-accent);
+    color: mat-color($extranet-app-primary, default-contrast);
+    margin: 3px !important;
+}
+
+// .mat-button {
+//     color: mat-color($extranet-app-accent);
+//     background-color: mat-color($extranet-app-primary, default-contrast);
+//     margin: 3px !important;
+// }
+.example-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: mat-color($extranet-app-primary); // #eee;
+}
+
+//BACKGORUND
+.primary-bg {
+    background-color: mat-color($extranet-app-primary);
+}
+
+.primary-light-bg {
+    background-color: mat-color($extranet-app-primary, lighter);
+}
+
+.primary-dark-bg {
+    background-color: mat-color($extranet-app-primary, darker);
+}
+
+.primary-bg-A200 {
+    background-color: mat-color($extranet-app-primary, A200);
+}
+
+.primary-bg-A300 {
+    background-color: mat-color($extranet-app-primary, A400);
+}
+
+//PRIMARY COLOR
+.primary-color {
+    color: mat-color($extranet-app-primary);
+}
+
+.primary-light-color {
+    color: mat-color($extranet-app-primary, lighter);
+}
+
+.primary-dark-color {
+    color: mat-color($extranet-app-primary, darker);
+}
+
+.primary-color-A200 {
+    color: mat-color($extranet-app-primary, A200);
+}
+
+.primary-color-A300 {
+    color: mat-color($extranet-app-primary, A400);
+}
+
+.oldGold {
+    color: rgb(207, 181, 59);
+}
+
+//ACCENT COLOR
+.accent-color {
+    color: mat-color($extranet-app-accent);
+}
+
+.accent-light-color {
+    color: mat-color($extranet-app-accent, lighter);
+}
+
+.accent-dark-color {
+    color: mat-color($extranet-app-accent, darker);
+}
+
+.accent-color-A200 {
+    color: mat-color($extranet-app-accent, A200);
+}
+
+.accent-color-A300 {
+    color: mat-color($extranet-app-accent, A400);
+}
+
+//BACKGORUND WARN
+.warn-bg {
+    background-color: mat-color($extranet-app-warn);
+}
+
+.warn-light-bg {
+    background-color: mat-color($extranet-app-warn, lighter);
+}
+
+.warn-dark-bg {
+    background-color: mat-color($extranet-app-warn, darker);
+}
+
+.warn-bg-A200 {
+    background-color: mat-color($extranet-app-warn, A200);
+}
+
+.warn-bg-A300 {
+    background-color: mat-color($extranet-app-warn, A400);
+}
+
+//WARN COLOR
+.warn-color {
+    color: mat-color($extranet-app-warn);
+}
+
+.warn-light-color {
+    color: mat-color($extranet-app-warn, lighter);
+}
+
+.warn-dark-color {
+    color: mat-color($extranet-app-warn, darker);
+}
+
+.warn-color-A200 {
+    color: mat-color($extranet-app-warn, A200);
+}
+
+.warn-color-A300 {
+    color: mat-color($extranet-app-warn, A400);
+}
+
+body {
+    zoom: 88%;
+    -moz-transform: scale(0.88);
+    -moz-transform-origin: 0 0;
+}
+
+@media(max-width: 600px) {
+    body {
+        zoom: 96%;
+        -moz-transform: scale(0.96);
+        -moz-transform-origin: 0 0;
+    }
+}

@@ -1,0 +1,74 @@
+.mat-column-nroIncidente {
+    flex: 0 0 200px;
+}
+
+.mat-column-fechaIncidente {
+    flex: 0 0 200px;
+}
+
+.mat-column-codCliente {
+    flex: 0 0 200px;
+}
+
+.mat-column-nroAfiliado {
+    flex: 0 0 200px;
+}
+
+.mat-column-verImagenesElectros {
+    flex: 0 0 30px;
+}
+
+.mat-column-verImagenesElectros .mat-icon-button
+{
+  width: 0 !important;
+}
+
+@media(max-width: 600px) {
+    .mobile-label {
+        width: 85px;
+        display: inline-block;
+        font-weight: bold;
+    }
+    .mat-header-row {
+        display: none;
+    }
+    .mat-row {
+        flex-direction: column;
+        align-items: start;
+        padding: 8px 24px;
+    }
+    .mat-footer-row,
+    .mat-row {
+        min-height: 26px !important;
+    }
+    .mat-cell-first {
+        padding-left: 0px !important;
+    }
+    .mat-cell-button {
+        width: auto !important;
+    }
+    .mat-column-nroIncidente {
+        flex: auto !important;
+    }
+    .mat-column-fechaIncidente {
+        flex: auto !important;
+    }
+    .mat-column-codCliente {
+        flex: auto !important;
+    }
+    .mat-column-nroAfiliado {
+        flex: auto !important;
+    }
+    .mat-column-paciente {
+        flex: auto !important;
+    }
+    .mat-column-sintomas {
+        flex: auto !important;
+    }
+    .mat-column-subcarpeta {
+        flex: auto !important;
+    }
+    .mat-column-verImagenesElectros {
+        flex: auto !important;
+    }
+}

@@ -1,0 +1,139 @@
+.contenedor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: url(/assets/images/bg-login.jpg)  no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  /*Flex*/
+ display: flex;
+ flex-flow: column nowrap;
+}
+
+ /* start: Toolbar*/
+.main-toolbar {
+  background-color: #ffffff;
+  height: 78px !important;
+  /* Flex */
+  display: flex;
+  flex-shrink: 0;
+  justify-content: space-between;
+}
+
+  .logo {
+    /* Flex */
+    display: flex;
+    align-items: center;
+  }
+
+    .logo .wrapper-logo-image img {
+      vertical-align: top;
+      width: 208px;
+      height: 43px;
+    }
+
+    .logo .title {
+      color: #2b51a1;
+      padding-left: 31px;
+      margin: 0;
+    }
+
+  .current-date {
+    margin: 0;
+    color: #959595;
+  }
+
+@media screen and (max-width:480px)
+{
+  .logo .wrapper-logo-image img {
+      width: 155px;
+      height: 32px;
+  }
+
+  .logo .title {
+    padding-left: 0px;
+    margin: 0 0 0 3px;
+  }
+
+  .current-date {
+    display:none;
+  }
+}
+ /* end: Toolbar*/
+
+
+ .site-content {
+  /*Flex*/
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0px;
+    padding-right: 0px;
+    width: 100%;
+  }
+
+/* start: Footer*/
+footer {
+  color: #ffffff;
+  /* Flex */
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+  #footer-row-1{
+    background-color: rgba(0, 0, 0, 1);
+    text-align: center;
+  }
+
+  #footer-row-2{
+    background: #1b1d26;
+  }
+
+    .wrapper-footer {
+      /* width: 95%; */
+      margin: auto;
+      /* align-items: center; */
+      max-width: 1170px;
+      /* Flex */
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-around;
+    }
+
+    .footer-sedes {
+        padding: 29px 0px 24px;
+        line-height: 15px;
+        font-size: 14px !important;
+    }
+
+    .footer-copyright {
+        padding: 19px 0;
+        text-align: center;
+        font-size: 14px !important;
+    }
+
+        .footer-copyright  a{
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .link-footer {
+          color: rgb(0, 86, 179) !important;
+        }
+
+@media screen and (max-width:480px)
+{
+  .sede {
+      margin-top: 10px;
+  }
+}
+/* end: Footer*/
+

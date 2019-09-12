@@ -1,0 +1,102 @@
+<mat-form-field class="ml-5 mr-5">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+</mat-form-field>
+<mat-form-field class="ml-5 mr-5">
+    <input matInput [matDatepicker]="picker1" placeholder="Fecha Desde" [formControl]="desde" name="dpDesde">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+</mat-form-field>
+<mat-form-field class="ml-5 mr-5">
+    <input matInput [matDatepicker]="picker2" placeholder="Fecha Hasta" [formControl]="hasta" name="dpHasta">
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+</mat-form-field>
+<mat-form-field class="ml-5 mr-5" *ngIf="userAcceso == '3' && modoGenerico">
+    <mat-select placeholder="Vendedor" [formControl]="vendedorSelect">
+        <mat-option *ngFor="let item of vendedores" [value]="item.id">
+            {{item.descripcion}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<button mat-raised-button type="submit" (click)="GetReclamosFiltrados()" [disabled]="matTableLoadingService.activo$ | async">Buscar</button>
+
+<div class="mat-elevation-z8">
+    <mat-table [dataSource]="mtClienteReclamos" matSort>
+        <ng-container matColumnDef="nro">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                Nro
+            </mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let element">
+                <span class="mobile-label">Nro:</span>{{element.nro}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="razonSocial">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Razon Social</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Razon Social:</span> {{element.razonSocial}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="fecInicio">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Inicio</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Fecha Inicio:</span> {{element.fecInicio | date: 'dd/MM/yyyy'}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tipoReclamo">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo Reclamo</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Tipo Reclamo:</span> {{element.tipoReclamo}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="motivo">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Motivo</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Motivo:</span> {{element.motivo}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="cliente">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Cliente:</span> {{element.cliente}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="situacion">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Situacion</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Situacion:</span> {{element.situacionDescripcion}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="administrador">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Administrador</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Administrador:</span> {{element.administrador}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="prioridad">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Prioridad</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Prioridad:</span> {{element.prioridad}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="fecIncidente">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Incidente</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Fecha Incidente:</span>
+                <div [hidden]="element.nroIncidente == null">{{element.fecIncidente | date: 'dd/MM/yyyy'}}</div>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="nroIncidente">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Nro. Incidente</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Nro. Incidente:</span> {{element.nroIncidente}}
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="dcClienteReclamos "></mat-header-row>
+        <mat-row *matRowDef="let row; columns: dcClienteReclamos; " [hidden]="matTableLoadingService.activo$ | async"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[7, 10, 25, 100] " [hidden]="mtClienteReclamos.data.length == 0 || (matTableLoadingService.activo$ | async)"></mat-paginator>
+    <app-mat-table-loading></app-mat-table-loading>
+    <app-mat-table-not-found [activo]="mtClienteReclamos.data.length === 0 && !(matTableLoadingService.activo$ | async)" ></app-mat-table-not-found>
+</div>

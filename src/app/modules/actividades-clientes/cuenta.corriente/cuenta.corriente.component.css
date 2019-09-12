@@ -1,0 +1,85 @@
+.mat-column-nro {
+    flex: 0 0 80px;
+}
+
+.mat-column-fecDocumento {
+    flex: 0 0 140px;
+}
+
+.align-currency {
+    justify-content: flex-end;
+}
+
+
+/* .mat-column-tipoComprobante {
+    flex: 0 0 150px;
+}
+
+.mat-column-nroComprobante {
+    flex: 0 0 180px;
+}
+*/
+
+
+/* .mat-column-debe {
+    flex: 0 0 100px;
+}
+
+.mat-column-haber {
+    flex: 0 0 100px;
+}
+
+.mat-column-adjunto {
+    flex: 0 0 100px;
+} */
+
+mat-footer-row {
+    font-weight: bold;
+}
+
+@media(max-width: 600px) {
+    .mobile-label {
+        width: 105px;
+        display: inline-block;
+        font-weight: bold;
+    }
+    .mat-header-row {
+        display: none;
+    }
+    .mat-footer-row,
+    .mat-row {
+        min-height: 26px !important;
+    }
+    .mat-row {
+        flex-direction: column;
+        align-items: start;
+        padding: 8px 24px;
+    }
+    .mat-cell-first {
+        padding-left: 0px !important;
+    }
+    .mat-cell-button {
+        width: auto !important;
+    }
+    .mat-column-nro {
+        flex: auto !important;
+    }
+    .mat-column-fecDocumento {
+        flex: auto !important;
+    }
+    .mat-column-tipoComprobante {
+        flex: auto !important;
+    }
+    .mat-column-nroComprobante {
+        flex: auto !important;
+    }
+    .mat-column-debe {
+        flex: auto !important;
+    }
+    .mat-column-haber {
+        flex: auto !important;
+    }
+    .mat-column-adjunto {
+        flex: auto !important;
+    }
+}

@@ -1,0 +1,124 @@
+.mat-column-fecIncidente {
+    flex: 0 0 6%;
+}
+
+.mat-column-nroIncidente {
+    flex: 0 0 3%;
+}
+
+.mat-column-llamada {
+    flex: 0 0 4%;
+}
+
+.mat-column-integranteId {
+    flex: 0 0 8%;
+}
+
+.mat-column-nombre {
+    flex: 0 0 11%;
+}
+
+.mat-column-domicilio {
+    flex: 0 0 11%;
+}
+
+.mat-column-localidad {
+    flex: 0 0 9%;
+}
+
+.mat-column-sintoma {
+    flex: 0 0 13%;
+}
+
+.mat-column-grado {
+    flex: 0 0 4%;
+}
+
+.mat-column-arribo {
+    flex: 0 0 4%;
+}
+
+.mat-column-diagnostico {
+    /* flex: 0 0 12%; */
+    margin-right: 1%;
+}
+
+.mat-column-deriva {
+    flex: 0 0 3%;
+}
+
+.mat-column-final {
+    flex: 0 0 4%;
+}
+
+.mat-column-nroInterno {
+    flex: 0 0 0%;
+}
+
+@media(max-width: 600px) {
+    .mobile-label {
+        width: 85px;
+        display: inline-block;
+        font-weight: bold;
+    }
+    .mat-header-row {
+        display: none;
+    }
+    .mat-row {
+        flex-direction: column;
+        align-items: start;
+        padding: 8px 24px;
+    }
+    .mat-footer-row,
+    .mat-row {
+        min-height: 26px !important;
+    }
+    .mat-cell-first {
+        padding-left: 0px !important;
+    }
+    .mat-cell-button {
+        width: auto !important;
+    }
+    .mat-column-nroIncidente {
+        flex: auto !important;
+    }
+    .mat-column-fecIncidente {
+        flex: auto !important;
+    }
+    .mat-column-llamada {
+        flex: auto !important;
+    }
+    .mat-column-integranteId {
+        flex: auto !important;
+    }
+    .mat-column-nombre {
+        flex: auto !important;
+    }
+    .mat-column-domicilio {
+        flex: auto !important;
+    }
+    .mat-column-localidad {
+        flex: auto !important;
+    }
+    .mat-column-sintoma {
+        flex: auto !important;
+    }
+    .mat-column-grado {
+        flex: auto !important;
+    }
+    .mat-column-arribo {
+        flex: auto !important;
+    }
+    .mat-column-diagnostico {
+        flex: auto !important;
+    }
+    .mat-column-deriva {
+        flex: auto !important;
+    }
+    .mat-column-final {
+        flex: auto !important;
+    }
+    .mat-column-nroInterno {
+        flex: auto !important;
+    }
+}

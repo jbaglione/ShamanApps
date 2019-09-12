@@ -1,0 +1,200 @@
+.sub-title {
+    color: #2b51a1;
+    font-size: 14px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.wrapper-toolbar {
+    margin: auto;
+    align-items: center;
+    /* Flex */
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row nowrap;
+    background-color: whitesmoke;
+    border-radius: 4px;
+    padding: 4px;
+    width: -moz-fit-content;
+    text-align: left;
+    margin-top: 1px;
+}
+
+.wrapper-toolbar .logo {
+    justify-content: space-between;
+    align-items: center;
+    /* Flex */
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.mat-button-icon-small {
+    width: 23px;
+    height: 23px;
+    margin-left: 5px;
+    line-height: 26px;
+    margin-right: 10px !important;
+    margin-left: 10px !important;
+    color: #959595 !important;
+    background-color: inherit !important;
+}
+
+.mat-button-icon-small .mat-icon {
+    font-size: 16px;
+    vertical-align: baseline;
+}
+
+.mat-column-nroIncidente {
+    flex: 0 0 70px;
+}
+
+.mat-column-formatedFecha {
+    flex: 0 0 80px;
+}
+
+.mat-column-conceptoId {
+    flex: 0 0 80px;
+}
+
+.mat-column-nroInterno {
+    flex: 0 0 80px;
+}
+
+.mat-column-iva {
+    flex: 0 0 40px;
+}
+
+.mat-column-arba {
+    flex: 0 0 40px;
+}
+
+.mat-column-agip {
+    flex: 0 0 40px;
+}
+
+.mat-column-nroAfiliado {
+    flex: 0 0 100px;
+}
+
+.mat-column-formatedPaciente {
+    flex: 0 0 *px;
+}
+
+.mat-column-desde {
+    flex: 0 0 12%;
+}
+
+.mat-column-hasta {
+    flex: 0 0 12%;
+}
+
+.mat-column-kmt {
+    flex: 0 0 45px;
+}
+
+.mat-column-tpoEspera {
+    flex: 0 0 60px;
+}
+
+.mat-column-importeBase {
+    flex: 0 0 80px;
+}
+
+.mat-column-recargos {
+    flex: 0 0 80px;
+}
+
+.mat-column-importe {
+    flex: 0 0 7%;
+}
+
+.mat-column-verImagenesServicios {
+    flex: 0 0 70px;
+}
+
+.mat-column-calculo {
+    flex: 0 0 55px;
+}
+
+::ng-deep .mat-tooltip {
+    position: absolute;
+}
+
+@media(max-width: 600px) {
+    .mobile-label {
+        width: 85px;
+        display: inline-block;
+        font-weight: bold;
+    }
+    .mat-header-row {
+        display: none;
+    }
+    .mat-row {
+        flex-direction: column;
+        align-items: start;
+        padding: 8px 24px;
+    }
+    .mat-footer-row,
+    .mat-row {
+        min-height: 26px !important;
+    }
+    .mat-cell-first {
+        padding-left: 0px !important;
+    }
+    .mat-cell-button {
+        width: auto !important;
+    }
+    .mat-column-formatedFecha {
+        flex: auto !important;
+    }
+    .mat-column-nroIncidente {
+        flex: auto !important;
+    }
+    .mat-column-conceptoId {
+        flex: auto !important;
+    }
+    .mat-column-nroInterno {
+        flex: auto !important;
+    }
+    .mat-column-iva {
+        flex: auto !important;
+    }
+    .mat-column-arba {
+        flex: auto !important;
+    }
+    .mat-column-agip {
+        flex: auto !important;
+    }
+    .mat-column-nroAfiliado {
+        flex: auto !important;
+    }
+    .mat-column-formatedPaciente {
+        flex: auto !important;
+    }
+    .mat-column-desde {
+        flex: auto !important;
+    }
+    .mat-column-hasta {
+        flex: auto !important;
+    }
+    .mat-column-kmt {
+        flex: auto !important;
+    }
+    .mat-column-tpoEspera {
+        flex: auto !important;
+    }
+    .mat-column-importeBase {
+        flex: auto !important;
+    }
+    .mat-column-recargos {
+        flex: auto !important;
+    }
+    .mat-column-importe {
+        flex: auto !important;
+    }
+    .mat-column-verImagenesServicios {
+        flex: auto !important;
+    }
+    .mat-column-abrir {
+        flex: auto !important;
+    }
+}

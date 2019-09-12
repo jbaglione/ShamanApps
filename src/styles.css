@@ -1,0 +1,50 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+/* @import "~@angular/material/prebuilt-themes/indigo-pink.css"; */
+
+
+/* @import "./extranet-style.scss"; */
+
+
+/* .blue-snackbar {
+  background: #2196F3;
+} */
+
+@media(max-width: 600px) {
+    .hidden-if-mobile {
+        display: none !important;
+    }
+}
+
+.container {
+    display: flex;
+    margin-top: 0px;
+    /* or inline-flex */
+}
+
+.text--center {
+    text-align: center;
+}
+
+.text--right {
+    text-align: right;
+}
+
+.example-spacer-small {
+    flex: 0.3 0.3 auto;
+}
+
+.example-spacer-extra-small {
+    flex: 0.15 0.15 auto;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.icon-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

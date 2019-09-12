@@ -1,0 +1,117 @@
+<div [hidden]="modoGenerico">
+    <button mat-raised-button class="mb-10" (click)="verGestion('nuevo')">Nueva Gestion</button>
+</div>
+
+<div [hidden]="!modoGenerico">
+    <mat-form-field class="ml-5 mr-5">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+    </mat-form-field>
+    <mat-form-field class="ml-5 mr-5" style="max-width: 120px;">
+        <mat-select placeholder="Fecha" [formControl]="tipoFechaGestionSelect">
+            <mat-option *ngFor="let item of tiposFechas" [value]="item.id">
+                {{item.descripcion}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="ml-5 mr-5 short-form-field">
+        <input matInput [matDatepicker]="picker1" placeholder="Fecha Desde" [formControl]="desde" name="dpDesde">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="ml-5 mr-5 short-form-field">
+        <input matInput [matDatepicker]="picker2" placeholder="Fecha Hasta" [formControl]="hasta" name="dpHasta">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="ml-5 mr-5" *ngIf="userAcceso == '3'">
+        <mat-select placeholder="Vendedor" [formControl]="vendedorSelect">
+            <mat-option *ngFor="let item of vendedores" [value]="item.id">
+                {{item.descripcion}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    &nbsp;
+    <button mat-raised-button type="submit" (click)="GetGestionesGenerales()" [disabled]="matTableLoadingService.activo$ | async">Buscar</button>
+</div>
+
+<div class="mat-elevation-z8">
+    <mat-table [dataSource]="mtClientesGestiones" matSort>
+        <ng-container matColumnDef="fecha">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="mat-cell-first">
+                Fecha
+            </mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let element">
+                <span class="mobile-label">Fecha:</span>{{element.fecha | date: 'dd/MM/yyyy'}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="razonSocial">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Razon Social</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Razon Social:</span> {{element.razonSocial}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="tipoGestion">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo de Gestion</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Tipo de Gestion:</span> {{element.tipoGestion == null?'': element.tipoGestion.descripcion}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="observaciones">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Observaciones</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Observaciones:</span> {{element.observaciones}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="fechaRecontacto">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                Fecha Recontacto
+            </mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let element">
+                <span class="mobile-label">Fecha Recontacto:</span>{{element.fechaRecontacto | date: 'dd/MM/yyyy'}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="adjunto">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Adjunto</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Adjunto:</span>
+                <div *ngIf="element.adjunto != null && element.adjunto.archivo != null">
+                    <button mat-icon-button matTooltip='Ver archivo adjunto' style="padding-top: 8px;">
+                        <a [href]="element.adjunto.archivo | safe" target="_blank">
+                            <mat-icon>cloud_download</mat-icon>
+                        </a>
+                    </button>
+                </div>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="edit">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                Editar
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element ">
+                <span class="mobile-label ">Editar:</span>
+                <button (click)="verGestion(element.id, element)" mat-icon-button color='accent' matTooltip='Editar esta gestion'>
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="delete">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                Eliminar
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element ">
+                <span class="mobile-label ">Eliminar:</span>
+                <button (click)="eliminarGestion(element.id) " mat-icon-button color='warn' matTooltip='Eliminar esta gestion'>
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="dcClientesGestiones "></mat-header-row>
+        <mat-row *matRowDef="let row; columns: dcClientesGestiones;" [hidden]="matTableLoadingService.activo$ | async"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]" [hidden]="mtClientesGestiones.data.length == 0 || (matTableLoadingService.activo$ | async)"></mat-paginator>
+    <app-mat-table-loading></app-mat-table-loading>
+    <app-mat-table-not-found [activo]="mtClientesGestiones.data.length == 0 && !(matTableLoadingService.activo$ | async)"></app-mat-table-not-found>
+</div>

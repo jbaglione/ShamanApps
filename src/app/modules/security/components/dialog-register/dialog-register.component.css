@@ -1,0 +1,9 @@
+.mat-dialog-actions {
+  justify-content: flex-end;
+}
+
+.mat-dialog-actions .mat-button {
+  color:#314896;
+  background-color: white!important;
+  margin: 0!important;
+}

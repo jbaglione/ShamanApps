@@ -1,0 +1,11 @@
+.wrapper-cliente {
+  width: 100%;
+  background-color: #2b51a1;
+  color: white;
+  font-weight: 600;
+  height: 35px;
+}
+
+.tab-container {
+  padding: 15px 25px 25px 25px;
+}

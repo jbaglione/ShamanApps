@@ -1,0 +1,127 @@
+﻿
+.box-disclaimer {
+  border-style: solid;
+  border-color: #bdbaba;
+  border-width: 0.1px;
+  background-color:rgba(49, 43, 43, .6);
+  color: White;
+  padding: 13px;
+  max-width: 430px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0px;
+  position: relative;
+  top: 10px;
+  font-weight: normal;
+}
+
+.logo-form {
+  background-image: url(/assets/images/logo-pm.png);
+  height: 100px;
+  width: 100px;
+  background-repeat: no-repeat;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  top: 25px;
+  z-index: 2;
+}
+
+.login {
+  position: relative;
+  top:-31px;
+  max-width: 430px;
+}
+
+  .login .mat-title {
+    margin-top: 32px;
+    margin-bottom: 0;
+  }
+
+  .login .mat-form-field{
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+
+  .login .mat-form-field .mat-icon{
+    margin-right: 10px;
+  }
+
+  .login .forgot-password
+  {
+    display: block;
+    margin-top: 0;
+    margin-bottom: 0px;
+    text-align:right;
+    text-decoration: none;
+    color: #314896;
+    font-weight: 400;
+  }
+
+  .login .login-button {
+    margin-top: 15px !important;
+    margin-bottom: 10px !important;
+    line-height: 50px !important;
+    font-size: 18px !important;
+    font-weight: 600;
+  }
+
+  .login .link-login {
+    margin-top: 10px;
+  }
+
+  .login .link-login a {
+      display:flex;
+      align-items: center;
+      text-decoration: none;
+      color: #7f7f7f;
+    }
+
+      .login .link-login a span {
+        font-weight: 500;
+      }
+
+      /* .login .link-login a .label-title {
+        font-size:16px;
+        font-weight: 700;
+      } */
+
+/*
+.tile-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+  .tile-wide {
+    height: 112px !important;
+    background-color: #2b51a1 !important;
+    color:#fff!important;
+    width: 210px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .tile-wide:hover {
+    outline: #999999 solid 3px;
+  }
+
+  .icon {
+    font-size: 35px !important;
+  } */
+
+@media screen and (max-width:768px)
+{
+  .box-disclaimer {
+    font-size: 12px;
+  }
+}
+
+
+
+
+

@@ -1,0 +1,108 @@
+.mat-column-nro {
+    flex: 0 0 50px;
+}
+
+.mat-column-razonSocial {
+    flex: 0 0 150px;
+    margin-right: 10px;
+}
+
+.mat-column-fecInicio {
+    flex: 0 0 95px;
+}
+
+.mat-column-tipoReclamo {
+    flex: 0 0 150px;
+}
+
+.mat-column-motivo {
+    min-width: 200px;
+    flex: 0 0 *px;
+}
+
+.mat-column-cliente {
+    flex: 0 0 100px;
+}
+
+.mat-column-situacion {
+    flex: 0 0 80px;
+}
+
+.mat-column-administrador {
+    flex: 0 0 150px;
+    margin-right: 20px;
+}
+
+.mat-column-prioridad {
+    flex: 0 0 70px;
+}
+
+.mat-column-fecIncidente {
+    flex: 0 0 95px;
+}
+
+.mat-column-nroIncidente {
+    flex: 0 0 0 80px;
+}
+
+@media(max-width: 600px) {
+    .mobile-label {
+        width: 85px;
+        display: inline-block;
+        font-weight: bold;
+    }
+    .mat-header-row {
+        display: none;
+    }
+    .mat-row {
+        flex-direction: column;
+        align-items: start;
+        padding: 8px 24px;
+    }
+    .mat-footer-row,
+    .mat-row {
+        min-height: 26px !important;
+    }
+    .mat-cell-first {
+        padding-left: 0px !important;
+    }
+    .mat-cell-button {
+        width: auto !important;
+    }
+    .mat-column-nro {
+        flex: auto !important;
+    }
+    .mat-column-razonSocial {
+        flex: auto !important;
+    }
+    .mat-column-nro {
+        flex: auto !important;
+    }
+    .mat-column-fecInicio {
+        flex: auto !important;
+    }
+    .mat-column-tipoReclamo {
+        flex: auto !important;
+    }
+    .mat-column-motivo {
+        flex: auto !important;
+    }
+    .mat-column-cliente {
+        flex: auto !important;
+    }
+    .mat-column-situacion {
+        flex: auto !important;
+    }
+    .mat-column-administrador {
+        flex: auto !important;
+    }
+    .mat-column-prioridad {
+        flex: auto !important;
+    }
+    .mat-column-fecIncidente {
+        flex: auto !important;
+    }
+    .mat-column-nroIncidente {
+        flex: auto !important;
+    }
+}

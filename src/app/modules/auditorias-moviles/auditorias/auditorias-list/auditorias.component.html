@@ -1,0 +1,111 @@
+<!-- <div [hidden]="modoGenerico"> -->
+<br>
+<br>
+<button mat-raised-button class="mb-10" (click)="verAuditoria('nuevo')">Nueva Auditoria</button>
+<!-- </div> -->
+
+<div [hidden]="!modoGenerico">
+    <mat-form-field class="ml-5 mr-5">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+    </mat-form-field>
+    <mat-form-field class="ml-5 mr-5 short-form-field">
+        <input matInput [matDatepicker]="picker1" placeholder="Fecha" [formControl]="desde" name="dpDesde">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="ml-5 mr-5 short-form-field">
+        <input matInput [matDatepicker]="picker2" placeholder="Fecha Hasta" [formControl]="hasta" name="dpHasta">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="ml-5 mr-5" *ngIf="userAcceso == '3'">
+        <mat-select placeholder="Vendedor" [formControl]="vendedorSelect">
+            <mat-option *ngFor="let item of vendedores" [value]="item.id">
+                {{item.descripcion}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    &nbsp;
+    <button mat-raised-button type="submit" (click)="GetAuditoriasGenerales()" [disabled]="matTableLoadingService.activo$ | async">Buscar</button>
+</div>
+
+<!-- 'fecha',
+'dominioId',
+'chofer',
+'medico',
+'enfermero',
+'condicion',
+'edit',
+'delete' -->
+
+<div class="mat-elevation-z8">
+    <mat-table [dataSource]="mtAuditoriasMoviles" matSort>
+        <ng-container matColumnDef="fecha">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="mat-cell-first">
+                Fecha
+            </mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let element">
+                <span class="mobile-label">Fecha:</span>{{element.fecha | date: 'dd/MM/yyyy'}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="dominioId">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Patente</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Patente:</span> {{element.dominioId}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="chofer">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Chofer</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Chofer:</span> {{element.chofer}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="medico">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Medico</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Medico:</span> {{element.medico}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="enfermero">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Enfermero</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Enfermero:</span> {{element.enfermero}}
+            </mat-cell>
+        </ng-container>
+        condicion
+        <ng-container matColumnDef="condicion">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Condicion</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Condicion:</span> {{element.condicion}}
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                Editar
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element ">
+                <span class="mobile-label ">Editar:</span>
+                <button (click)="verAuditoria(element.id, element)" mat-icon-button color='accent' matTooltip='Editar esta auditoria'>
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="delete">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                Eliminar
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element ">
+                <span class="mobile-label ">Eliminar:</span>
+                <button (click)="eliminarAuditoria(element.id) " mat-icon-button color='warn' matTooltip='Eliminar esta auditoria'>
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="dcAuditoriasMoviles "></mat-header-row>
+        <mat-row *matRowDef="let row; columns: dcAuditoriasMoviles;" [hidden]="matTableLoadingService.activo$ | async"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]" [hidden]="mtAuditoriasMoviles.data.length == 0 || (matTableLoadingService.activo$ | async)"></mat-paginator>
+    <app-mat-table-loading></app-mat-table-loading>
+    <app-mat-table-not-found [activo]="mtAuditoriasMoviles.data.length == 0 && !(matTableLoadingService.activo$ | async)"></app-mat-table-not-found>
+</div>

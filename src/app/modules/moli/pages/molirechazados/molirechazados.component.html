@@ -1,0 +1,104 @@
+<br>
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" [formControl]="descripcionInput" name="Descripcion" placeholder="Buscar...">
+</mat-form-field>
+<mat-form-field class="ml-5 mr-5">
+    <input matInput [matDatepicker]="picker1" placeholder="Fecha Desde" [formControl]="desde" name="dpDesde">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+</mat-form-field>
+<mat-form-field class="ml-5 mr-5">
+    <input matInput [matDatepicker]="picker2" placeholder="Fecha Hasta" [formControl]="hasta" name="dpHasta">
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+</mat-form-field>
+
+<button mat-raised-button type="submit" (click)="getMoliRechazados()" [disabled]="isLoading">Buscar</button>
+<button mat-raised-button color="accent" (click)="exportToExcel()">Exportar</button>
+<br>
+
+<div class="mat-elevation-z8">
+    <mat-table [dataSource]="mtMoliRechazados" matSort #table>
+        <ng-container matColumnDef="nroIncidente">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Inc</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Inc.:</span> {{element.nroIncidente}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="fecIncidente">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Fecha:</span> {{element.fecIncidenteDate | date: 'dd/MM/yyyy'}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="llamada">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Llamada</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Llamada:</span> {{element.llamadaDate | date: 'HH:mm'}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="nroInterno">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Nro. Int.</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Nro. Int.:</span> {{element.nroInterno}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="integranteId">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Nro. Afiliado</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Nro. Afiliado:</span> {{element.integranteId}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="nombre">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Paciente</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Paciente:</span> {{element.nombre}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="domicilio">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Domicilio</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Domicilio:</span> {{element.domicilio}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="localidad">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Localidad</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Localidad:</span> {{element.localidad}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="sintoma">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Síntoma</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Síntoma:</span> {{element.sintoma}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="grado">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Grado</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Grado:</span> {{element.grado}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="motivoRechazo">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Motivo Rechazo</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">>Motivo Rechazo:</span> {{element.motivoRechazo}}
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="dcMoliRechazados "></mat-header-row>
+        <mat-row *matRowDef="let row; columns: dcMoliRechazados; "></mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[7, 10, 25, 100] " *ngIf="mtMoliRechazados.data.length != 0"></mat-paginator>
+
+    <div *ngIf="isLoading && mtMoliRechazados.data.length === 0" style="display: flex; justify-content: center; align-items: center; height: 200px;">
+        <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+        </mat-progress-spinner>
+    </div>
+
+    <div style="text-align: center; padding-top: 40px; padding-bottom: 40px;" *ngIf="!isLoading && mtMoliRechazados.data.length === 0">
+        <!--(mtMoliRechazados.data === null ||  -->
+        NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
+    </div>
+</div>
+<br />

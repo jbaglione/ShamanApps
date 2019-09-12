@@ -1,0 +1,205 @@
+/* start: Sidenav*/
+.mat-sidenav
+{
+  background-color:#314896;
+}
+
+.logo-nav{
+  background-color: #ffffff;
+  height: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+  .mat-nav-list h3{
+    color: #ffffff !important;
+  }
+
+  .item-nav {
+    height: 40px !important;
+    padding-left: 14px !important;
+   }
+    .mat-list-item
+    {
+      color: #ffffff !important;
+      font-size: 14px !important;
+    }
+/* end: Sidenav*/
+
+.sidenav-content {
+  display: flex;
+  flex-flow: column nowrap;
+}
+/* start: Toolbar*/
+.main-toolbar {
+  background-color: #ffffff;
+  position: fixed;
+  /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+  z-index: 2;
+  height: 55px !important;
+}
+
+  .main-toolbar .wrapper-toolbar {
+    width: 100%;
+    margin: auto;
+    align-items: center;
+
+    /* Flex */
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row nowrap;
+  }
+
+    .wrapper-toolbar .logo {
+      justify-content: space-between;
+      align-items: center;
+
+      /* Flex */
+      display: flex;
+      flex-flow: row wrap;
+    }
+
+      .logo .wrapper-logo-image img {
+        vertical-align: top;
+        width: 184px;
+        height: 38px;
+      }
+
+      .logo .title {
+        color: #2b51a1;
+        font-size: 18px;
+        line-height: 38px;
+        padding-left: 35px;
+      }
+
+    .wrapper-toolbar .user-info {
+        /* Flex */
+        display: flex;
+        flex-direction:row;
+        align-items: center;
+    }
+
+      .user-info .user-icon {
+          width: 28px;
+          height: 28px;
+          font-size: 26px;
+          color: #6e7275;
+      }
+
+      .user-info .user-name {
+          font-size: 13px;
+          color: #959595;
+          margin-left: 10px;
+      }
+
+      .user-info .separator
+      {
+          font-size: 20px;
+          color: black;
+      }
+
+    .wrapper-toolbar .user-info-mobile {
+        display: none;
+    }
+
+    .logout-icon {
+      width: 28px;
+      height: 28px;
+      font-size: 28px;
+      color: #2b51a1;
+      padding-top: 3px;
+    }
+
+
+@media screen and (max-width:768px) {
+  .user-info {
+    display: none !important;
+  }
+
+  .user-info-mobile {
+    display: flex !important;
+  }
+}
+
+@media screen and (max-width:600px)
+{
+  .main-toolbar {
+    height: 90px !important;
+  }
+
+  .logo {
+    /* Flex */
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+  }
+
+  .logo .wrapper-logo-image img {
+      width: 172px;
+      height: 36px;
+      vertical-align: top;
+  }
+
+  .logo .title {
+      color: #2b51a1;
+      font-size: 18px;
+      line-height: 36px;
+      padding-left: 40px;
+  }
+
+  .user-info-mobile .user-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 26px;
+    color: #6e7275;
+  }
+}
+ /* end: Toolbar*/
+
+
+ /* start: Page content*/
+ .page-content {
+    flex: 1 0 auto;
+    margin-top:55px;
+    width: 100%;
+ }
+
+ @media screen and (max-width:600px)
+{
+  .page-content {
+    margin-top:90px;
+  }
+}
+ /* end: Page content*/
+
+
+/* start: Footer*/
+footer {
+  color: #ffffff;
+  background-color: #20232e;
+  /* Flex */
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0px;
+  line-height: 25px;
+  text-align:center;
+  width: 100%;
+}
+
+  footer p{
+    font-size: 12px !important;
+    margin: 0;
+    width: 100%;
+  }
+
+
+
+
+
+
+.is-mobile .sidenav-container {
+  /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+     `<body>` to be our scrolling element for mobile layouts. */
+  /* flex: 1 0 auto; */
+}

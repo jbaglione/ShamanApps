@@ -1,0 +1,94 @@
+.very-short-form-field {
+    max-width: 80px;
+}
+
+.short-form-field {
+    max-width: 110px;
+}
+
+.long-form-field {
+    min-width: 300px;
+}
+
+.mat-column-fecha {
+    flex: 0 0 75px;
+}
+
+.mat-column-razonSocial {
+    flex: 0 0 150px;
+    margin-right: 10px;
+}
+
+.mat-column-tipoGestion {
+    flex: 0 0 150px;
+}
+
+.mat-column-observaciones {
+    flex: 0 0 *px;
+}
+
+.mat-column-fechaRecontacto {
+    flex: 0 0 95px;
+}
+
+.mat-column-adjunto {
+    flex: 0 0 80px;
+}
+
+.mat-column-edit {
+    flex: 0 0 80px;
+}
+
+.mat-column-delete {
+    flex: 0 0 80px;
+}
+
+@media(max-width: 600px) {
+    .mobile-label {
+        width: 85px;
+        display: inline-block;
+        font-weight: bold;
+    }
+    .mat-header-row {
+        display: none;
+    }
+    .mat-row {
+        flex-direction: column;
+        align-items: start;
+        padding: 8px 24px;
+    }
+    .mat-footer-row,
+    .mat-row {
+        min-height: 26px !important;
+    }
+    .mat-cell-first {
+        padding-left: 0px !important;
+    }
+    .mat-cell-button {
+        width: auto !important;
+    }
+    .mat-column-razonSocial {
+        flex: auto !important;
+    }
+    .mat-column-fecha {
+        flex: auto !important;
+    }
+    .mat-column-tipoGestion {
+        flex: auto !important;
+    }
+    .mat-column-observaciones {
+        flex: auto !important;
+    }
+    .mat-column-fechaRecontacto {
+        flex: auto !important;
+    }
+    .mat-column-adjunto {
+        flex: auto !important;
+    }
+    .mat-column-edite {
+        flex: auto !important;
+    }
+    .mat-column-delete {
+        flex: auto !important;
+    }
+}

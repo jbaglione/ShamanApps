@@ -1,0 +1,162 @@
+<div class="wrapper-toolbar">
+    <div class="logo">
+        <button class="mat-button-icon-small" mat-icon-button type="button" mat-button [routerLink]="['/facturacion']">
+          <!-- matTooltip="Retroceder a la página anterior." -->
+          <mat-icon [routerLink]="['/facturacion']">arrow_back</mat-icon>
+      </button>
+        <span class="sub-title">Volver a Comprobantes</span>
+    </div>
+</div>
+
+
+<br>
+<mat-form-field class="ml-5 mr-5">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." [formControl]="descripcionInput" name="Descripcion" />
+</mat-form-field>
+<div style="display: inline-block;">
+    <button mat-raised-button (click)="exportToExcel()">Exportar</button>
+    <button mat-raised-button color="accent" (click)="downloadAllImages()">Descargar</button>
+</div>
+<br>
+
+<div class="mat-elevation-z8">
+
+    <mat-table [dataSource]="mtComprobanteServicios" matSort #table>
+        <ng-container matColumnDef="nroIncidente">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Incidente</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Incidente:</span> {{element.nroIncidente}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="formatedFecha">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Fecha:</span> {{element.formatedFecha | date: 'dd/MM/yyyy'}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="conceptoId">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Concepto</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Concepto:</span> {{element.conceptoId}}
+            </mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="nroInterno">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Nro Int.</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Nro Int.:</span> {{element.nroInterno}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="iva">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Iva</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Iva:</span> {{element.iva}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="arba">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>ARBA</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">ARBA:</span> {{element.arba}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="agip">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>AGIP</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">AGIP:</span> {{element.agip}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="nroAfiliado">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Nro</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Nro:</span> {{element.nroAfiliado}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="formatedPaciente">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Paciente</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Paciente:</span> {{element.formatedPaciente}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="desde">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Desde</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Desde:</span> {{element.desde}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="hasta">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Hasta</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Hasta:</span> {{element.hasta}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="kmt">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Kmt</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Kmt:</span> {{element.kmt}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="tpoEspera">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Espera</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Espera:</span> {{element.tpoEspera}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="importeBase">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Base</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Base:</span> {{element.importeBase | currency}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="recargos">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Recargos</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Recargos:</span> {{element.recargos | currency}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="importe">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Importe</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Importe:</span> {{element.importe | currency}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="verImagenesServicios">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                Imagenes
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element; let i = index">
+                <span class="mobile-label">Ver:</span>
+                <button (click)="openGallery(i)" mat-icon-button matTooltip='Ver imagenes del servicios'>
+                            <mat-icon>photo_library</mat-icon>
+                    </button>
+                <ngx-gallery [options]="element.galleryOptions" [images]="element.galleryImages"></ngx-gallery>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="calculo">
+            <mat-header-cell *matHeaderCellDef>
+                Calculo
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Calculo:</span>
+                <button (click)="verRenglones(element.id, element.nroInterno)" mat-icon-button matTooltip='Ver renglones'>
+                  <mat-icon color="primary">date_range</mat-icon>
+              </button>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="dcComprobanteServicios "></mat-header-row>
+        <mat-row *matRowDef="let row; columns: dcComprobanteServicios; "></mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[7, 10, 25, 100] " *ngIf="mtComprobanteServicios.data.length != 0"></mat-paginator>
+
+    <div *ngIf="isLoading && mtComprobanteServicios.data.length === 0" style="display: flex; justify-content: center; align-items: center; height: 200px;">
+        <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+        </mat-progress-spinner>
+    </div>
+
+    <div style="text-align: center; padding-top: 40px; padding-bottom: 40px;" *ngIf="!isLoading && mtComprobanteServicios.data.length === 0">
+        <!--(mtMoliRealizados.data === null ||  -->
+        NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
+    </div>
+</div>
+<br />

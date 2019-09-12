@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Solicitar Usuario</h1>
+<div mat-dialog-content>
+    <form name="registerForm" [formGroup]="registerForm">
+      <mat-form-field class="full-width">
+          <input autofocus matInput placeholder="Nombre/ Razón Social" formControlName="nombre" />
+          <mat-error *ngIf="registerForm.get('nombre').hasError('required')">
+            Por favor ingrese el nombre/ razón social
+          </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+          <mat-label>Relación</mat-label>
+          <mat-select  formControlName="relacion" (selectionChange)="selectRelacion($event.value)">
+            <mat-option *ngFor="let relacion of relaciones" [value]="relacion.value">
+              {{relacion.viewValue}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="registerForm.get('relacion').hasError('required')">
+              Por favor, seleccione relación
+          </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+          <input matInput type="email" placeholder="Email" formControlName="email" />
+          <mat-error *ngIf="registerForm.get('email').hasError('email') && !registerForm.get('email').hasError('required')">
+            Por favor ingrese un email valido.
+          </mat-error>
+          <mat-error *ngIf="registerForm.get('email').hasError('required')">
+            Email es <strong>requerido</strong>
+          </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+          <input matInput placeholder="{{clienteLabel}}" formControlName="cliente" />
+          <mat-error *ngIf="registerForm.get('cliente').hasError('required')">
+            Por favor ingrese el cliente
+          </mat-error>
+      </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="accent" (click)="onCancelClick()">Cancelar</button>
+  <button mat-raised-button color="accent" (click)="onSendClick()" [disabled]="!registerForm.valid">Enviar</button>
+</div>

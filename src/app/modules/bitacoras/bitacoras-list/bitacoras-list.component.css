@@ -1,0 +1,100 @@
+.bitacora-list-container
+{
+  padding: 15px 25px 25px 25px;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-column-nro {
+    flex: 0 0 75px;
+}
+
+.mat-column-fecha {
+    flex: 0 0 85px;
+}
+
+.mat-column-hora {
+    flex: 0 0 80px;
+}
+
+.mat-column-titulo {
+    flex: 0 0 *px;
+}
+
+.mat-column-motivo {
+    flex: 0 0 260px;
+}
+
+.mat-column-administrador {
+    flex: 0 0 230px;
+}
+
+.mat-column-estado {
+    flex: 0 0 100px;
+}
+
+.mat-column-ultFecha {
+    flex: 0 0 130px;
+}
+
+.mat-column-diasRta {
+    flex: 0 0 80px;
+    display: none;
+}
+
+.mat-column-duracion {
+    flex: 0 0 80px;
+    display: none;
+}
+
+@media(max-width: 600px) {
+    .mobile-label {
+        width: 85px;
+        display: inline-block;
+        font-weight: bold;
+    }
+    .mat-header-row {
+        display: none;
+    }
+    .mat-row {
+        flex-direction: column;
+        align-items: start;
+        padding: 8px 24px;
+    }
+    .mat-footer-row,
+    .mat-row {
+        min-height: 26px !important;
+    }
+    .mat-cell-first {
+        padding-left: 0px !important;
+    }
+    .mat-cell-button {
+        width: auto !important;
+    }
+    .mat-column-nro {
+        flex: auto !important;
+    }
+    .mat-column-fecha {
+        flex: auto !important;
+    }
+    .mat-column-hora {
+        flex: auto !important;
+    }
+    .mat-column-titulo {
+        flex: auto !important;
+    }
+    .mat-column-motivo {
+        flex: auto !important;
+    }
+    .mat-column-administrador {
+        flex: auto !important;
+    }
+    .mat-column-estado {
+        flex: auto !important;
+    }
+    .mat-column-ultFecha {
+        flex: auto !important;
+    }
+}

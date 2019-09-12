@@ -1,0 +1,65 @@
+<h1 mat-dialog-title>Registro de Gestiones</h1>
+<mat-dialog-content style="border-top: 1px solid #dadce0;">
+    <br />
+    <form class="example-form" [formGroup]="gestionForm" (ngSubmit)="guardarGestion()" novalidate="novalidate">
+        <table class="example-full-width" cellspacing="0">
+            <tr>
+                <td>
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker3" placeholder="Fecha" formControlName="fecha" name="dpFecha">
+                        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                        <mat-datepicker #picker3></mat-datepicker>
+                        <mat-error *ngIf="!gestionForm.controls.fecha.valid">
+                            Debe ingresar una fecha valida.
+                        </mat-error>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-form-field>
+                        <mat-select placeholder="Tipo de Gestion" formControlName="tipoGestion">
+                            <mat-option *ngFor="let item of tiposGestion" [value]="item.id ">
+                                {{item.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-form-field>
+                        <textarea matInput placeholder="Observaciones" formControlName="observaciones" rows=3></textarea>
+                        <mat-error *ngIf="!gestionForm.controls.observaciones.valid">
+                            Ingrese una observaciones valida.
+                        </mat-error>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker4" placeholder="Fecha Recontacto" formControlName="fechaRecontacto" name="dpFechaRecontacto">
+                        <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                        <mat-datepicker #picker4></mat-datepicker>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div *ngIf="gestion.adjunto != null && gestion.adjunto.archivo != null">
+                        <button mat-raised-button color="accent" (click)="eliminarAdjuntoActual()" matTooltip="Elimina el archivo actual y permite cargar otro.">Cambiar Adjunto
+                            Actual</button>
+                    </div>
+                    <div *ngIf="gestion.adjunto == null || gestion.adjunto.archivo == null">
+                        <input type="file" #myInput (change)="onFileChange($event)" accept="application/pdf" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right ">
+    <button mat-raised-button color="accent" (click)="onNoClick() ">Cancelar</button>
+    <button mat-raised-button type="submit " (click)="guardarGestion() ">Guardar</button>
+</mat-dialog-actions>

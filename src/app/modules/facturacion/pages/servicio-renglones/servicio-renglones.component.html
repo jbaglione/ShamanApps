@@ -1,0 +1,49 @@
+<h1 mat-dialog-title>Apertura Valorización Servicio {{nroInterno}}</h1>
+<mat-dialog-content style="border-top: 1px solid #dadce0;">
+    <br />
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <!-- <ng-container matColumnDef="nroIncidente">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Incidente</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Incidente:</span> {{element.nroIncidente}}
+            </mat-cell>
+        </ng-container> -->
+        <ng-container matColumnDef="codigo">
+            <mat-header-cell *matHeaderCellDef> Codigo </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Codigo:</span>{{element.codigo}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="concepto">
+            <mat-header-cell *matHeaderCellDef> Concepto </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Concepto:</span>{{element.concepto}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="cantidad">
+            <mat-header-cell *matHeaderCellDef class="align-currency"> Cantidad </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="align-currency">
+                <span class="mobile-label">Cantidad:</span>{{element.cantidad}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="unitario">
+            <mat-header-cell *matHeaderCellDef class="align-currency"> Unitario </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="align-currency">
+                <span class="mobile-label">Unitario:</span>{{element.unitario | currency}}
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="importe">
+            <mat-header-cell *matHeaderCellDef class="align-currency"> Importe </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="align-currency">
+                <span class="mobile-label">Importe:</span>{{element.importe | currency}}
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="dcServicioRenglones"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: dcServicioRenglones;"></mat-row>
+    </mat-table>
+
+</mat-dialog-content>
+<mat-dialog-actions style="float:right ">
+    <button mat-raised-button [mat-dialog-close]=" ">OK</button>
+</mat-dialog-actions>

@@ -1,0 +1,212 @@
+@import './extranet-theme';
+@import './extranet-typography';
+@import './extranet-material-controls';
+
+[hidden] { display: none !important;}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f9f9f9;
+}
+
+.container-padding {
+    padding: 15px 25px 25px 25px;
+}
+
+.mt-5 {
+  margin-top: 5px !important;
+}
+
+.mr-5{
+  margin-right: 5px !important;
+}
+
+.mb-5 {
+  margin-bottom: 5px !important;
+}
+
+.ml-5{
+  margin-left: 5px !important;
+}
+
+.mt-10 {
+  margin-top: 10px !important;
+}
+
+.mr-10{
+  margin-right: 10px !important;
+}
+
+.mb-10 {
+  margin-bottom: 10px !important;
+}
+
+.ml-10{
+  margin-left: 10px !important;
+}
+
+.mobile-label {
+  display: none;
+}
+
+.full-width{
+	width: 100%;
+}
+
+//BACKGORUND
+.primary-bg {
+    background-color: mat-color($extranet-app-primary);
+}
+
+.primary-light-bg {
+    background-color: mat-color($extranet-app-primary, lighter);
+}
+
+.primary-dark-bg {
+    background-color: mat-color($extranet-app-primary, darker);
+}
+
+.primary-bg-A200 {
+    background-color: mat-color($extranet-app-primary, A200);
+}
+
+.primary-bg-A300 {
+    background-color: mat-color($extranet-app-primary, A400);
+}
+
+//PRIMARY COLOR
+.primary-color {
+    color: mat-color($extranet-app-primary);
+}
+
+.primary-light-color {
+    color: mat-color($extranet-app-primary, lighter);
+}
+
+.primary-dark-color {
+    color: mat-color($extranet-app-primary, darker);
+}
+
+.primary-color-A200 {
+    color: mat-color($extranet-app-primary, A200);
+}
+
+.primary-color-A300 {
+    color: mat-color($extranet-app-primary, A400);
+}
+
+.oldGold {
+    color: rgb(207, 181, 59);
+}
+
+//ACCENT COLOR
+.accent-color {
+    color: mat-color($extranet-app-accent);
+}
+
+.accent-light-color {
+    color: mat-color($extranet-app-accent, lighter);
+}
+
+.accent-dark-color {
+    color: mat-color($extranet-app-accent, darker);
+}
+
+.accent-color-A200 {
+    color: mat-color($extranet-app-accent, A200);
+}
+
+.accent-color-A300 {
+    color: mat-color($extranet-app-accent, A400);
+}
+
+//BACKGORUND WARN
+.warn-bg {
+    background-color: mat-color($extranet-app-warn);
+}
+
+.warn-light-bg {
+    background-color: mat-color($extranet-app-warn, lighter);
+}
+
+.warn-dark-bg {
+    background-color: mat-color($extranet-app-warn, darker);
+}
+
+.warn-bg-A200 {
+    background-color: mat-color($extranet-app-warn, A200);
+}
+
+.warn-bg-A300 {
+    background-color: mat-color($extranet-app-warn, A400);
+}
+
+//WARN COLOR
+.warn-color {
+    color: mat-color($extranet-app-warn);
+}
+
+.warn-light-color {
+    color: mat-color($extranet-app-warn, lighter);
+}
+
+.warn-dark-color {
+    color: mat-color($extranet-app-warn, darker);
+}
+
+.warn-color-A200 {
+    color: mat-color($extranet-app-warn, A200);
+}
+
+.warn-color-A300 {
+    color: mat-color($extranet-app-warn, A400);
+}
+
+@media(max-width: 600px) {
+  .hidden-if-mobile {
+      display: none !important;
+  }
+}
+
+.container {
+  display: flex;
+  margin-top: 0px;
+  /* or inline-flex */
+}
+
+.text--center {
+  text-align: center;
+}
+
+.text--right {
+  text-align: right;
+}
+
+.example-spacer-small {
+  flex: 0.3 0.3 auto;
+}
+
+.example-spacer-extra-small {
+  flex: 0.15 0.15 auto;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.icon-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.excel-icon  g{
+  fill:green;
+}
+
+

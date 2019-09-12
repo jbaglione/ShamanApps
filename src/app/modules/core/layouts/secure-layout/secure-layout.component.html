@@ -1,0 +1,69 @@
+<div>
+  <mat-sidenav-container class="sidenav-container" fullscreen>
+    <mat-sidenav #snav [mode]="over">
+      <div class="logo-nav">
+          <img src="./assets/images/logo.png" />
+      </div>
+      <mat-divider></mat-divider>
+      <mat-nav-list  *ngFor="let grupoAccesosMicrositiosItem of grupoAccesosMicrositios | async; let i = index">
+        <h3 mat-subheader>{{grupoAccesosMicrositiosItem.nombre}}</h3>
+        <mat-list-item *ngFor="let accesoMicrositio of grupoAccesosMicrositiosItem.accesosMicrositios" class="item-nav">
+          <mat-icon mat-list-icon>folder</mat-icon>
+          <a matLine (click) = "goToPage(accesoMicrositio.url, accesoMicrositio.codigo)">{{accesoMicrositio.titulo}}</a>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="sidenav-content">
+      <mat-toolbar role="heading" class="mat-elevation-z2 main-toolbar">
+        <div class="wrapper-toolbar">
+          <div class="logo">
+            <div class="wrapper-logo-image wrapper-logo-image-secure">
+              <span>
+                <button mat-icon-button type="button" aria-label="Toggle sidenav" (click)="snav.toggle()">
+                  <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+                </button>
+              </span>
+              <img src="./assets/images/logo.png" />
+            </div>
+            <span class="title">{{ titulo }}</span>
+          </div>
+          <div class="user-info">
+            <mat-icon class="user-icon">perm_identity</mat-icon>
+            <span class="user-name"> {{ user?.username }}</span>
+            <span class="separator">&nbsp;|&nbsp;</span>
+            <button mat-icon-button>
+              <mat-icon class="logout-icon" matTooltip="Cerrar sesion" (click)="logout()" >power_settings_new</mat-icon>
+            </button>
+          </div>
+          <div class="user-info-mobile">
+            <button mat-icon-button [matMenuTriggerFor]="loginmenu">
+              <span class="mat-button-wrapper">
+                <mat-icon class="logout-icon">perm_identity</mat-icon>
+                <mat-icon class="logout-icon">arrow_drop_down</mat-icon>
+              </span>
+            </button>
+            <mat-menu #loginmenu="matMenu">
+              <span mat-menu-item disabled style="color: black;">
+                <strong>{{ user?.username }}</strong>
+              </span>
+              <button mat-menu-item>
+                <span class="mat-button-wrapper">
+                  <mat-icon class="logout-icon" matTooltip="Cerrar sesión" (click)="logout()" >power_settings_new</mat-icon >
+                  Cerrar sesión
+                </span>
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+      </mat-toolbar>
+      <app-progress-bar [topbar]="56">
+      </app-progress-bar>
+        <div class="page-content">
+          <router-outlet></router-outlet>
+        </div>
+        <footer>
+          <p>Acceso no autorizado, uso, reproducción, o divulgación está prohibido. PARAMEDIC no asumirá responsabilidad ni obligación legal alguna por cualquier información incorrecta o alterada contenida en el sistema</p>
+        </footer>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

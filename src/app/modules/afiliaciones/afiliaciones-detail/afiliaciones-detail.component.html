@@ -1,0 +1,8 @@
+<button mat-icon-button type="button" [mat-dialog-close]=" " style="float: right; margin-top: 0px !important; ">
+    <mat-icon class="icon-center">close_circle</mat-icon>
+</button>
+<h1 mat-dialog-title>Cliente Potencial
+</h1>
+<div mat-dialog-content>
+    <iframe [src]="urlFinal | safe" allow="geolocation" class="frame"></iframe>
+</div>

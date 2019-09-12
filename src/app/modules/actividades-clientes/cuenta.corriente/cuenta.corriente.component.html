@@ -1,0 +1,74 @@
+<mat-form-field class="ml-5 mr-5">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+    <mat-table [dataSource]="mtClienteCuentaCorriente" matSort>
+        <ng-container matColumnDef="nro">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+                Nro
+            </mat-header-cell>
+            <mat-cell mat-cell *matCellDef="let element" class="mat-cell-first">
+                <span class="mobile-label">Nro:</span>{{element.nro}}
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef> Saldo </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="fecDocumento">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha Documento</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Fecha Documento:</span> {{element.fecDocumento | date: 'dd/MM/yyyy'}}
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency}} </mat-footer-cell>
+            <!-- <mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency}} </mat-footer-cell> -->
+        </ng-container>
+
+        <ng-container matColumnDef="tipoComprobante">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo Comprobante</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Tipo Comprobante:</span> {{element.tipoComprobante}}
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="nroComprobante">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Nro. Comprobante</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Nro. Comprobante:</span> {{element.nroComprobante}}
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="debe">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">Debe</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="align-currency">
+                <span class="mobile-label">Debe:</span> {{element.debe | currency}}
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="haber">
+            <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency" style="margin-right: 84px;">Haber</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="align-currency" style="margin-right: 84px;">
+                <span class="mobile-label">Haber:</span> {{element.haber | currency}}
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="comprobante">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Comprobante</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="mobile-label">Comprobante:</span>
+                <div *ngIf="element.comprobanteDescargable">
+                    <button mat-icon-button matTooltip='Ver Comprobante' (click)='downloadComprobante(element.id, element.tipoComprobante)'>
+                            <mat-icon>cloud_download</mat-icon>
+                    </button>
+                </div>
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="dcClienteCuentaCorriente "></mat-header-row>
+        <mat-row *matRowDef="let row; columns: dcClienteCuentaCorriente; "></mat-row>
+        <mat-footer-row *matFooterRowDef="dcClienteCuentaCorriente"></mat-footer-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[7, 10, 25, 100] "></mat-paginator>
+</div>
+
+<br />
