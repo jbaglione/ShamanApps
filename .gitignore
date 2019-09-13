@@ -35,3 +35,4 @@ UserInterfaceState.xcuserstate
 dist
 dist
 android
+/src/app/*.zip

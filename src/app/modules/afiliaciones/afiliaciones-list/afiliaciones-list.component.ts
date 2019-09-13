@@ -13,6 +13,7 @@ import { ClientePotencial, ClientePotencialForExcel } from 'src/app/models/clien
 import { PotencialExitoComponent } from '../dialog-potencial-exito/dialog-potencial-exito.component';
 import { ExportMatTableToXlxs } from '@app/modules/shared/helpers/export-mat-table-to-xlxs';
 import { MatTableLoadingService } from '@app/modules/shared/services/mat-table-loading.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-afiliaciones-list',
@@ -40,6 +41,9 @@ export class AfiliacionesListComponent implements OnInit {
     { descripcion: 'Suspendidos', id: '5' }
   ];
   vendedores: listable[] = [{ descripcion: 'Todos', id: '0' }];
+
+  vendedores$: Observable<listable[]>;
+  clientesPotenciales$: Observable<ClientePotencial[]>;
 
   // Datos para grilla
   dcClientesPotencialesBasic: string[] = [
@@ -102,13 +106,8 @@ export class AfiliacionesListComponent implements OnInit {
     this.descripcionInput = new FormControl('');
     this.tiposClientesSelect = new FormControl(this.tiposClientes[0].id);
     this.vendedoresSelect = new FormControl(this.vendedores[0].id);
-    this.afiliacionesService
-      .getVendedores()
-      .subscribe(data => {
-        this.vendedores = data;
-      });
-
-      this.getClientes(this.tiposClientes[0].id, '');
+    this.getVendedores();
+    this.getClientes(this.tiposClientes[0].id, '');
   }
 
   setDataSourceAttributes() {
@@ -122,11 +121,18 @@ export class AfiliacionesListComponent implements OnInit {
     this.mtClientesPotenciales.filter = filterValue;
   }
 
+  getVendedores() {
+    this.vendedores$ =  this.afiliacionesService.getVendedores();
+    this.vendedores$.subscribe(data => {
+      this.vendedores = data;
+    });
+  }
+
   getClientes(tipoCliente: string, vendedor: string) {
     this.matTableLoadingService.activar();
-    this.afiliacionesService
-      .getClientePotencial(tipoCliente, vendedor)
-      .subscribe( data => {
+    this.clientesPotenciales$ = this.afiliacionesService.getClientePotencial(tipoCliente, vendedor);
+    this.clientesPotenciales$.subscribe(
+      data => {
         if (data == null) {
           return;
         }
@@ -142,7 +148,8 @@ export class AfiliacionesListComponent implements OnInit {
         this.setDataSourceAttributes();
         this.matTableLoadingService.desactivar();
       },
-      err => { this.matTableLoadingService.desactivar(); } );
+      err => { this.matTableLoadingService.desactivar(); }
+    );
   }
 
   openDialogCliente(paramClienteId: number = 0, paramClienteEstado: number = 1, ): void {

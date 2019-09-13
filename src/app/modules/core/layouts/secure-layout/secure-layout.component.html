@@ -29,7 +29,7 @@
           </div>
           <div class="user-info">
             <mat-icon class="user-icon">perm_identity</mat-icon>
-            <span class="user-name"> {{ user?.username }}</span>
+            <span class="user-name"> {{ userName$ | async }}</span>
             <span class="separator">&nbsp;|&nbsp;</span>
             <button mat-icon-button>
               <mat-icon class="logout-icon" matTooltip="Cerrar sesion" (click)="logout()" >power_settings_new</mat-icon>
@@ -44,7 +44,7 @@
             </button>
             <mat-menu #loginmenu="matMenu">
               <span mat-menu-item disabled style="color: black;">
-                <strong>{{ user?.username }}</strong>
+                <strong>{{ userName$ | async }}</strong>
               </span>
               <button mat-menu-item>
                 <span class="mat-button-wrapper">

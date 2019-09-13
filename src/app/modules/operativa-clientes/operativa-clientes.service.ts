@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { AppConfig } from 'src/app/configs/app.config';
 import { Electro } from './models/electro.model';
+import { shareReplay } from 'rxjs/operators';
 
 @Injectable()
 export class OperativaClientesService {
@@ -40,13 +41,10 @@ export class OperativaClientesService {
     };
   }
 
-  //#region Electros
   public GetElectros$(desde: Date, hasta: Date): Observable<Electro[]> {
     const url = `${this.operativaClientesApiUrl}/Electros/Desde/${desde.toDateString()}/Hasta/${hasta.toDateString()}`;
     return this.httpClient.get<Electro[]>(url);
   }
-
-  //#endregion
 
   private showSnackBar(name): void {
     const config: any = new MatSnackBarConfig();

@@ -1,25 +1,36 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { AppConfig } from '@app/configs/app.config';
-import { Usuario, GrupoAccesosMicrositios, ForgotPasswordResult, AccesoMicrositio } from './models/index';
+import { Usuario, GrupoAccesosMicrositios, ForgotPasswordResult } from './models/index';
 import * as jwt_decode from 'jwt-decode';
 import { UsuarioRegister } from './models/register.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  private readonly CURRENT_USER: string = 'currentUser';
-  private currentUser: BehaviorSubject<Usuario>;
-  public currentUser$: Observable<Usuario>;
+  public readonly CURRENT_USER: string = 'currentUser';
+  private readonly LOGIN_STATUS: string = 'loginStatus';
+  private loginStatus = new BehaviorSubject<boolean>(this.checkloginstatus());
+  private userName    = new BehaviorSubject<string>(this.currentUserValue != null ? this.currentUserValue.username : '');
 
-  constructor( private httpClient: HttpClient) {
-    this.currentUser = new BehaviorSubject<Usuario>(JSON.parse(localStorage.getItem(this.CURRENT_USER)));
-    this.currentUser$ = this.currentUser.asObservable();
+  constructor( private httpClient: HttpClient) { }
+
+  public get currentUserValue(): any {
+    const currentUser: Usuario =  JSON.parse(localStorage.getItem(this.CURRENT_USER));
+    if (currentUser == null) {
+      return null;
+    } else {
+      return currentUser;
+    }
   }
 
-  public get currentUserValue(): Usuario {
-    return this.currentUser.value;
+  public get isLoggesIn() {
+      return this.loginStatus.asObservable();
+  }
+
+  get currentUserName() {
+      return this.userName.asObservable();
   }
 
   login(username: string, password: string) {
@@ -27,14 +38,37 @@ export class AuthenticationService {
       .post<Usuario>(`${AppConfig.endpoints.security}users/Authenticate`, { username, password })
       .pipe(
         map(user => {
-          // login successful if there's a jwt token in the response
           if (user && user.tokenInfo && user.tokenInfo.accessToken) {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
+            this.loginStatus.next(true);
+            localStorage.setItem(this.LOGIN_STATUS, '1');
             localStorage.setItem( this.CURRENT_USER, JSON.stringify(user) );
-            this.currentUser.next(user);
+            this.userName.next(this.currentUserValue.username);
           }
-
           return user;
+        })
+      );
+  }
+
+  refreshToken(): Observable<any> {
+    const usuario: Usuario = this.currentUserValue;
+    const token: string = usuario.tokenInfo.accessToken;
+    const refreshToken: string = usuario.tokenInfo.refreshToken;
+
+    return this.httpClient
+      .post<any>(`${AppConfig.endpoints.security}users/RefreshToken`, { token, refreshToken })
+      .pipe(
+        map(user => {
+          if (user && user.tokenInfo && user.tokenInfo.accessToken) {
+            this.loginStatus.next(true);
+            localStorage.setItem(this.LOGIN_STATUS, '1');
+            localStorage.setItem( this.CURRENT_USER, JSON.stringify(user) );
+            this.userName.next(this.currentUserValue.username);
+          }
+          return <any>user;
+        }),
+        catchError((err): Observable<any> => {
+          console.log('Error en refresh');
+          return null;
         })
       );
   }
@@ -46,12 +80,10 @@ export class AuthenticationService {
         map(user => {
           // login successful if there's a jwt token in the response
           if (user && user.token) {
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem(
-              this.CURRENT_USER,
-              JSON.stringify(user)
-            );
-            this.currentUser.next(user);
+            this.loginStatus.next(true);
+            localStorage.setItem(this.LOGIN_STATUS, '1');
+            localStorage.setItem(this.CURRENT_USER,JSON.stringify(user));
+            this.userName.next(this.currentUserValue.username);
           }
 
           return user;
@@ -60,9 +92,9 @@ export class AuthenticationService {
   }
 
   logout() {
-    // remove user from local storage to log user out
+    this.loginStatus.next(false);
     localStorage.removeItem(this.CURRENT_USER);
-    this.currentUser.next(null);
+    localStorage.setItem(this.LOGIN_STATUS, '0');
   }
 
   getGruposMicrositios(): Observable<GrupoAccesosMicrositios[]> {
@@ -79,18 +111,7 @@ export class AuthenticationService {
               }
             });
           });
-
-          const mockMicrositio: AccesoMicrositio = {
-            codigo: 9999,
-            jerarquia: 300,
-            titulo: 'Aditorias Moviles',
-            url: '/auditoriasmoviles/auditorias',
-            urlV1: ''
-          };
-          currentUser.micrositiosV1.push(mockMicrositio);
-
           localStorage.setItem(this.CURRENT_USER, JSON.stringify(currentUser));
-          this.currentUser.next(currentUser);
           return grupoMicrositios;
         })
       );
@@ -140,9 +161,7 @@ export class AuthenticationService {
   }
 
   getAccesosCurrentUser(): number {
-    var as =  this.currentUserValue.accesos.find(a => a.pagina === this.getCurrentPageId());
-    if(as!= null)
-    return as.codigo;
+    return this.currentUserValue.accesos.find(a => a.pagina == this.getCurrentPageId() ).codigo;
   }
 
   setCurrentPageId(pageId: number) {
@@ -152,4 +171,17 @@ export class AuthenticationService {
   getCurrentPageId(): number {
     return parseInt(sessionStorage.getItem('currentPageId'));
   }
+
+  checkloginstatus(): boolean {
+    const loginCookie = localStorage.getItem(this.LOGIN_STATUS);
+    const user = this.currentUserValue;
+
+    if (loginCookie == '1') {
+      if (user && user.tokenInfo && user.tokenInfo.accessToken) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }

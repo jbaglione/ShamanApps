@@ -74,7 +74,7 @@
         </ng-container>
 
         <ng-container matColumnDef="adjunto">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Adjunto</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef> Adjunto</mat-header-cell>
             <mat-cell *matCellDef="let element">
                 <span class="mobile-label">Adjunto:</span>
                 <div *ngIf="element.adjunto != null && element.adjunto.archivo != null">
@@ -87,7 +87,7 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="edit">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <mat-header-cell *matHeaderCellDef>
                 Editar
             </mat-header-cell>
             <mat-cell *matCellDef="let element ">
@@ -98,7 +98,7 @@
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="delete">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>
+            <mat-header-cell *matHeaderCellDef>
                 Eliminar
             </mat-header-cell>
             <mat-cell *matCellDef="let element ">
@@ -113,5 +113,5 @@
     </mat-table>
     <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]" [hidden]="mtClientesGestiones.data.length == 0 || (matTableLoadingService.activo$ | async)"></mat-paginator>
     <app-mat-table-loading></app-mat-table-loading>
-    <app-mat-table-not-found [activo]="mtClientesGestiones.data.length == 0 && !(matTableLoadingService.activo$ | async)"></app-mat-table-not-found>
+    <app-mat-table-not-found [activo]="mtClientesGestiones.data.length == 0 && !(matTableLoadingService.activo$ | async)" ></app-mat-table-not-found>
 </div>

@@ -1,67 +1,67 @@
 <div class="contenedor">
-    <mat-toolbar role="heading" class="mat-elevation-z2 main-toolbar">
-        <div class="logo">
-            <div class="wrapper-logo-image">
-                <img src="./assets/images/logo.png" />
-            </div>
-            <span class="mat-h1 title">EXTRANET</span>
+  <mat-toolbar role="heading" class="mat-elevation-z2 main-toolbar">
+    <div class="logo">
+      <div class="wrapper-logo-image">
+        <img src="./assets/images/logo.png" />
+      </div>
+      <span class="mat-h1 title">EXTRANET</span>
+    </div>
+    <div class="current-date mat-subheading-1">
+      {{ currentDate }}
+    </div>
+  </mat-toolbar>
+  <app-progress-bar>
+  </app-progress-bar>
+  <main class="site-content">
+    <router-outlet></router-outlet>
+  </main>
+  <footer>
+    <div id="footer-row-1">
+      <div class="wrapper-footer footer-sedes mat-h5">
+        <div class="sede">
+          <p>
+            <strong><span>SEDE CENTRAL</span></strong>
+          </p>
+          <p><span>Donado 1746, C1430DRH </span></p>
+          <p><span>Ciudad Autónoma de Buenos Aires </span></p>
+          <p><span>Tel: (54-11) 5777-5500</span></p>
         </div>
-        <div class="current-date mat-subheading-1">
-            {{ currentDate }}
+        <div class="sede">
+          <p>
+            <strong><span>SEDE PILAR</span></strong>
+          </p>
+          <p><span>Au. Panamericana Km. 44 (1669)</span></p>
+          <p><span>Del Viso, Buenos Aires</span></p>
+          <p><span>Tel: (02320) 404900</span></p>
         </div>
-    </mat-toolbar>
-    <app-progress-bar>
-    </app-progress-bar>
-    <main class="site-content">
-        <router-outlet></router-outlet>
-    </main>
-    <footer>
-        <div id="footer-row-1">
-            <div class="wrapper-footer footer-sedes mat-h5">
-                <div class="sede">
-                    <p>
-                        <strong><span>SEDE CENTRAL</span></strong>
-                    </p>
-                    <p><span>Donado 1746, C1430DRH </span></p>
-                    <p><span>Ciudad Autónoma de Buenos Aires </span></p>
-                    <p><span>Tel: (54-11) 5777-5500</span></p>
-                </div>
-                <div class="sede">
-                    <p>
-                        <strong><span>SEDE PILAR</span></strong>
-                    </p>
-                    <p><span>Au. Panamericana Km. 44 (1669)</span></p>
-                    <p><span>Del Viso, Buenos Aires</span></p>
-                    <p><span>Tel: (02320) 404900</span></p>
-                </div>
-                <div class="sede">
-                    <p>
-                        <strong><span>SEDE SALTA</span></strong>
-                    </p>
-                    <p><span>Av. Belgrano 2060 (4400)</span></p>
-                    <p><span>Ciudad de Salta, Salta</span></p>
-                    <p><span>Tel: (0387) 4317999</span></p>
-                </div>
-                <div class="sede">
-                    <p>
-                        <strong><span>SEDE CÓRDOBA </span></strong>
-                    </p>
-                    <p><span> 25 de Mayo 267 4° Piso </span></p>
-                    <p><span>Ciudad de Córdoba, Córdoba CP 5000</span></p>
-                    <p><span>Tel: (0351) 4201717</span></p>
-                </div>
-            </div>
+        <div class="sede">
+          <p>
+            <strong><span>SEDE SALTA</span></strong>
+          </p>
+          <p><span>Av. Belgrano 2060 (4400)</span></p>
+          <p><span>Ciudad de Salta, Salta</span></p>
+          <p><span>Tel: (0387) 4317999</span></p>
         </div>
-        <div id="footer-row-2">
-            <div class=" wrapper-footer footer-copyright mat-h5">
-                <span class="sp-copyright">
+        <div class="sede">
+          <p>
+            <strong><span>SEDE CÓRDOBA </span></strong>
+          </p>
+          <p><span> 25 de Mayo 267 4° Piso </span></p>
+          <p><span>Ciudad de Córdoba, Córdoba CP 5000</span></p>
+          <p><span>Tel: (0351) 4201717</span></p>
+        </div>
+      </div>
+    </div>
+    <div id="footer-row-2">
+      <div class=" wrapper-footer footer-copyright mat-h5">
+        <span class="sp-copyright">
           <strong> <a class="link-footer" target="_blank" href="http://www.paramedic.com.ar/index.php/quienes-somos/politica-de-calidad">Política de Calidad</a></strong>
           <br />
           Superintendencia de Servicios de Salud 0800-222-SALUD (72583) | www.sssalud.gov.ar R.N.E.M.P.: 1338
           <br />
-          © Copyright <a class="link-footer" target="_blank" href="http://www.paramedic.com.ar">Shaman</a> {{ anio }}.
+          © Copyright <a class="link-footer" target="_blank" href="http://www.paramedic.com.ar">Paramedic</a> {{ anio }}. Version {{version}}
         </span>
-            </div>
-        </div>
-    </footer>
+      </div>
+    </div>
+  </footer>
 </div>

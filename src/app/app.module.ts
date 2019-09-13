@@ -23,7 +23,7 @@ import { CoreModule } from '@app/modules/core/core.module';
   ],
   providers: [
     CommonService,
-    { provide: MAT_DATE_LOCALE, useValue: 'es-AR' },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-AR' }
   ],
   bootstrap: [
     AppComponent

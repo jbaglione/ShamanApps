@@ -47,7 +47,7 @@ export class DialogRegisterComponent implements OnInit {
           this.clienteLabel = 'Código Cliente';
           break;
         case 'EmpresaPrestadora':
-          this.clienteLabel = 'Código Empresa Shaman';
+          this.clienteLabel = 'Código Empresa Paramedic';
           break;
         case 'PrestadorDeMovil':
           this.clienteLabel = 'Moviles';

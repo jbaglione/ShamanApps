@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { NgCircleProgressModule } from 'ng-circle-progress';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from '@app/modules/shared/shared.module';
 import { ActividadesClientesModule } from '@app/modules/actividades-clientes/actividades-clientes.module';
-import { ErrorInterceptor } from '@app/modules/core/helpers/error.interceptor';
-import { JwtInterceptor } from '@app/modules/security/helpers';
 import { AfiliacionesRoutingModule } from './afiliaciones-routing.module';
 import { AfiliacionesDetailComponent } from './afiliaciones-detail/afiliaciones-detail.component';
 import { AfiliacionesListComponent } from './afiliaciones-list/afiliaciones-list.component';
@@ -52,8 +49,6 @@ import { AfiliacionesService } from './afiliaciones.service';
   ],
   entryComponents: [PotencialExitoComponent],
     providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         AfiliacionesService
     ]
 })

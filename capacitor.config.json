@@ -1,7 +1,7 @@
 {
     "appId": "io.ionic.starter",
-    "appName": "ShamanApps",
+    "appName": "ExtranetApp V1",
     "bundledWebRuntime": false,
     "npmClient": "npm",
-    "webDir": "dist/ShamanApps-angular"
+    "webDir": "dist/ExtranetApps-angular"
 }

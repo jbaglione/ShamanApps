@@ -6,13 +6,18 @@ export const AppConfig: any = {
   endpoints: {
     // localhost
     // security: 'https://localhost:44377/security/',
-    api: 'https://localhost:44319/api/',
+    // api: 'https://localhost:44319/api/',
     // oldExranet: 'http://localhost:2128/',
 
-    // test
-     security: 'http://192.168.5.115:5005/security/',
+    // // test
+    //  security: 'http://192.168.5.115:5005/security/',
     //  api: 'http://192.168.5.115:5006/api/',
-     oldExranet: 'http://192.168.5.115:5000/'
+    //  oldExranet: 'http://192.168.5.115:5000/'
+
+    // QA
+    security: 'https://telmed.paramedicapps.com.ar/extranet-v2-security-test/security/',
+    api: 'https://telmed.paramedicapps.com.ar/extranet-v2-api-test/api/',
+    oldExranet: 'https://telmed.paramedicapps.com.ar/old-version-test/'
 
     // Produccion
     // site: http://paramedicapps.com.ar:5567/'
@@ -26,6 +31,8 @@ export const AppConfig: any = {
   // votesLimit: 3,
   // topHeroesLimit: 4,
   snackBarDuration: 3700,
-  // repositoryURL: 'https://github.com/ismaestro/angular6-example-app'
+  loggingWebHook: 'https://hooks.slack.com/services/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',
+  getApiURL: 'https://api.ipify.org?format=json',
+  proxyCORSUrl: 'https://cors-anywhere.herokuapp.com/',
+  version: '2.2.0-beta'
 };
-

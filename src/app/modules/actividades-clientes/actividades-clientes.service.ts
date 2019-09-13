@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { catchError, tap } from 'rxjs/operators';
 import { AppConfig } from '../../configs/app.config';
 import { Observable, of, throwError as observableThrowError } from 'rxjs';
-import { LoggerService } from '../../services/logger.service';
+// import { LoggerService } from '../../services/logger.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ClientesGestion } from 'src/app/models/clientes-gestion';
 import { listable } from 'src/app/models/listable.model';
@@ -38,7 +38,7 @@ export class ActividadesClientesService {
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
       // TODO: better job of transforming error for user consumption
-      LoggerService.log(`${operation} failed: ${error.message}`);
+      // LoggerService.log(`${operation} failed: ${error.message}`);
 
       if (error.status >= 500) {
         throw error;
@@ -54,14 +54,14 @@ export class ActividadesClientesService {
   public GetClientePotencial(clienteId: number): Observable<ClientePotencial> {
     const url = `${this.actividadesApiUrl}/GetClientePotencial/${clienteId}`;
     return this.httpClient.get<ClientePotencial>(url).pipe(
-      tap(() => LoggerService.log('fetched GetGestiones')),
+      // tap(() => LoggerService.log('fetched GetGestiones')),
       catchError(this.handleError<ClientePotencial>('obtener el cliente.'))
     );
   }
 
   public getVendedores() {
     return this.httpClient.get<listable[]>(this.vendedoresApiUrl).pipe(
-      tap(() => LoggerService.log('fetched GetVendedores')),
+      // tap(() => LoggerService.log('fetched GetVendedores')),
       catchError(this.handleError<listable[]>('GetVendedores'))
     );
   }
@@ -70,7 +70,7 @@ export class ActividadesClientesService {
   public GetGestiones(clienteId: number): Observable<ClientesGestion[]> {
     const url = `${this.gestionesApiUrl}/${clienteId}`;
     return this.httpClient.get<ClientesGestion[]>(url).pipe(
-      tap(() => LoggerService.log('fetched GetGestiones')),
+      // tap(() => LoggerService.log('fetched GetGestiones')),
       catchError(this.handleError<ClientesGestion[]>('obtener las Gestiones.'))
     );
   }
@@ -86,7 +86,7 @@ export class ActividadesClientesService {
 
     const url = `${this.gestionesApiUrl}/GetGestionesGenerales/${clienteId}`;
     return this.httpClient.get<ClientesGestion[]>(url, { params: params }).pipe(
-      tap(() => LoggerService.log('fetched GetGestiones')),
+      // tap(() => LoggerService.log('fetched GetGestiones')),
       catchError(this.handleError<ClientesGestion[]>('obtener las Gestiones Generales.'))
     );
   }
@@ -94,7 +94,7 @@ export class ActividadesClientesService {
   public GetGestion(id: number): Observable<ClientesGestion> {
     const url = `${this.gestionesApiUrl}/GetById/${id}`;
     return this.httpClient.get<ClientesGestion>(url).pipe(
-      tap(() => LoggerService.log(`fetched ClientesGestion id=${id}`)),
+      // tap(() => LoggerService.log(`fetched ClientesGestion id=${id}`)),
       catchError(this.handleError<ClientesGestion>('obtener la Gestion'))
     );
   }
@@ -102,7 +102,7 @@ export class ActividadesClientesService {
   public GetTiposGestion(): Observable<listable> {
     const url = `${this.gestionesApiUrl}/GetTiposGestion`;
     return this.httpClient.get<listable>(url).pipe(
-      tap(() => LoggerService.log('fetched GetTiposGestion')),
+      // tap(() => LoggerService.log('fetched GetTiposGestion')),
       catchError(this.handleError<listable>('obtener los tipos de Gestion'))
     );
   }
@@ -110,7 +110,7 @@ export class ActividadesClientesService {
   EliminarGestion(id: number) {
     const url = `${this.gestionesApiUrl}/${id}`;
     return this.httpClient.delete(url).pipe(
-      tap(() => LoggerService.log('fetched EliminarGestion')),
+      // tap(() => LoggerService.log('fetched EliminarGestion')),
       catchError(this.handleError('eliminar la Gestion'))
     );
   }
@@ -122,7 +122,7 @@ export class ActividadesClientesService {
     const headerOptions = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient.post(url, body, { headers: headerOptions }).pipe(
       tap(() => {
-        LoggerService.log('fetched CreateClientesGestion');
+        // LoggerService.log('fetched CreateClientesGestion');
         this.showSnackBar(isNew ? 'Gestion creada' : 'Gestion actualizada');
       }),
       catchError(this.handleError<ClientesGestion>(isNew ? 'crear la Gestion' : 'actualizar la Gestion'))
@@ -131,7 +131,7 @@ export class ActividadesClientesService {
   //#endregion
 
   //#region Consumos
-  public GetConsumos(desde: Date, hasta: Date, vendedor: string, clienteId: number, modoAdmin: Boolean): Observable<ClienteConsumo[]> {
+  public GetConsumos(desde: Date, hasta: Date, vendedor: string, clienteId: number, modoAdmin: boolean): Observable<ClienteConsumo[]> {
 
     const params = new HttpParams()
       .set('desde', desde.toDateString())
@@ -141,7 +141,7 @@ export class ActividadesClientesService {
 
     const url = `${this.consumosApiUrl}/GetConsumos/${clienteId}`;
     return this.httpClient.get<ClienteConsumo[]>(url, { params: params }).pipe(
-      tap(() => LoggerService.log('fetched GetConsumos')),
+      // tap(() => LoggerService.log('fetched GetConsumos')),
       catchError(this.handleError<ClienteConsumo[]>('obtener los Consumos.'))
     );
   }
@@ -159,7 +159,7 @@ export class ActividadesClientesService {
 
     const url = `${this.reclamosApiUrl}/GetReclamos/${clienteId}`;
     return this.httpClient.get<ClienteReclamo[]>(url, { params: params }).pipe(
-      tap(() => LoggerService.log('fetched GetReclamos')),
+      // tap(() => LoggerService.log('fetched GetReclamos')),
       catchError(this.handleError<ClienteReclamo[]>('obtener los Reclamos.'))
     );
   }
@@ -169,7 +169,7 @@ export class ActividadesClientesService {
   public GetCuentaCorriente(clienteId: number): Observable<ClienteCuentaCorriente[]> {
     const url = `${this.cuentaCorrienteApiUrl}/GetCuentaCorriente/${clienteId}`;
     return this.httpClient.get<ClienteCuentaCorriente[]>(url).pipe(
-      tap(() => LoggerService.log('fetched GetCuentaCorriente')),
+      // tap(() => LoggerService.log('fetched GetCuentaCorriente')),
       catchError(this.handleError<ClienteCuentaCorriente[]>('obtener la Cuenta Corriente.'))
     );
   }
@@ -186,7 +186,7 @@ export class ActividadesClientesService {
 
     const url = `${this.cuentaCorrienteApiUrl}/GetComprobante/${documentoId}`;
     return this.httpClient.get(url, { params: params, responseType: 'blob' }).pipe(
-      tap(() => LoggerService.log('fetched GetComprobante')),
+      // tap(() => LoggerService.log('fetched GetComprobante')),
       catchError(this.handleError<any>('obtener el comprobante.'))
     );
   }

@@ -1,36 +1,36 @@
-<div *ngIf="userAcceso == '1'"  >
+<div *ngIf="userAcceso == '1'">
     <button mat-raised-button (click)="openDialogCliente()">Nuevo Cliente</button>
 </div>
 
 <div style="display: flex; justify-content: space-between; align-items: center;">
-  <div>
-      <mat-form-field class="ml-5 mr-5">
-          <input matInput (keydown)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
-      </mat-form-field>
+    <div>
+        <mat-form-field class="ml-5 mr-5">
+            <input matInput (keydown)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+        </mat-form-field>
 
-      <mat-form-field class="ml-5 mr-5">
-          <mat-select placeholder="Tipo de Cliente" [formControl]="tiposClientesSelect">
-              <mat-option *ngFor="let item of tiposClientes" [value]="item.id">
-                  {{item.descripcion}}
-              </mat-option>
-          </mat-select>
-      </mat-form-field>
+        <mat-form-field class="ml-5 mr-5">
+            <mat-select placeholder="Tipo de Cliente" [formControl]="tiposClientesSelect">
+                <mat-option *ngFor="let item of tiposClientes" [value]="item.id">
+                    {{item.descripcion}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-      <mat-form-field class="ml-5 mr-5" *ngIf="userAcceso == '3'">
-          <mat-select placeholder="Vendedores" [formControl]="vendedoresSelect">
-              <mat-option *ngFor="let item of vendedores" [value]="item.id">
-                  {{item.descripcion}}
-              </mat-option>
-          </mat-select>
-      </mat-form-field>
-      &nbsp;
-      <button mat-raised-button (click)="getClientes(tiposClientesSelect.value, vendedoresSelect.value)" [disabled]="matTableLoadingService.activo$ | async">Buscar</button>
-  </div>
-  <div>
-      <button mat-icon-button matTooltip='Exportar a Excel' (click)="exportToExcel()" style="margin-right: 10px;" [disabled]="matTableLoadingService.activo$ | async">
+        <mat-form-field class="ml-5 mr-5" *ngIf="userAcceso == '3'">
+            <mat-select placeholder="Vendedores" [formControl]="vendedoresSelect">
+                <mat-option *ngFor="let item of vendedores" [value]="item.id">
+                    {{item.descripcion}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        &nbsp;
+        <button mat-raised-button (click)="getClientes(tiposClientesSelect.value, vendedoresSelect.value)" [disabled]="matTableLoadingService.activo$ | async">Buscar</button>
+    </div>
+    <div>
+        <button mat-icon-button matTooltip='Exportar a Excel' (click)="exportToExcel()" style="margin-right: 10px;" [disabled]="matTableLoadingService.activo$ | async">
         <mat-icon svgIcon="excel_icon" class="excel-icon"></mat-icon>
       </button>
-  </div>
+    </div>
 </div>
 
 <div class="mat-elevation-z8">
@@ -128,6 +128,5 @@
     </mat-table>
     <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]" [hidden]="mtClientesPotenciales.data.length == 0 || (matTableLoadingService.activo$ | async)"></mat-paginator>
     <app-mat-table-loading></app-mat-table-loading>
-    <app-mat-table-not-found [activo]="mtClientesPotenciales.data.length === 0 && !(matTableLoadingService.activo$ | async)" ></app-mat-table-not-found>
+    <app-mat-table-not-found [activo]="mtClientesPotenciales.data.length === 0 && !(matTableLoadingService.activo$ | async)"></app-mat-table-not-found>
 </div>
-

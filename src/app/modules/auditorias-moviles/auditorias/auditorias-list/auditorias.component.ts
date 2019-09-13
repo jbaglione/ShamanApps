@@ -69,7 +69,6 @@ export class AuditoriasComponent implements OnInit {
     this.userId = this.authenticationService.currentUserValue.id;
     this.modoGenerico = this.movilId === 0;
 
-
     this.descripcionInput = new FormControl('');
     this.desde = new FormControl(new Date(new Date().setFullYear(new Date().getFullYear() - 1)));
     this.hasta = new FormControl(new Date());

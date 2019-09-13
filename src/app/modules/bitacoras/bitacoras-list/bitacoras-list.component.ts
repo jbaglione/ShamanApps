@@ -22,9 +22,9 @@ export class ListBitacorasComponent implements OnInit {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   constructor(private bitacorasService: BitacorasService,
-              private commonService: CommonService,
-              private router: Router) {
-    commonService.setTitulo('Lista de Bitacoras');
+    private commonService: CommonService,
+    private router: Router) {
+    commonService.setTitulo("Lista de Bitacoras");
   }
 
   ngOnInit() {

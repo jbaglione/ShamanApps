@@ -6,6 +6,7 @@ import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryComponent } from 'ngx-gal
 import { OperativaClientesService } from '../../operativa-clientes.service';
 import { Electro } from '../../models/electro.model';
 import { CommonService } from '@app/services/common.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-electros',
@@ -18,6 +19,8 @@ export class ElectrosComponent implements OnInit  {
   desde: FormControl;
   hasta: FormControl;
   descripcionInput: FormControl;
+
+  electros$: Observable<Electro[]>;
 
   // Datos para grilla
   isLoading: Boolean = false;
@@ -75,9 +78,11 @@ export class ElectrosComponent implements OnInit  {
   getElectros() {
     const that = this;
     that.isLoading = true;
-    that.operativaClientesService
-      .GetElectros$(this.desde.value, this.hasta.value)
-      .subscribe(electros => {
+
+    that.electros$ = that.operativaClientesService.GetElectros$(this.desde.value, this.hasta.value);
+
+    that.electros$.subscribe(
+      electros => {
         if (electros == null) {
           return;
         }
@@ -94,7 +99,8 @@ export class ElectrosComponent implements OnInit  {
         this.mtElectros = new MatTableDataSource(electros);
         this.setDataSourceAttributes();
       },
-      err => { this.isLoading = false; });
+      err => { this.isLoading = false; }
+    );
   }
 
   buildGalleryOptionsObject(electro: Electro): NgxGalleryOptions[] {

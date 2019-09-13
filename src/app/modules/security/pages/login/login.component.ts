@@ -2,11 +2,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { AuthenticationService } from '@app/modules/security/authentication.service';
 import { DialogForgotPasswordComponent } from '../../components/dialog-forgot-password/dialog-forgot-password.component';
 import { first } from 'rxjs/operators';
 import { ProgressBarService } from '@app/modules/shared/services/progress-bar.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -18,15 +19,14 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   returnUrl: string;
-  forgotDialogRef: MatDialogRef<DialogForgotPasswordComponent>;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private dialog: MatDialog,
     private authenticationService: AuthenticationService,
-    public dialog: MatDialog,
-    public progressBarService: ProgressBarService
+    private progressBarService: ProgressBarService
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
@@ -64,11 +64,11 @@ export class LoginComponent implements OnInit {
       .subscribe(
         usuario => {
           this.router.navigate([this.returnUrl]);
-          this.progressBarService.desactivarProgressBar();
         },
         error => {
           this.loading = false;
           this.progressBarService.desactivarProgressBar();
+          throw error;
         }
       );
   }

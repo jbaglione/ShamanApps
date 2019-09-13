@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppConfig } from '@app/configs/app.config';
 
 @Component({
   selector: 'app-public-layout',
@@ -9,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class PublicLayoutComponent implements OnInit {
   currentDate: string;
   anio: number;
+  version = AppConfig.version;
 
   constructor() {}
 

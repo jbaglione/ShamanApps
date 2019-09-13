@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+// import { Http } from '@angular/http';
 import { catchError, tap } from 'rxjs/operators';
 import { AppConfig } from '../../configs/app.config';
 import { Observable, of } from 'rxjs';
-import { LoggerService } from '../../services/logger.service';
+// import { LoggerService } from '../../services/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { Bitacora } from '@app/models/bitacora.model';
@@ -37,7 +37,7 @@ export class BitacorasService {
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
       // TODO: better job of transforming error for user consumption
-      LoggerService.log(`${operation} failed: ${error.message}`);
+      // LoggerService.log(`${operation} failed: ${error.message}`);
 
       if (error.status >= 500) {
         throw error;
@@ -54,7 +54,7 @@ export class BitacorasService {
   public GetBitacoras(): Observable<Bitacora[]> {
     const url = `${this.bitacoraApiUrl}`;
     return this.httpClient.get<Bitacora[]>(url).pipe(
-      tap(() => LoggerService.log('fetched GetBitacoras')),
+      // tap(() => LoggerService.log('fetched GetBitacoras')),
       catchError(this.handleError<Bitacora[]>('Obtener las Bitacoras'))
     );
   }
@@ -63,7 +63,7 @@ export class BitacorasService {
     const url = `${this.bitacoraApiUrl}`;
     const headerOptions = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `${token}` });
     return this.httpClient.get<Bitacora[]>(url, { headers: headerOptions }).pipe(
-      tap(() => LoggerService.log('fetched GetBitacorasToken')),
+      // tap(() => LoggerService.log('fetched GetBitacorasToken')),
       catchError(this.handleError<Bitacora[]>('Obtener las Bitacoras'))
     );
   }
@@ -71,7 +71,7 @@ export class BitacorasService {
   public GetBitacora(id: number): Observable<Bitacora> {
     const url = `${this.bitacoraApiUrl}/${id}`;
     return this.httpClient.get<Bitacora>(url).pipe(
-      tap(() => LoggerService.log(`fetched bitacora id=${id}`)),
+      // tap(() => LoggerService.log(`fetched bitacora id=${id}`)),
       catchError(this.handleError<Bitacora>(`Obtener la Bitacora`))
     );
   }
@@ -79,7 +79,7 @@ export class BitacorasService {
   public GetMotivos(): Observable<listable> {
     const url = `${this.bitacoraApiUrl}Listables/GetMotivos`;
     return this.httpClient.get<listable>(url).pipe(
-      tap(() => LoggerService.log('fetched GetMotivos')),
+      // tap(() => LoggerService.log('fetched GetMotivos')),
       catchError(this.handleError<listable>('Obtener los Motivos'))
     );
   }
@@ -87,7 +87,7 @@ export class BitacorasService {
   public GetEstados(): Observable<listable> {
     const url = `${this.bitacoraApiUrl}Listables/GetEstados`;
     return this.httpClient.get<listable>(url).pipe(
-      tap(() => LoggerService.log('fetched GetEstados')),
+      // tap(() => LoggerService.log('fetched GetEstados')),
       catchError(this.handleError<listable>('Obtener los Estados'))
     );
   }
@@ -95,7 +95,7 @@ export class BitacorasService {
   public GetNewBitacoraNro(): Observable<number> {
     const url = `${this.bitacoraApiUrl}GetNewBitacoraNro`;
     return this.httpClient.get<number>(url).pipe(
-      tap(() => LoggerService.log('fetched GetNewBitacoraNro')),
+      // tap(() => LoggerService.log('fetched GetNewBitacoraNro')),
       catchError(this.handleError<number>('Obtener datos'))
     );
   }
@@ -107,7 +107,7 @@ export class BitacorasService {
     const headerOptions = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient.post(url, body, { headers: headerOptions }).pipe(
       tap(() => {
-        LoggerService.log('fetched CreateBitacora');
+        // LoggerService.log('fetched CreateBitacora');
         this.showSnackBar(isNew ? 'Bitacora creada' : 'Bitacora actualizada');
       }),
       catchError(this.handleError<Bitacora>(isNew ? 'crear la Bitacora' : 'actualizar la Bitacora'))

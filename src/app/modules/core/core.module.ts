@@ -1,11 +1,12 @@
-import { NgModule } from '@angular/core';
+import { JwtInterceptor } from '@app/modules/security/helpers';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from '@app/modules/shared/shared.module';
 import { SecurityModule } from '@app/modules/security/security.module';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
 import { SecureLayoutComponent } from './layouts/secure-layout/secure-layout.component';
-import { ErrorInterceptor } from './helpers/error.interceptor';
+import { GlobalErrorHandler } from './helpers/global-error-handler';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ErrorInterceptor } from './helpers/error.interceptor';
     SecurityModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+     {provide: ErrorHandler, useClass: GlobalErrorHandler },
+    //  { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ]
 })
 

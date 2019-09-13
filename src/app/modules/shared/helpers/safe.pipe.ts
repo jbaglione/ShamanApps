@@ -5,9 +5,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class SafePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
   transform(url: string) {
-    if (!url.includes('http://')) {
-      url = 'http://' + url;
+    if (!url.includes('https://')) {
+      url = 'https://' + url;
     }
+
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }

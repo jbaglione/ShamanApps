@@ -6,7 +6,7 @@ import { AppConfig } from 'src/app/configs/app.config';
 import { Comprobante } from './models/comprobante';
 import { ComprobanteServicio } from './models/comprobante-servicio';
 import { ServicioRenglon } from './models/comprobante-servicio-renglon';
-import { LoggerService } from '@app/services/logger.service';
+// import { LoggerService } from '@app/services/logger.service';
 import { catchError, tap } from 'rxjs/operators';
 
 @Injectable()
@@ -41,7 +41,7 @@ export class FacturacionService {
   public getComprobantes(): Observable<Comprobante[]> {
     const url = `${this.facturacionApiUrl}/GetComprobantes`;
     return this.httpClient.get<Comprobante[]>(url).pipe(
-      tap(() => LoggerService.log('fetched GetTiposGestion')),
+      // tap(() => LoggerService.log('fetched GetTiposGestion')),
       catchError(this.handleError<Comprobante[]>('obtener los tipos de Gestion'))
     );
   }
@@ -49,7 +49,7 @@ export class FacturacionService {
   getComprobanteServicios(comprobanteId: number): Observable<ComprobanteServicio[]> {
     const url = `${this.facturacionApiUrl}/GetComprobanteServicios/${comprobanteId}`;
     return this.httpClient.get<ComprobanteServicio[]>(url).pipe(
-      tap(() => LoggerService.log(`fetched GetComprobanteServicios id=${comprobanteId}`)),
+      // tap(() => LoggerService.log(`fetched GetComprobanteServicios id=${comprobanteId}`)),
       catchError(this.handleError<ComprobanteServicio[]>('obtener los Servicios'))
     );
   }
@@ -62,7 +62,7 @@ export class FacturacionService {
   getRenglones(comprobanteId: number, servicioId: number): Observable<ServicioRenglon[]> {
     const url = `${this.facturacionApiUrl}/GetServicioRenglon/${comprobanteId}/${servicioId}`;
     return this.httpClient.get<ServicioRenglon[]>(url).pipe(
-      tap(() => LoggerService.log(`fetched GetServicioRenglon comprobanteId=${comprobanteId}, servicioId=${servicioId}`)),
+      // tap(() => LoggerService.log(`fetched GetServicioRenglon comprobanteId=${comprobanteId}, servicioId=${servicioId}`)),
       catchError(this.handleError<ServicioRenglon[]>('obtener los Renglones'))
     );
   }
@@ -70,7 +70,7 @@ export class FacturacionService {
   public getComprobantePdf(documentoId: number) {
     const url = `${this.facturacionApiUrl}/GetComprobantePdf/${documentoId}`;
     return this.httpClient.get(url, { responseType: 'blob' }).pipe(
-      tap(() => LoggerService.log('fetched GetComprobante')),
+      // tap(() => LoggerService.log('fetched GetComprobante')),
       catchError(this.handleError<any>('obtener el comprobante.'))
     );
   }

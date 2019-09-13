@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, shareReplay } from 'rxjs/operators';
 import { AppConfig } from '../../configs/app.config';
 import { Observable, of, throwError as observableThrowError } from 'rxjs';
-import { LoggerService } from '../../services/logger.service';
+// import { LoggerService } from '../../services/logger.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Auditoria } from './models/auditoria';
 import { listable } from 'src/app/models/listable.model';
@@ -34,36 +34,38 @@ export class AuditoriasMovilesService {
     this.vendedoresApiUrl = AppConfig.endpoints.api + 'Vendedores';
   }
 
-  private handleError<T>(operation = 'operation', result?: T, showMessage: boolean = true) {
-    return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-      // TODO: better job of transforming error for user consumption
-      LoggerService.log(`${operation} failed: ${error.message}`);
+  // private handleError<T>(operation = 'operation', result?: T, showMessage: boolean = true) {
+  //   return (error: any): Observable<T> => {
+  //     // TODO: send the error to remote logging infrastructure
+  //     console.error(error); // log to console instead
+  //     // TODO: better job of transforming error for user consumption
+  //     LoggerService.log(`${operation} failed: ${error.message}`);
 
-      if (error.status >= 500) {
-        throw error;
-      }
-      if (showMessage) {
-        this.showSnackBar('Ha ocurrido un error al ' + operation);
-      }
+  //     if (error.status >= 500) {
+  //       throw error;
+  //     }
+  //     if (showMessage) {
+  //       this.showSnackBar('Ha ocurrido un error al ' + operation);
+  //     }
 
-      return of(result as T);
-    };
-  }
+  //     return of(result as T);
+  //   };
+  // }
 
   public GetClientePotencial(clienteId: number): Observable<ClientePotencial> {
     const url = `${this.actividadesApiUrl}/GetClientePotencial/${clienteId}`;
     return this.httpClient.get<ClientePotencial>(url).pipe(
-      tap(() => LoggerService.log('fetched GetAuditorias')),
-      catchError(this.handleError<ClientePotencial>('obtener el cliente.'))
+      shareReplay()
+      // tap(() => LoggerService.log('fetched GetAuditorias')),
+      // catchError(this.handleError<ClientePotencial>('obtener el cliente.'))
     );
   }
 
   public getVendedores() {
     return this.httpClient.get<listable[]>(this.vendedoresApiUrl).pipe(
-      tap(() => LoggerService.log('fetched GetVendedores')),
-      catchError(this.handleError<listable[]>('GetVendedores'))
+      shareReplay()
+      // tap(() => LoggerService.log('fetched GetVendedores')),
+      // catchError(this.handleError<listable[]>('GetVendedores'))
     );
   }
 
@@ -71,8 +73,9 @@ export class AuditoriasMovilesService {
   public GetAuditorias(movilId: number): Observable<Auditoria[]> {
     const url = `${this.auditoriasMovilesApiUrl}/${movilId}`;
     return this.httpClient.get<Auditoria[]>(url).pipe(
-      tap(() => LoggerService.log('fetched GetAuditorias')),
-      catchError(this.handleError<Auditoria[]>('obtener las Auditorias.'))
+      shareReplay()
+      // tap(() => LoggerService.log('fetched GetAuditorias')),
+      // catchError(this.handleError<Auditoria[]>('obtener las Auditorias.'))
     );
   }
 
@@ -86,32 +89,36 @@ export class AuditoriasMovilesService {
 
     const url = `${this.auditoriasMovilesApiUrl}/GetAuditoriasGenerales/${movilId}`;
     return this.httpClient.get<Auditoria[]>(url, { params }).pipe(
-      tap(() => LoggerService.log('fetched GetAuditorias')),
-      catchError(this.handleError<Auditoria[]>('obtener las Auditorias Generales.'))
+      shareReplay()
+      // tap(() => LoggerService.log('fetched GetAuditorias')),
+      // catchError(this.handleError<Auditoria[]>('obtener las Auditorias Generales.'))
     );
   }
 
   public GetAuditoria(id: number): Observable<Auditoria> {
     const url = `${this.auditoriasMovilesApiUrl}/GetById/${id}`;
     return this.httpClient.get<Auditoria>(url).pipe(
-      tap(() => LoggerService.log(`fetched Auditoria id=${id}`)),
-      catchError(this.handleError<Auditoria>('obtener la Auditoria'))
+      shareReplay()
+      // tap(() => LoggerService.log(`fetched Auditoria id=${id}`)),
+      // catchError(this.handleError<Auditoria>('obtener la Auditoria'))
     );
   }
 
   public GetTiposAuditoria(): Observable<listable> {
     const url = `${this.auditoriasMovilesApiUrl}/GetTiposAuditoria`;
     return this.httpClient.get<listable>(url).pipe(
-      tap(() => LoggerService.log('fetched GetTiposAuditoria')),
-      catchError(this.handleError<listable>('obtener los tipos de Auditoria'))
+      shareReplay()
+      // tap(() => LoggerService.log('fetched GetTiposAuditoria')),
+      // catchError(this.handleError<listable>('obtener los tipos de Auditoria'))
     );
   }
 
   EliminarAuditoria(id: number) {
     const url = `${this.auditoriasMovilesApiUrl}/${id}`;
     return this.httpClient.delete(url).pipe(
-      tap(() => LoggerService.log('fetched EliminarAuditoria')),
-      catchError(this.handleError('eliminar la Auditoria'))
+      shareReplay()
+      // tap(() => LoggerService.log('fetched EliminarAuditoria')),
+      // catchError(this.handleError('eliminar la Auditoria'))
     );
   }
 
@@ -122,10 +129,10 @@ export class AuditoriasMovilesService {
     const headerOptions = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient.post(url, body, { headers: headerOptions }).pipe(
       tap(() => {
-        LoggerService.log('fetched CreateAuditoria');
+        // LoggerService.log('fetched CreateAuditoria');
         this.showSnackBar(isNew ? 'Auditoria creada' : 'Auditoria actualizada');
       }),
-      catchError(this.handleError<Auditoria>(isNew ? 'crear la Auditoria' : 'actualizar la Auditoria'))
+      // catchError(this.handleError<Auditoria>(isNew ? 'crear la Auditoria' : 'actualizar la Auditoria'))
     );
   }
   //#endregion
@@ -141,8 +148,9 @@ export class AuditoriasMovilesService {
 
     const url = `${this.consumosApiUrl}/GetConsumos/${clienteId}`;
     return this.httpClient.get<ClienteConsumo[]>(url, { params }).pipe(
-      tap(() => LoggerService.log('fetched GetConsumos')),
-      catchError(this.handleError<ClienteConsumo[]>('obtener los Consumos.'))
+      shareReplay()
+      // tap(() => LoggerService.log('fetched GetConsumos')),
+      // catchError(this.handleError<ClienteConsumo[]>('obtener los Consumos.'))
     );
   }
 
@@ -159,8 +167,9 @@ export class AuditoriasMovilesService {
 
     const url = `${this.reclamosApiUrl}/GetReclamos/${clienteId}`;
     return this.httpClient.get<ClienteReclamo[]>(url, { params }).pipe(
-      tap(() => LoggerService.log('fetched GetReclamos')),
-      catchError(this.handleError<ClienteReclamo[]>('obtener los Reclamos.'))
+      shareReplay()
+      // tap(() => LoggerService.log('fetched GetReclamos')),
+      // catchError(this.handleError<ClienteReclamo[]>('obtener los Reclamos.'))
     );
   }
   //#endregion
@@ -169,8 +178,9 @@ export class AuditoriasMovilesService {
   public GetCuentaCorriente(clienteId: number): Observable<ClienteCuentaCorriente[]> {
     const url = `${this.cuentaCorrienteApiUrl}/GetCuentaCorriente/${clienteId}`;
     return this.httpClient.get<ClienteCuentaCorriente[]>(url).pipe(
-      tap(() => LoggerService.log('fetched GetCuentaCorriente')),
-      catchError(this.handleError<ClienteCuentaCorriente[]>('obtener la Cuenta Corriente.'))
+      shareReplay()
+      // tap(() => LoggerService.log('fetched GetCuentaCorriente')),
+      // catchError(this.handleError<ClienteCuentaCorriente[]>('obtener la Cuenta Corriente.'))
     );
   }
 
@@ -186,8 +196,9 @@ export class AuditoriasMovilesService {
 
     const url = `${this.cuentaCorrienteApiUrl}/GetComprobante/${documentoId}`;
     return this.httpClient.get(url, { params, responseType: 'blob' }).pipe(
-      tap(() => LoggerService.log('fetched GetComprobante')),
-      catchError(this.handleError<any>('obtener el comprobante.'))
+      shareReplay()
+      // tap(() => LoggerService.log('fetched GetComprobante')),
+      // catchError(this.handleError<any>('obtener el comprobante.'))
     );
   }
   // public GetComprobante(nroComprobante: string) {

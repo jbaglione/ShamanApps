@@ -11,7 +11,7 @@
 }
 
 .mat-column-fecha {
-    flex: 0 0 75px;
+    flex: 0 0 100px;
 }
 
 .mat-column-razonSocial {
@@ -32,15 +32,15 @@
 }
 
 .mat-column-adjunto {
-    flex: 0 0 80px;
+    flex: 0 0 60px;
 }
 
 .mat-column-edit {
-    flex: 0 0 80px;
+    flex: 0 0 60px;
 }
 
 .mat-column-delete {
-    flex: 0 0 80px;
+    flex: 0 0 60px;
 }
 
 @media(max-width: 600px) {

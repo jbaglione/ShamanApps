@@ -17,5 +17,5 @@ export class AppComponent {
         this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/excel-icon.svg')
       );
   }
-  title = 'ShamanApps-angular';
+  title = 'ExtranetApps-angular';
 }
