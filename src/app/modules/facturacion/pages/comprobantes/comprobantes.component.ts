@@ -5,9 +5,10 @@ import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/m
 
 import { FacturacionService } from '../../facturacion.service';
 import { Comprobante } from '../../models/comprobante';
-import { CommonService } from '@app/services/common.service';
-import { ExportMatTableToXlxs } from '@app/modules/shared/helpers/export-mat-table-to-xlxs';
+import { CommonService } from '@app/modules/shared/services/common.service';
 import { Router } from '@angular/router';
+import { FileService } from '@app/modules/shared/services/files.service';
+
 
 @Component({
   selector: 'app-comprobantes',
@@ -53,7 +54,8 @@ export class ComprobantesComponent  implements OnInit {
     private facturacionService: FacturacionService,
     private commonService: CommonService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private fileService: FileService
   ) {
     this.commonService.setTitulo('Comprobantes');
   }
@@ -94,9 +96,11 @@ export class ComprobantesComponent  implements OnInit {
   getComprobantePdf(documentoId: number) {
     this.facturacionService.getComprobantePdf(documentoId).subscribe(data => {
       if (data !== undefined) {
-        const file = new Blob([data], { type: 'application/pdf' });
-        const fileURL = URL.createObjectURL(file);
-        window.open(fileURL, '_blank');
+        // this.fileShareService.shareBuffer(data, 'factura', FileSharerService.PDF_SHARE_TYPE);
+
+        this.fileService.saveBuffer(data, 'factura', FileService.PDF_TYPE);
+        // const fileURL = URL.createObjectURL(file);
+        // window.open(fileURL, '_blank');
       }
     });
   }

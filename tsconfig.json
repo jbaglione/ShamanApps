@@ -16,7 +16,8 @@
     ],
     "paths": {
       "@app/*": ["./src/app/*"],
-			"@env/*": [ "./src/environments/*" ]
+      "@env/*": [ "./src/environments/*" ],
+      "@ag-grid-comunity/*": [ "node_modules/ag-grid-community/dist/*" ]
 		},
     "lib": [
       "es2018",

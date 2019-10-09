@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { CommonService } from 'src/app/services/common.service';
+import { CommonService } from '@app/modules/shared/services/common.service';
 import { ActividadesClientesService } from 'src/app/modules/actividades-clientes/actividades-clientes.service';
 import { ClientePotencial } from 'src/app/models/cliente-potencial.model';
 

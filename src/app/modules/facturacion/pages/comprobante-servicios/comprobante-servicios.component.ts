@@ -7,11 +7,11 @@ import { NgxGalleryImage, NgxGalleryOptions, NgxGalleryComponent } from 'ngx-gal
 
 import { FacturacionService } from '../../facturacion.service';
 import { ComprobanteServicio, ComprobanteServicioForExcel } from '../../models/comprobante-servicio';
-import { CommonService } from '@app/services/common.service';
+import { CommonService } from '@app/modules/shared/services/common.service';
 import { ExportMatTableToXlxs } from '@app/modules/shared/helpers/export-mat-table-to-xlxs';
 import { DownloadHelper } from '@app/modules/shared/helpers/download';
 import { ServicioRenglonComponent } from '../servicio-renglones/servicio-renglones.component';
-
+import { FileService } from '@app/modules/shared/services/files.service';
 
 @Component({
   selector: 'app-comprobante-servicios',
@@ -21,8 +21,8 @@ import { ServicioRenglonComponent } from '../servicio-renglones/servicio-renglon
 
 export class ComprobanteServiciosComponent implements OnInit {
   descripcionInput: FormControl;
-  isLoading: Boolean = false;
-  isDownloading: Boolean = false;
+  isLoading = false;
+  isDownloading = false;
   comprobanteId: number;
   dcComprobanteServicios: string[] = [
     'formatedFecha',
@@ -68,7 +68,8 @@ export class ComprobanteServiciosComponent implements OnInit {
     private commonService: CommonService,
     public dialog: MatDialog,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private fileService: FileService
   ) {
     this.commonService.setTitulo('Servicios');
     activatedRoute.params.subscribe(params => {
@@ -122,8 +123,21 @@ export class ComprobanteServiciosComponent implements OnInit {
     this.facturacionService.getComprobantePdf(documentoId).subscribe(data => {
       if (data !== undefined) {
         const file = new Blob([data], { type: 'application/pdf' });
-        const fileURL = URL.createObjectURL(file);
-        window.open(fileURL, '_blank');
+
+        // this.fileSharerService.savePdfFileSharer(file);
+
+        // const fileURL = URL.createObjectURL(file);
+        // window.open(fileURL, '_blank');
+      }
+    });
+  }
+
+  shareComprobantePdf(documentoId: number) {
+    this.facturacionService.getComprobantePdf(documentoId).subscribe(data => {
+      if (data !== undefined) {
+        this.fileService.saveBuffer(data, 'comprobante', FileService.PDF_TYPE );
+        // const fileURL = URL.createObjectURL(file);
+        // window.open(fileURL, '_blank');
       }
     });
   }
@@ -190,7 +204,7 @@ export class ComprobanteServiciosComponent implements OnInit {
   }
 
   exportToExcel() {
-    ExportMatTableToXlxs.export(new ComprobanteServicioForExcel(), this.mtComprobanteServicios, 'comprobanteServicios', this.commonService);
+    this.fileService.exportMatTable(new ComprobanteServicioForExcel(), this.mtComprobanteServicios, 'comprobanteServicios');
   }
 
   downloadAllImages() {

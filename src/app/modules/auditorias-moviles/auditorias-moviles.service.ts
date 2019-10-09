@@ -11,7 +11,7 @@ import { ClienteConsumo } from 'src/app/models/cliente-consumo';
 import { ClientePotencial } from 'src/app/models/cliente-potencial.model';
 import { ClienteReclamo } from 'src/app/models/cliente-reclamo';
 import { ClienteCuentaCorriente } from 'src/app/models/cliente-cuentacorriente';
-// import { Auditoria } from '@app/models/clientes-gestion';
+// import { Auditoria } from '@app/models/clientes-auditoria';
 
 @Injectable()
 export class AuditoriasMovilesService {
@@ -104,12 +104,54 @@ export class AuditoriasMovilesService {
     );
   }
 
-  public GetTiposAuditoria(): Observable<listable> {
-    const url = `${this.auditoriasMovilesApiUrl}/GetTiposAuditoria`;
-    return this.httpClient.get<listable>(url).pipe(
+  public GetTiposAuditoria(movilId: string): Observable<listable[]> {
+    const url = `${this.auditoriasMovilesApiUrl}/GetTiposAuditoria/${movilId}`;
+    return this.httpClient.get<listable[]>(url).pipe(
       shareReplay()
       // tap(() => LoggerService.log('fetched GetTiposAuditoria')),
-      // catchError(this.handleError<listable>('obtener los tipos de Auditoria'))
+      // catchError(this.handleError<listable[]>('obtener los tipos de Auditoria'))
+    );
+  }
+
+  public GetMoviles(): Observable<listable[]> {
+    const url = `${this.auditoriasMovilesApiUrl}/GetMoviles`;
+    return this.httpClient.get<listable[]>(url).pipe(
+      shareReplay()
+    );
+  }
+
+  public GetChoferes(): Observable<listable[]> {
+    const url = `${this.auditoriasMovilesApiUrl}/GetPersonal`;
+    return this.httpClient.get<listable[]>(url).pipe(
+      shareReplay()
+    );
+  }
+
+  public GetMedicos(): Observable<listable[]> {
+    const url = `${this.auditoriasMovilesApiUrl}/GetPersonal`;
+    return this.httpClient.get<listable[]>(url).pipe(
+      shareReplay()
+    );
+  }
+
+  public GetEnfermeros(): Observable<listable[]> {
+    const url = `${this.auditoriasMovilesApiUrl}/GetPersonal`;
+    return this.httpClient.get<listable[]>(url).pipe(
+      shareReplay()
+    );
+  }
+
+  public GetBasesOperativas(): Observable<listable[]> {
+    const url = `${this.auditoriasMovilesApiUrl}/GetBasesOperativas`;
+    return this.httpClient.get<listable[]>(url).pipe(
+      shareReplay()
+    );
+  }
+
+  public GetPrestadores(): Observable<listable[]> {
+    const url = `${this.auditoriasMovilesApiUrl}/GetPrestadores`;
+    return this.httpClient.get<listable[]>(url).pipe(
+      shareReplay()
     );
   }
 
@@ -122,10 +164,10 @@ export class AuditoriasMovilesService {
     );
   }
 
-  public CreateAuditoria(gestion: Auditoria) {
-    const isNew = gestion.id === 0;
+  public CreateAuditoria(auditoria: Auditoria) {
+    const isNew = auditoria.id === 0;
     const url = `${this.auditoriasMovilesApiUrl}`;
-    const body = JSON.stringify(gestion);
+    const body = JSON.stringify(auditoria);
     const headerOptions = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient.post(url, body, { headers: headerOptions }).pipe(
       tap(() => {

@@ -3,7 +3,7 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 
 import { BitacorasService } from '../bitacoras.service';
-import { CommonService } from '../../../services/common.service';
+import { CommonService } from '../../shared/services/common.service';
 import { Bitacora } from 'src/app/models/bitacora.model';
 
 
@@ -36,10 +36,13 @@ export class ListBitacorasComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    if (filterValue != null && filterValue != "") {
+    if (filterValue != null && filterValue != '') {
       filterValue = filterValue.trim();
       filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-      this.mtBitacoras.filter = filterValue;
+
+      if (this.mtBitacoras != null) {
+        this.mtBitacoras.filter = filterValue;
+      }
     }
   }
 

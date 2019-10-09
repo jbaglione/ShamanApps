@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SafeUrl } from '@angular/platform-browser';
 import { AuthenticationService } from '@app/modules/security/authentication.service';
-import { CommonService } from '@app/services/common.service';
+import { CommonService } from '@app/modules/shared/services/common.service';
 
 @Component({
   selector: 'app-index',

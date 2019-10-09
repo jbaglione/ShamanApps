@@ -51,25 +51,25 @@
         <ng-container matColumnDef="dominioId">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Patente</mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Patente:</span> {{element.dominioId}}
+                <span class="mobile-label">Patente:</span> {{element.movil == null?'': element.movil.descripcion}}
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="chofer">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Chofer</mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Chofer:</span> {{element.chofer}}
+                <span class="mobile-label">Chofer:</span> {{element.chofer == null?'': element.chofer.descripcion}}
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="medico">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Medico</mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Medico:</span> {{element.medico}}
+                <span class="mobile-label">Medico:</span> {{element.medico == null?'': element.medico.descripcion}}
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="enfermero">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Enfermero</mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Enfermero:</span> {{element.enfermero}}
+                <span class="mobile-label">Enfermero:</span> {{element.enfermero == null?'': element.enfermero.descripcion}}
             </mat-cell>
         </ng-container>
         condicion

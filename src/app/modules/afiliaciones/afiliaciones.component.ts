@@ -1,7 +1,7 @@
 import { Component, NgModule } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { CommonService } from 'src/app/services/common.service';
+import { CommonService } from '@app/modules/shared/services/common.service';
 import { AfiliacionesService } from 'src/app/modules/afiliaciones/afiliaciones.service';
 import { ClientePotencial } from 'src/app/models/cliente-potencial.model';
 import { ConsumosComponent } from '../actividades-clientes/consumos/consumos.component';

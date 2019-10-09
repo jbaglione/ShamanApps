@@ -2,7 +2,7 @@ import { Component, Input, OnInit  } from '@angular/core';
 
 import { AdComponent } from './ad.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { CommonService } from '@app/services/common.service';
+import { CommonService } from '@app/modules/shared/services/common.service';
 
 @Component({
   template: `

@@ -1,4 +1,4 @@
-import { CommonService } from '@app/services/common.service';
+import { CommonService } from '@app/modules/shared/services/common.service';
 import { forkJoin } from 'rxjs';
 import { saveAs } from 'file-saver';
 import * as JSZip from 'jszip';

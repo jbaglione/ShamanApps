@@ -5,7 +5,7 @@ import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryComponent } from 'ngx-gal
 
 import { OperativaClientesService } from '../../operativa-clientes.service';
 import { Electro } from '../../models/electro.model';
-import { CommonService } from '@app/services/common.service';
+import { CommonService } from '@app/modules/shared/services/common.service';
 import { Observable } from 'rxjs';
 
 @Component({

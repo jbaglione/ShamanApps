@@ -5,8 +5,8 @@ import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/m
 
 import { MoliService } from '../../moli.service';
 import { MoliRealizado, MoliRealizadoForExcel } from '../../models/moli-realizado';
-import { CommonService } from '@app/services/common.service';
-import { ExportMatTableToXlxs } from '@app/modules/shared/helpers/export-mat-table-to-xlxs';
+import { CommonService } from '@app/modules/shared/services/common.service';
+import { FileService } from '@app/modules/shared/services/files.service';
 
 @Component({
   selector: 'app-moli-realizados',
@@ -18,7 +18,7 @@ export class MoliRealizadosComponent implements OnInit {
   desde: FormControl;
   hasta: FormControl;
   descripcionInput: FormControl;
-  isLoading: Boolean = false;
+  isLoading: boolean = false;
 
   dcMoliRealizados: string[] = [
     'fecIncidente',
@@ -55,8 +55,8 @@ export class MoliRealizadosComponent implements OnInit {
     private moliService: MoliService,
     private commonService: CommonService,
     public dialog: MatDialog,
-    private domSanitization: DomSanitizer
-  ) {
+    private domSanitization: DomSanitizer,
+    private fileService: FileService) {
     // this.commonService.setTitulo('Moli Realizados');
   }
 
@@ -107,7 +107,7 @@ export class MoliRealizadosComponent implements OnInit {
 
 
   exportToExcel() {
-    ExportMatTableToXlxs.export(new MoliRealizadoForExcel(), this.mtMoliRealizados, 'molirealizados', this.commonService);
+    this.fileService.exportMatTable(new MoliRealizadoForExcel(), this.mtMoliRealizados, 'molirealizados');
   }
 
 }

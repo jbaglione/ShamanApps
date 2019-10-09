@@ -5,8 +5,8 @@ import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/m
 
 import { MoliService } from '../../moli.service';
 import { MoliRechazado, MoliRechazadoForExcel } from '../../models/moli-rechazado';
-import { CommonService } from '@app/services/common.service';
-import { ExportMatTableToXlxs } from '@app/modules/shared/helpers/export-mat-table-to-xlxs';
+import { CommonService } from '@app/modules/shared/services/common.service';
+import { FileService } from '@app/modules/shared/services/files.service';
 
 @Component({
   selector: 'app-moli-rechazados',
@@ -52,7 +52,8 @@ export class MoliRechazadosComponent implements OnInit {
     private moliService: MoliService,
     private commonService: CommonService,
     public dialog: MatDialog,
-    private domSanitization: DomSanitizer
+    private domSanitization: DomSanitizer,
+    private fileService: FileService
   ) {
     // this.commonService.setTitulo('Moli Rechazados');
   }
@@ -102,7 +103,7 @@ export class MoliRechazadosComponent implements OnInit {
   }
 
   exportToExcel() {
-    ExportMatTableToXlxs.export(new MoliRechazadoForExcel(), this.mtMoliRechazados, 'molirechazados', this.commonService);
+    this.fileService.exportMatTable(new MoliRechazadoForExcel(), this.mtMoliRechazados, 'molirechazados');
   }
 
 }

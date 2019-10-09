@@ -4,10 +4,10 @@ import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/m
 import { AuditoriasMovilesService } from '../../auditorias-moviles.service';
 import { AuthenticationService } from '../../../security/authentication.service';
 import { Auditoria } from '../../models/auditoria';
-import { AuditoriaDetailComponent } from '../auditoria-detail/auditoria-detail.component';
 import { listable } from 'src/app/models/listable.model';
 import { FormControl } from '@angular/forms';
 import { MatTableLoadingService } from '@app/modules/shared/services/mat-table-loading.service';
+import { AuditoriaCabeceraComponent } from '../auditoria-cabecera/auditoria-cabecera.component';
 
 @Component({
   selector: 'app-auditorias-moviles-auditorias',
@@ -65,7 +65,7 @@ export class AuditoriasComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userAcceso = this.authenticationService.getAccesosCurrentUser().toString();
+    this.userAcceso = '3'; // this.authenticationService.getAccesosCurrentUser().toString();
     this.userId = this.authenticationService.currentUserValue.id;
     this.modoGenerico = this.movilId === 0;
 
@@ -151,7 +151,7 @@ export class AuditoriasComponent implements OnInit {
 
   verAuditoria(id: any = 0, element: Auditoria = null): void {
 
-    const dialogRef = this.dialog.open(AuditoriaDetailComponent, {
+    const dialogRef = this.dialog.open(AuditoriaCabeceraComponent, {
       width: '95vw',
       maxWidth: '700px',
       data: { id: id, clienteId: this.movilId, acceso: this.userAcceso, elemento: element }

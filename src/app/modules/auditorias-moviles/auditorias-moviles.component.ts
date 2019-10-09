@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { CommonService } from 'src/app/services/common.service';
+import { CommonService } from '@app/modules/shared/services/common.service';
 import { AuditoriasMovilesService } from 'src/app/modules/auditorias-moviles/auditorias-moviles.service';
 import { Auditoria } from './models/auditoria';
 

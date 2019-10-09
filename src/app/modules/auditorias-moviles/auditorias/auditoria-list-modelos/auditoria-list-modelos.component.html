@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Nueva Auditoria</h1>
+<mat-dialog-content style="border-top: 1px solid #dadce0;">
+    <br />
+    <form class="example-form" [formGroup]="modelosAuditoriaForm" (ngSubmit)="iniciarModeloAuditoria()" novalidate="novalidate">
+        <div class="modelos" *ngFor="let item of modelosAuditoria">
+            <button type="button" [disabled]="'btn' + item.id" (click)="onNoClick(item.id)">{{item.descripcion}}</button>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right ">
+    <button mat-raised-button color="accent" (click)="onNoClick() ">Cancelar</button>
+</mat-dialog-actions>

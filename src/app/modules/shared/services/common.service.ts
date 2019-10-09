@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AppConfig } from '../configs/app.config';
+import { AppConfig } from '../../../configs/app.config';
 
-import {BehaviorSubject, Observable, of, throwError as observableThrowError } from 'rxjs';
-import {MatSnackBar, MatSnackBarConfig} from '@angular/material';
+import { BehaviorSubject, Observable, of, throwError as observableThrowError } from 'rxjs';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CommonService {
   public titulo: Observable<string>;
   private tituloSubject: BehaviorSubject<string>;
@@ -22,17 +22,17 @@ export class CommonService {
   }
 
   public showSnackBar(name): void {
-      const config: any = new MatSnackBarConfig();
-      config.duration = AppConfig.snackBarDuration;
-      this.snackBar.open(name, 'OK', config);
-    }
+    const config: any = new MatSnackBarConfig();
+    config.duration = AppConfig.snackBarDuration;
+    this.snackBar.open(name, 'OK', config);
+  }
   public showSnackBarFatal(name): void {
-      const config: MatSnackBarConfig = new MatSnackBarConfig();
-      config.duration = AppConfig.snackBarDuration;
-      config.verticalPosition = 'top';
-      config.panelClass = ['warn-bg'];
-      this.snackBar.open(name, '', config);
-    }
+    const config: MatSnackBarConfig = new MatSnackBarConfig();
+    config.duration = AppConfig.snackBarDuration;
+    config.verticalPosition = 'top';
+    config.panelClass = ['warn-bg'];
+    this.snackBar.open(name, '', config);
+  }
 
   public createGetRequets(data: string[]) {
     const getRequests = [];

@@ -4,16 +4,18 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/material';
 
 import { AfiliacionesService } from '../afiliaciones.service';
-import { CommonService } from '@app/services/common.service';
+import { CommonService } from '@app/modules/shared/services/common.service';
 import { AuthenticationService } from '@app/modules/security/authentication.service';
 
 import { listable } from 'src/app/models/listable.model';
 import { AfiliacionesDetailComponent } from '../afiliaciones-detail/afiliaciones-detail.component';
 import { ClientePotencial, ClientePotencialForExcel } from 'src/app/models/cliente-potencial.model';
 import { PotencialExitoComponent } from '../dialog-potencial-exito/dialog-potencial-exito.component';
-import { ExportMatTableToXlxs } from '@app/modules/shared/helpers/export-mat-table-to-xlxs';
+// import { ExportMatTableToXlxs } from '@app/modules/shared/helpers/export-mat-table-to-xlxs';
 import { MatTableLoadingService } from '@app/modules/shared/services/mat-table-loading.service';
 import { Observable } from 'rxjs';
+import { FileService } from '@app/modules/shared/services/files.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-afiliaciones-list',
@@ -23,9 +25,9 @@ import { Observable } from 'rxjs';
 })
 
 export class AfiliacionesListComponent implements OnInit {
-  //Seguridad
+  // Seguridad
   userAcceso: string;
-
+  isMobile: boolean;
   // Filtros para busqueda
   descripcionInput: FormControl;
   tiposClientesSelect: FormControl;
@@ -95,19 +97,21 @@ export class AfiliacionesListComponent implements OnInit {
     private commonService: CommonService,
     public matTableLoadingService: MatTableLoadingService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private fileService: FileService,
+    private deviceService: DeviceDetectorService
   ) {
     this.commonService.setTitulo('Clientes Potenciales');
+    this.isMobile = this.deviceService.isMobile();
   }
 
   ngOnInit() {
       this.userAcceso = this.authenticationService.getAccesosCurrentUser().toString();
-
-    this.descripcionInput = new FormControl('');
-    this.tiposClientesSelect = new FormControl(this.tiposClientes[0].id);
-    this.vendedoresSelect = new FormControl(this.vendedores[0].id);
-    this.getVendedores();
-    this.getClientes(this.tiposClientes[0].id, '');
+      this.descripcionInput = new FormControl('');
+      this.tiposClientesSelect = new FormControl(this.tiposClientes[0].id);
+      this.vendedoresSelect = new FormControl(this.vendedores[0].id);
+      this.getVendedores();
+      this.getClientes(this.tiposClientes[0].id, '');
   }
 
   setDataSourceAttributes() {
@@ -180,13 +184,21 @@ export class AfiliacionesListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result == 'updated') {
+      if (result === 'updated') {
         this.getClientes(this.tiposClientesSelect.value, this.vendedoresSelect.value);
       }
     });
   }
 
   exportToExcel() {
-    ExportMatTableToXlxs.export(new ClientePotencialForExcel(), this.mtClientesPotenciales, 'afiliaciones', this.commonService);
+    this.fileService.exportMatTable(new ClientePotencialForExcel(), this.mtClientesPotenciales, 'afiliaciones');
+  }
+
+  shareToExcel() {
+    this.fileService.exportMatTable(new ClientePotencialForExcel(), this.mtClientesPotenciales, 'afiliaciones', true);
+  }
+
+  takePhoto() {
+    this.fileService.takePhoto();
   }
 }

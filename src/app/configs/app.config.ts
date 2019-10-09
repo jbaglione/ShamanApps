@@ -5,7 +5,8 @@ export let APP_CONFIG = new InjectionToken('app.config');
 export const AppConfig: any = {
   endpoints: {
     // localhost
-    // security: 'https://localhost:44377/security/',
+    security: 'https://localhost:44377/security/',
+    apiShaman: 'https://localhost:44318/api/',
     // api: 'https://localhost:44319/api/',
     // oldExranet: 'http://localhost:2128/',
 
@@ -15,7 +16,7 @@ export const AppConfig: any = {
     //  oldExranet: 'http://192.168.5.115:5000/'
 
     // QA
-    security: 'https://telmed.paramedicapps.com.ar/extranet-v2-security-test/security/',
+    // security: 'https://telmed.paramedicapps.com.ar/extranet-v2-security-test/security/',
     api: 'https://telmed.paramedicapps.com.ar/extranet-v2-api-test/api/',
     oldExranet: 'https://telmed.paramedicapps.com.ar/old-version-test/'
 
@@ -31,7 +32,7 @@ export const AppConfig: any = {
   // votesLimit: 3,
   // topHeroesLimit: 4,
   snackBarDuration: 3700,
-  loggingWebHook: 'https://hooks.slack.com/services/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',
+  loggingWebHook: 'https://hooks.slack.com/services/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',
   getApiURL: 'https://api.ipify.org?format=json',
   proxyCORSUrl: 'https://cors-anywhere.herokuapp.com/',
   version: '2.2.0-beta'

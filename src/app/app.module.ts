@@ -6,8 +6,11 @@ import { MAT_DATE_LOCALE } from '@angular/material';
 import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from '@app/app.component';
 import { AppRoutingModule } from '@app/app-routing.module';
-import { CommonService } from '@app/services/common.service';
 import { CoreModule } from '@app/modules/core/core.module';
+import { DeviceDetectorModule } from 'ngx-device-detector';
+import { FileService } from '@app/modules/shared/services/files.service';
+import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   declarations: [
@@ -18,12 +21,16 @@ import { CoreModule } from '@app/modules/core/core.module';
     BrowserAnimationsModule,
     HttpClientModule,
     ToastrModule.forRoot(),
+    IonicModule.forRoot(),
     AppRoutingModule,
-    CoreModule
+    CoreModule,
+    DeviceDetectorModule.forRoot(),
+    AgGridModule.withComponents([])
   ],
   providers: [
-    CommonService,
-    { provide: MAT_DATE_LOCALE, useValue: 'es-AR' }
+    FileService,
+    // { provide: MAT_DATE_LOCALE, useValue: 'es-AR' }
+    { provide: MAT_DATE_LOCALE, useValue: 'es-AR' , useClass: IonicRouteStrategy }
   ],
   bootstrap: [
     AppComponent

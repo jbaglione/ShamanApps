@@ -2,131 +2,144 @@
     <button mat-raised-button (click)="openDialogCliente()">Nuevo Cliente</button>
 </div>
 
-<div style="display: flex; justify-content: space-between; align-items: center;">
-    <div>
-        <mat-form-field class="ml-5 mr-5">
-            <input matInput (keydown)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
-        </mat-form-field>
+<div style="width:100%; overflow: hidden;">
+    <mat-form-field class="ml-5 mr-5 expansible">
+        <input matInput (keydown)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+    </mat-form-field>
 
-        <mat-form-field class="ml-5 mr-5">
-            <mat-select placeholder="Tipo de Cliente" [formControl]="tiposClientesSelect">
-                <mat-option *ngFor="let item of tiposClientes" [value]="item.id">
-                    {{item.descripcion}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
+    <mat-form-field class="ml-5 mr-5 expansible">
+        <mat-select placeholder="Tipo de Cliente" [formControl]="tiposClientesSelect">
+            <mat-option *ngFor="let item of tiposClientes" [value]="item.id">
+                {{item.descripcion}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
 
-        <mat-form-field class="ml-5 mr-5" *ngIf="userAcceso == '3'">
-            <mat-select placeholder="Vendedores" [formControl]="vendedoresSelect">
-                <mat-option *ngFor="let item of vendedores" [value]="item.id">
-                    {{item.descripcion}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        &nbsp;
-        <button mat-raised-button (click)="getClientes(tiposClientesSelect.value, vendedoresSelect.value)" [disabled]="matTableLoadingService.activo$ | async">Buscar</button>
-    </div>
-    <div>
-        <button mat-icon-button matTooltip='Exportar a Excel' (click)="exportToExcel()" style="margin-right: 10px;" [disabled]="matTableLoadingService.activo$ | async">
-        <mat-icon svgIcon="excel_icon" class="excel-icon"></mat-icon>
-      </button>
-    </div>
+    <mat-form-field class="ml-5 mr-5 expansible" *ngIf="userAcceso == '3'">
+        <mat-select placeholder="Vendedores" [formControl]="vendedoresSelect">
+            <mat-option *ngFor="let item of vendedores" [value]="item.id">
+                {{item.descripcion}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    &nbsp;
+
+    <button mat-raised-button (click)="getClientes(tiposClientesSelect.value, vendedoresSelect.value)" [disabled]="matTableLoadingService.activo$ | async">Buscar</button>
+    <button mat-icon-button matTooltip='Exportar a Excel' (click)="exportToExcel()" style="margin-right: 10px; float: right; line-height: 30px !important;" [disabled]="matTableLoadingService.activo$ | async">
+        <mat-icon svgIcon="excel_icon" class="excel-icon icon-mat-tool"></mat-icon>
+    </button>
+    <!-- <button *ngIf="isMobile" mat-icon-button style="margin-right: 10px; float: right; line-height: 30px !important;" [disabled]="matTableLoadingService.activo$ | async">
+        <mat-icon class="add_a_photo-icon" matTooltip="Tomar una fotografia" (click)="takePhoto()" >add_a_photo</mat-icon>
+    </button> -->
 </div>
 
-<div class="mat-elevation-z8">
-    <mat-table [dataSource]="mtClientesPotenciales" matSort>
-        <ng-container matColumnDef="nombreComercial">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre Comercial</mat-header-cell>
-            <mat-cell *matCellDef="let element" class="mat-cell-first">
-                <span class="mobile-label">Nombre Comercial:</span> {{element.nombreComercial}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="rubro">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Rubro</mat-header-cell>
-            <mat-cell mat-cell *matCellDef="let element">
-                <span class="mobile-label">Rubro:</span>{{element.rubroObj.descripcion}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="razonSocial">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Razon Social</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Razon Social:</span> {{element.razonSocial}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="cuit">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Cuit</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Cuit:</span> {{element.cuit}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="domicilio">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Domicilio</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Domicilio:</span> {{element.domicilio}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="motivoSuspension">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Motivo suspensión</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Motivo suspensión:</span> {{element.motivoSuspension == null?'': element.motivoSuspension.descripcion}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="localidad">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Localidad</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Localidad:</span> {{element.localidadObj.localidadDescripcion}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="credencialID">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Nro de Cliente</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Nro de Cliente:</span> {{element.credencialID}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="importeMensual">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Presupuesto</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Presupuesto:</span> {{element.importeMensual | currency}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="estado">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>
-                Afiliacion
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Afiliacion:</span>
-                <button (click)="openDialogCliente(element.clienteId, element.estado)" class="oldGold" mat-icon-button [color]='estadosDesc[element.estado].color' [matTooltip]='estadosDesc[element.estado].descripcion'>
+<div>
+    <div class="mat-elevation-z8">
+        <mat-table [dataSource]="mtClientesPotenciales" matSort>
+            <ng-container matColumnDef="nombreComercial">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre Comercial</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="mat-cell-first">
+                    <span class="mobile-label">Nombre Comercial:</span> {{element.nombreComercial}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="rubro">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Rubro</mat-header-cell>
+                <mat-cell mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Rubro:</span>{{element.rubroObj.descripcion}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="razonSocial">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Razon Social</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Razon Social:</span> {{element.razonSocial}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="cuit">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Cuit</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Cuit:</span> {{element.cuit}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="domicilio">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Domicilio</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Domicilio:</span> {{element.domicilio}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="motivoSuspension">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Motivo suspensión</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Motivo suspensión:</span> {{element.motivoSuspension == null?'': element.motivoSuspension.descripcion}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="localidad">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Localidad</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Localidad:</span> {{element.localidadObj.localidadDescripcion}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="credencialID">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Nro de Cliente</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Nro de Cliente:</span> {{element.credencialID}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="importeMensual">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Presupuesto</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Presupuesto:</span> {{element.importeMensual | currency}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="estado">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Afiliacion
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Afiliacion:</span>
+                    <button (click)="openDialogCliente(element.clienteId, element.estado)" class="oldGold" mat-icon-button [color]='estadosDesc[element.estado].color' [matTooltip]='estadosDesc[element.estado].descripcion'>
                     <mat-icon>{{estadosDesc[element.estado].icon}}</mat-icon>
                 </button>
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="potencialExito">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Exito</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Exito:</span>
-                <button (click)="cambiarPotencialExito(element)" mat-icon-button [matTooltip]='tooltipExito[element.estado].descripcion'>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="potencialExito">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Exito</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Exito:</span>
+                    <button (click)="cambiarPotencialExito(element)" mat-icon-button [matTooltip]='tooltipExito[element.estado].descripcion'>
                   <div style="height: 35px; width: 35px">
                     <circle-progress [percent]=element.potencialExito></circle-progress>
                 </div>
               </button>
-                <!-- {{(element.potencialExito / 100) | percent}} -->
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="actividad">
-            <mat-header-cell *matHeaderCellDef>
-                Actividad
-            </mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Actividad:</span>
-                <button (click)="navigateToActividadCliente(element.clienteId)" mat-icon-button matTooltip='Gestionar actividades del Cliente'>
+                    <!-- {{(element.potencialExito / 100) | percent}} -->
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actividad">
+                <mat-header-cell *matHeaderCellDef>
+                    Actividad
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Actividad:</span>
+                    <button (click)="navigateToActividadCliente(element.clienteId)" mat-icon-button matTooltip='Gestionar actividades del Cliente'>
                     <mat-icon color="primary">date_range</mat-icon>
                 </button>
-            </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="dcClientesPotenciales"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: dcClientesPotenciales;" [hidden]="matTableLoadingService.activo$ | async"></mat-row>
-    </mat-table>
-    <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]" [hidden]="mtClientesPotenciales.data.length == 0 || (matTableLoadingService.activo$ | async)"></mat-paginator>
-    <app-mat-table-loading></app-mat-table-loading>
-    <app-mat-table-not-found [activo]="mtClientesPotenciales.data.length === 0 && !(matTableLoadingService.activo$ | async)"></app-mat-table-not-found>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="dcClientesPotenciales"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: dcClientesPotenciales;" [hidden]="matTableLoadingService.activo$ | async"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]" [hidden]="mtClientesPotenciales.data.length == 0 || (matTableLoadingService.activo$ | async)"></mat-paginator>
+        <app-mat-table-loading></app-mat-table-loading>
+        <app-mat-table-not-found [activo]="mtClientesPotenciales.data.length === 0 && !(matTableLoadingService.activo$ | async)"></app-mat-table-not-found>
+    </div>
+    <!--<div class='containerAccions'>
+        <button *ngIf="!isMobile" mat-icon-button matTooltip='Exportar a Excel' (click)="exportToExcel()" style="margin-right: 10px;" [disabled]="matTableLoadingService.activo$ | async">
+          <mat-icon svgIcon="excel_icon" class="excel-icon"></mat-icon>
+        </button>
+        <button *ngIf="isMobile" mat-icon-button [disabled]="matTableLoadingService.activo$ | async">
+            <mat-icon class="share-icon" matTooltip="Compartir como Excel" (click)="shareToExcel()" >share</mat-icon>
+        </button>
+         <button mat-icon-button [disabled]="matTableLoadingService.activo$ | async">
+            <mat-icon class="add_a_photo-icon" matTooltip="Tomar una fotografia" (click)="takePhoto()" >add_a_photo</mat-icon>
+          </button>
+    </div> -->
 </div>

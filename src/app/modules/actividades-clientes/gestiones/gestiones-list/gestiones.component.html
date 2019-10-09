@@ -60,7 +60,8 @@
         <ng-container matColumnDef="observaciones">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Observaciones</mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Observaciones:</span> {{element.observaciones}}
+                <span class="mobile-label">Observaciones:</span>
+                <div class="ellipsis" isEllipsisActive>{{element.observaciones}}</div>
             </mat-cell>
         </ng-container>
 
@@ -113,5 +114,5 @@
     </mat-table>
     <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]" [hidden]="mtClientesGestiones.data.length == 0 || (matTableLoadingService.activo$ | async)"></mat-paginator>
     <app-mat-table-loading></app-mat-table-loading>
-    <app-mat-table-not-found [activo]="mtClientesGestiones.data.length == 0 && !(matTableLoadingService.activo$ | async)" ></app-mat-table-not-found>
+    <app-mat-table-not-found [activo]="mtClientesGestiones.data.length == 0 && !(matTableLoadingService.activo$ | async)"></app-mat-table-not-found>
 </div>

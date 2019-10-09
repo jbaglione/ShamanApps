@@ -11,7 +11,7 @@ import { DialogComponent } from '../../shared/dialog/dialog.component';
 
 import { BitacorasService } from '../bitacoras.service';
 import { AuthenticationService } from '../../security/authentication.service';
-import { CommonService } from '../../../services/common.service';
+import { CommonService } from '../../shared/services/common.service';
 import { NgxGalleryComponent, NgxGalleryOptions, NgxGalleryImage } from 'ngx-gallery';
 import { saveAs } from 'file-saver';
 

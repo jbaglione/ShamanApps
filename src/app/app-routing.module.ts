@@ -48,6 +48,11 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
+        path: 'paneloperativo',
+        loadChildren: './modules/panel-operativo/panel-operativo.module#PanelOperativoModule',
+        canActivate: [AuthGuard]
+      },
+      {
         path: 'extranet-v1',
         loadChildren: './modules/extranet-v1/extranet-v1.module#ExtranetV1Module',
       },

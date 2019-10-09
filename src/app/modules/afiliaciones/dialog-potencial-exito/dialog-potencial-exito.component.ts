@@ -6,7 +6,7 @@ import { AfiliacionesService } from '../afiliaciones.service';
 import { ClientePotencial } from 'src/app/models/cliente-potencial.model';
 import { listable } from '@app/models/listable.model';
 import { DialogComponent } from '@app/modules/shared/dialog/dialog.component';
-import { CommonService } from '@app/services/common.service';
+import { CommonService } from '@app/modules/shared/services/common.service';
 
 @Component({
   selector: 'app-dialog-potencial-exito',

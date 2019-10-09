@@ -11,6 +11,13 @@ table {
     display: none;
 }
 
+.containerAccions {
+    display: flex;
+    /* background-color: #f5ca3c; */
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
 ::ng-deep .my-panel {
     overflow: hidden !important;
     border-radius: 5px;
@@ -23,7 +30,7 @@ table {
 }
 
 .mat-column-nombreComercial {
-  flex: 0 0 15%;
+    flex: 0 0 15%;
 }
 
 .mat-column-rubro {
@@ -73,11 +80,22 @@ table {
     /* display: none; */
 }
 
- /* ::ng-deep .mat-tooltip {
+.icon-mat-tool {
+    height: 56px !important;
+}
+
+
+/* ::ng-deep .mat-tooltip {
     position: absolute !important;
 } */
 
 @media(max-width: 600px) {
+    .expansible {
+        width: 100%;
+    }
+    .icon-mat-tool {
+        height: 40px !important;
+    }
     .mobile-label {
         width: 85px;
         display: inline-block;

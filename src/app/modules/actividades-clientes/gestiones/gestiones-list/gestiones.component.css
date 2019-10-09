@@ -43,6 +43,15 @@
     flex: 0 0 60px;
 }
 
+@media(min-width: 600px) {
+    .ellipsis {
+        /* width: 1820px; */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
 @media(max-width: 600px) {
     .mobile-label {
         width: 85px;
