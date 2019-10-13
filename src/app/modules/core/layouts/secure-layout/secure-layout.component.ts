@@ -6,6 +6,7 @@ import { Usuario, GrupoAccesosMicrositios } from '@app/modules/security/models';
 import { ProgressBarService } from '@app/modules/shared/services/progress-bar.service';
 import { MatSidenav } from '@angular/material';
 import { SidenavService } from '../../services/sidenav.service';
+import { VendedorService } from '@app/modules/shared/services/vendedor.service';
 
 @Component({
   selector: 'app-secure-layout',
@@ -28,6 +29,7 @@ export class SecureLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private authenticationService: AuthenticationService,
     public progressBarService: ProgressBarService,
+    public vendedorService: VendedorService,
     private router: Router,
     private sidenavService: SidenavService
   ) {

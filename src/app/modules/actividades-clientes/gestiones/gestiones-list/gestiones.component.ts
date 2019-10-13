@@ -8,6 +8,7 @@ import { GestionDetailComponent } from '../gestion-detail/gestion-detail.compone
 import { listable } from 'src/app/models/listable.model';
 import { FormControl } from '@angular/forms';
 import { MatTableLoadingService } from '@app/modules/shared/services/mat-table-loading.service';
+import { VendedorService } from '@app/modules/shared/services/vendedor.service';
 
 @Component({
   selector: 'app-actividades-clientes-gestiones',
@@ -30,6 +31,7 @@ export class GestionesComponent implements OnInit {
   desde: FormControl;
   hasta: FormControl;
   vendedorSelect: FormControl;
+  chkResumir: boolean;
 
   // Listados para combos
   tiposFechas: listable [] = [
@@ -65,6 +67,7 @@ export class GestionesComponent implements OnInit {
   constructor(
     private gestionesService: ActividadesClientesService,
     private authenticationService: AuthenticationService,
+    private vendedorService: VendedorService,
     public matTableLoadingService: MatTableLoadingService,
     public dialog: MatDialog) {
   }
@@ -83,13 +86,12 @@ export class GestionesComponent implements OnInit {
 
     if (this.modoGenerico) {
       if (this.userAcceso == '3') {
-        this.gestionesService
+        this.vendedorService
           .getVendedores()
           .subscribe(data => {
             this.vendedores = data;
           });
       }
-
       this.dcClientesGestiones.splice( 1, 0, 'razonSocial');
     }
     this.LoadData();
@@ -116,7 +118,10 @@ export class GestionesComponent implements OnInit {
         this.setDataSourceAttributes();
         this.matTableLoadingService.desactivar();
       },
-      err => { this.matTableLoadingService.desactivar(); } );
+      err => {
+        this.matTableLoadingService.desactivar();
+        throw err;
+      } );
   }
 
   GetGestionesGenerales() {

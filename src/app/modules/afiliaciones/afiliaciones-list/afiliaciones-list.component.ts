@@ -1,3 +1,4 @@
+import { VendedorService } from './../../shared/services/vendedor.service';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { Component, ViewChild, OnInit } from '@angular/core';
@@ -11,7 +12,6 @@ import { listable } from 'src/app/models/listable.model';
 import { AfiliacionesDetailComponent } from '../afiliaciones-detail/afiliaciones-detail.component';
 import { ClientePotencial, ClientePotencialForExcel } from 'src/app/models/cliente-potencial.model';
 import { PotencialExitoComponent } from '../dialog-potencial-exito/dialog-potencial-exito.component';
-// import { ExportMatTableToXlxs } from '@app/modules/shared/helpers/export-mat-table-to-xlxs';
 import { MatTableLoadingService } from '@app/modules/shared/services/mat-table-loading.service';
 import { Observable } from 'rxjs';
 import { FileService } from '@app/modules/shared/services/files.service';
@@ -42,11 +42,9 @@ export class AfiliacionesListComponent implements OnInit {
     { descripcion: 'Inactivos', id: '4' },
     { descripcion: 'Suspendidos', id: '5' }
   ];
-  vendedores: listable[] = [{ descripcion: 'Todos', id: '0' }];
+  vendedores: listable[];
 
-  vendedores$: Observable<listable[]>;
   clientesPotenciales$: Observable<ClientePotencial[]>;
-
   // Datos para grilla
   dcClientesPotencialesBasic: string[] = [
     'nombreComercial',
@@ -94,6 +92,7 @@ export class AfiliacionesListComponent implements OnInit {
   constructor(
     private afiliacionesService: AfiliacionesService,
     private authenticationService: AuthenticationService,
+    private vendedorService: VendedorService,
     private commonService: CommonService,
     public matTableLoadingService: MatTableLoadingService,
     public dialog: MatDialog,
@@ -107,11 +106,16 @@ export class AfiliacionesListComponent implements OnInit {
 
   ngOnInit() {
       this.userAcceso = this.authenticationService.getAccesosCurrentUser().toString();
-      this.descripcionInput = new FormControl('');
-      this.tiposClientesSelect = new FormControl(this.tiposClientes[0].id);
-      this.vendedoresSelect = new FormControl(this.vendedores[0].id);
-      this.getVendedores();
-      this.getClientes(this.tiposClientes[0].id, '');
+    this.descripcionInput = new FormControl('');
+    this.tiposClientesSelect = new FormControl(this.tiposClientes[0].id);
+    this.vendedoresSelect = new FormControl(0);
+    this.vendedorService
+      .getVendedores()
+      .subscribe(vendedores => {
+        this.vendedores = vendedores;
+        this.vendedoresSelect.setValue('0');
+      });
+    this.getClientes(this.tiposClientes[0].id, '');
   }
 
   setDataSourceAttributes() {
@@ -125,12 +129,6 @@ export class AfiliacionesListComponent implements OnInit {
     this.mtClientesPotenciales.filter = filterValue;
   }
 
-  getVendedores() {
-    this.vendedores$ =  this.afiliacionesService.getVendedores();
-    this.vendedores$.subscribe(data => {
-      this.vendedores = data;
-    });
-  }
 
   getClientes(tipoCliente: string, vendedor: string) {
     this.matTableLoadingService.activar();
@@ -152,7 +150,10 @@ export class AfiliacionesListComponent implements OnInit {
         this.setDataSourceAttributes();
         this.matTableLoadingService.desactivar();
       },
-      err => { this.matTableLoadingService.desactivar(); }
+      err => {
+        this.matTableLoadingService.desactivar();
+        throw err;
+      }
     );
   }
 

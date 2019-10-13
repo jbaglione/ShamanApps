@@ -5,7 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class SafePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
   transform(url: string) {
-    if (!url.includes('https://')) {
+    if (!url.includes('https://') && !url.includes('http://') ) {
       url = 'https://' + url;
     }
 

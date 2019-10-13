@@ -20,7 +20,10 @@ import { AgGridModule } from 'ag-grid-angular';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+      countDuplicates: true
+    }),
     IonicModule.forRoot(),
     AppRoutingModule,
     CoreModule,

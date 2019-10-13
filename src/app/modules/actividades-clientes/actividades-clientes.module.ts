@@ -9,7 +9,6 @@ import { GestionesComponent } from './gestiones/gestiones-list/gestiones.compone
 import { ReclamosComponent } from './reclamos/reclamos.component';
 import { ActividadesClientesComponent } from './actividades-clientes.component';
 import { ActividadesClientesService } from './actividades-clientes.service';
-import { IsEllipsisActiveDirective } from '@app/modules/shared/directives/is-ellipsis-active.directive';
 
 @NgModule({
     declarations: [
@@ -18,8 +17,7 @@ import { IsEllipsisActiveDirective } from '@app/modules/shared/directives/is-ell
       GestionesComponent,
       GestionDetailComponent,
       ReclamosComponent,
-      ActividadesClientesComponent,
-      IsEllipsisActiveDirective
+      ActividadesClientesComponent
     ],
     imports: [
       SharedModule,
@@ -32,8 +30,7 @@ import { IsEllipsisActiveDirective } from '@app/modules/shared/directives/is-ell
       GestionesComponent,
       GestionDetailComponent,
       ReclamosComponent,
-      ActividadesClientesComponent,
-      IsEllipsisActiveDirective
+      ActividadesClientesComponent
     ],
     providers: [
       ActividadesClientesService

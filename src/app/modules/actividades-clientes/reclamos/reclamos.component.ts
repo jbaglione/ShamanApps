@@ -7,6 +7,7 @@ import { ActividadesClientesService } from '../actividades-clientes.service';
 import { ClienteReclamo } from 'src/app/models/cliente-reclamo';
 import { listable } from 'src/app/models/listable.model';
 import { MatTableLoadingService } from '@app/modules/shared/services/mat-table-loading.service';
+import { VendedorService } from '@app/modules/shared/services/vendedor.service';
 
 @Component({
   selector: 'app-actividades-clientes-reclamos',
@@ -62,6 +63,7 @@ export class ReclamosComponent implements OnInit {
   constructor(
     private actividadesClientesService: ActividadesClientesService,
     private authenticationService: AuthenticationService,
+    private vendedorService: VendedorService,
     public matTableLoadingService: MatTableLoadingService,
     public dialog: MatDialog) {
   }
@@ -78,7 +80,7 @@ export class ReclamosComponent implements OnInit {
 
     if (this.modoGenerico) {
       if (this.userAcceso == '3') {
-        this.actividadesClientesService
+        this.vendedorService
           .getVendedores()
           .subscribe(data =>
             this.vendedores = data
@@ -121,7 +123,10 @@ export class ReclamosComponent implements OnInit {
       this.setDataSourceAttributes();
       this.matTableLoadingService.desactivar();
     },
-    err => {  this.matTableLoadingService.desactivar(); } );
+    err => {
+      this.matTableLoadingService.desactivar();
+      throw err;
+    } );
   }
 
   GetReclamosFiltrados() {

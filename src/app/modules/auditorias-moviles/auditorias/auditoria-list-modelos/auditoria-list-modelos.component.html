@@ -1,9 +1,10 @@
 <h1 mat-dialog-title>Nueva Auditoria</h1>
 <mat-dialog-content style="border-top: 1px solid #dadce0;">
     <br />
-    <form class="example-form" [formGroup]="modelosAuditoriaForm" (ngSubmit)="iniciarModeloAuditoria()" novalidate="novalidate">
+    <form class="example-form" [formGroup]="modelosAuditoriaForm" novalidate="novalidate">
+        <!--(ngSubmit)="iniciarModeloAuditoria()" -->
         <div class="modelos" *ngFor="let item of modelosAuditoria">
-            <button type="button" [disabled]="'btn' + item.id" (click)="onNoClick(item.id)">{{item.descripcion}}</button>
+            <button type="button" [disabled]="'btn' + item.id" (click)="iniciarModeloAuditoria(item.id)">{{item.descripcion}}</button>
         </div>
     </form>
 </mat-dialog-content>

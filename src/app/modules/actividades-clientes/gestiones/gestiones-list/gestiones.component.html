@@ -32,6 +32,7 @@
     </mat-form-field>
     &nbsp;
     <button mat-raised-button type="submit" (click)="GetGestionesGenerales()" [disabled]="matTableLoadingService.activo$ | async">Buscar</button>
+    <mat-checkbox class="ml-5 mr-5 short-form-field" [(ngModel)]="chkResumir">Resumir Observaciones</mat-checkbox>
 </div>
 
 <div class="mat-elevation-z8">
@@ -61,7 +62,7 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header>Observaciones</mat-header-cell>
             <mat-cell *matCellDef="let element">
                 <span class="mobile-label">Observaciones:</span>
-                <div class="ellipsis" isEllipsisActive>{{element.observaciones}}</div>
+                <div [class.ellipsis]=chkResumir isEllipsisActive>{{element.observaciones}}</div>
             </mat-cell>
         </ng-container>
 

@@ -12,11 +12,23 @@ import { SafePipe } from './helpers/safe.pipe';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { MatTableLoadingComponent } from './mat-table-loading/mat-table-loading.component';
 import { MatTableNotFoundComponent } from './mat-table-not-found/mat-table-not-found.component';
+import { IsEllipsisActiveDirective } from './directives/is-ellipsis-active.directive';
 
 
 @NgModule({
-  declarations: [DialogComponent, SafePipe, SpinnerComponent, ProgressBarComponent, MatTableLoadingComponent, MatTableNotFoundComponent],
-  imports: [LayoutModule, CdkTableModule, MaterialModule, RouterModule, CommonModule],
+  declarations: [
+    DialogComponent,
+    SafePipe,
+    SpinnerComponent,
+    ProgressBarComponent,
+    MatTableLoadingComponent,
+    MatTableNotFoundComponent,
+    IsEllipsisActiveDirective],
+  imports: [LayoutModule,
+    CdkTableModule,
+    MaterialModule,
+    RouterModule,
+    CommonModule],
   exports: [
     LayoutModule,
     CdkTableModule,
@@ -31,8 +43,9 @@ import { MatTableNotFoundComponent } from './mat-table-not-found/mat-table-not-f
     SpinnerComponent,
     ProgressBarComponent,
     MatTableLoadingComponent,
-    MatTableNotFoundComponent
+    MatTableNotFoundComponent,
+    IsEllipsisActiveDirective
   ],
   entryComponents: [DialogComponent]
 })
-export class SharedModule {}
+export class SharedModule { }

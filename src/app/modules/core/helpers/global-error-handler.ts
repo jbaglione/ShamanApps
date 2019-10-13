@@ -40,7 +40,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     // Always log errors
     logger.logError(message.original, stackTrace, apiEndpoint, isServerError);
 
-    // console.error(error);
+    console.error(error);
   }
 
 }

@@ -8,6 +8,7 @@ import { DialogForgotPasswordComponent } from '../../components/dialog-forgot-pa
 import { first } from 'rxjs/operators';
 import { ProgressBarService } from '@app/modules/shared/services/progress-bar.service';
 import { ToastrService } from 'ngx-toastr';
+import { VendedorService } from '@app/modules/shared/services/vendedor.service';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private authenticationService: AuthenticationService,
-    private progressBarService: ProgressBarService
+    private progressBarService: ProgressBarService,
+    private vendedorService: VendedorService
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
@@ -63,6 +65,7 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         usuario => {
+          this.clearCache();
           this.router.navigate([this.returnUrl]);
         },
         error => {
@@ -87,5 +90,9 @@ export class LoginComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '400px';
     const rgisterDialogRef = this.dialog.open(DialogRegisterComponent, dialogConfig);
+  }
+
+  clearCache() {
+    this.vendedorService.clearCache();
   }
 }
