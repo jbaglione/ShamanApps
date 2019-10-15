@@ -1,77 +1,12 @@
 <div class="container-padding">
-    <!-- <mat-form-field class="ml-5 mr-5">
-        <input matInput [matDatepicker]="picker1" placeholder="Fecha Desde" [formControl]="desde" name="dpDesde">
-        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field class="ml-5 mr-5">
-        <input matInput [matDatepicker]="picker2" placeholder="Fecha Hasta" [formControl]="hasta" name="dpHasta">
-        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2></mat-datepicker>
-    </mat-form-field> -->
-
-    <button mat-raised-button type="submit" (click)="getPanelOperativo()" [disabled]="isLoading">Buscar</button>
-    <div fxLayout="row" fxLayoutAlign="end center">
-        <mat-form-field class="ml-5 mr-5" fxFlex="30" fxFlex.xs="100">
-            <mat-icon matPrefix>filter_list</mat-icon>
-            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar grilla" type="text" [formControl]="descripcionInput" name="Descripcion">
-        </mat-form-field>
-        <br>
-    </div>
-
-    <div class="mat-elevation-z8">
-        <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-balham" [rowData]="agTableDataSource" [columnDefs]="dcPanelOperativoAg">
+    <div class="mat-elevation-z8" style="height: 300px;">
+        <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="agTableDataSource" [columnDefs]="dcPanelOperativoAg" [paginationAutoPageSize]="true" [pagination]="true">
         </ag-grid-angular>
     </div>
-    <div class="mat-elevation-z8">
-        <!-- iD: number;
-        incidenteId: number;
-        gradoColor: string;
-        grado: string;
-        cliente: string; -->
-        <mat-table [dataSource]="mtPanelOperativo" matSort>
-            <ng-container matColumnDef="incidenteId">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>incidenteId</mat-header-cell>
-                <mat-cell *matCellDef="let element">
-                    <span class="mobile-label">Inc.:</span> {{element.incidenteId}}
-                </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="grado">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>grado</mat-header-cell>
-                <mat-cell *matCellDef="let element">
-                    <span class="mobile-label">grado:</span> {{element.grado}}
-                </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="cliente">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>cliente</mat-header-cell>
-                <mat-cell *matCellDef="let element">
-                    <span class="mobile-label">cliente:</span> {{element.cliente}}
-                </mat-cell>
-            </ng-container>
-
-            <!-- <ng-container matColumnDef="verImagenesPanelOperativo">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>
-                </mat-header-cell>
-                <mat-cell *matCellDef="let element; let i = index">
-                    <span class="mobile-label">Ver:</span>
-                    <button (click)="openGallery(i)" mat-icon-button>
-                                <mat-icon>photo_library</mat-icon>
-                        </button>
-                    <ngx-gallery [options]="element.galleryOptions" [images]="element.galleryImages"></ngx-gallery>
-                </mat-cell>
-            </ng-container> -->
-            <mat-header-row *matHeaderRowDef="dcPanelOperativo "></mat-header-row>
-            <mat-row *matRowDef="let row; columns: dcPanelOperativo; "></mat-row>
-        </mat-table>
-        <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]" [hidden]="mtPanelOperativo.data.length == 0 || isLoading"></mat-paginator>
-
-        <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; height: 200px; background-color:white">
-            <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
-            </mat-progress-spinner>
-        </div>
-
-        <div style="text-align: center; padding-top: 40px; padding-bottom: 40px;" *ngIf="!isLoading && mtPanelOperativo.data.length === 0">
-            NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
-        </div>
+</div>
+<div class="container-padding">
+    <div class="mat-elevation-z8" style="height: 300px;">
+        <ag-grid-angular style="height: 100%;" class="ag-theme-balham" [rowData]="agTableDataSource" [columnDefs]="dcPanelOperativoAg" [paginationAutoPageSize]="true" [pagination]="true">
+        </ag-grid-angular>
     </div>
 </div>

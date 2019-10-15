@@ -1,17 +1,18 @@
 @import './extranet-theme';
 @import './extranet-typography';
 @import './extranet-material-controls';
+[hidden] {
+    display: none !important;
+}
 
-[hidden] { display: none !important;}
-
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  background-color: #f9f9f9;
+    background-color: #f9f9f9;
 }
 
 .container-padding {
@@ -19,43 +20,43 @@ body {
 }
 
 .mt-5 {
-  margin-top: 5px !important;
+    margin-top: 5px !important;
 }
 
-.mr-5{
-  margin-right: 5px !important;
+.mr-5 {
+    margin-right: 5px !important;
 }
 
 .mb-5 {
-  margin-bottom: 5px !important;
+    margin-bottom: 5px !important;
 }
 
-.ml-5{
-  margin-left: 5px !important;
+.ml-5 {
+    margin-left: 5px !important;
 }
 
 .mt-10 {
-  margin-top: 10px !important;
+    margin-top: 10px !important;
 }
 
-.mr-10{
-  margin-right: 10px !important;
+.mr-10 {
+    margin-right: 10px !important;
 }
 
 .mb-10 {
-  margin-bottom: 10px !important;
+    margin-bottom: 10px !important;
 }
 
-.ml-10{
-  margin-left: 10px !important;
+.ml-10 {
+    margin-left: 10px !important;
 }
 
 .mobile-label {
-  display: none;
+    display: none;
 }
 
-.full-width{
-	width: 100%;
+.full-width {
+    width: 100%;
 }
 
 //BACKGORUND
@@ -168,45 +169,53 @@ body {
 }
 
 @media(max-width: 600px) {
-  .hidden-if-mobile {
-      display: none !important;
-  }
+    .hidden-if-mobile {
+        display: none !important;
+    }
 }
 
 .container {
-  display: flex;
-  margin-top: 0px;
-  /* or inline-flex */
+    display: flex;
+    margin-top: 0px;
+    /* or inline-flex */
 }
 
 .text--center {
-  text-align: center;
+    text-align: center;
 }
 
 .text--right {
-  text-align: right;
+    text-align: right;
 }
 
 .example-spacer-small {
-  flex: 0.3 0.3 auto;
+    flex: 0.3 0.3 auto;
 }
 
 .example-spacer-extra-small {
-  flex: 0.15 0.15 auto;
+    flex: 0.15 0.15 auto;
 }
 
 .example-spacer {
-  flex: 1 1 auto;
+    flex: 1 1 auto;
 }
 
 .icon-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.excel-icon  g{
-  fill:green;
+.excel-icon g {
+    fill: green;
 }
 
+.bold-and-red {
+    background-color: red;
+    font-weight: bold;
+}
 
+.bold-and-yellow {
+    background-color: yellow;
+    font-weight: bold;
+}

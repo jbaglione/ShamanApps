@@ -7,7 +7,7 @@ export interface PanelOperativo {
     gradoColor: string;
     grado: string;
     cliente: string;
-    // nroIncidente: number;
+    nroIncidente: number;
     flgReclamo: number;
     reclamo: string;
     flgAviso: number;
