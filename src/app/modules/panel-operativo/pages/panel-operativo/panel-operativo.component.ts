@@ -8,7 +8,7 @@ import { PanelOperativo } from '../../models/panel-operativo.model';
 import { CommonService } from '@app/modules/shared/services/common.service';
 import { Observable, Subject, timer, Subscription } from 'rxjs';
 import { takeUntil, switchMap, catchError } from 'rxjs/operators';
-
+import 'ag-grid-enterprise';
 
 @Component({
   selector: 'app-panel-operativo',
@@ -21,8 +21,8 @@ export class PanelOperativoComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   agTableDataSource: PanelOperativo[];
   getRowNodeId;
-  // gridApi;
-  // gridColumnApi;
+  gridApi;
+  gridColumnApi;
 
   constructor(
     private operativaClientesService: PanelOperativoService,
@@ -75,150 +75,150 @@ export class PanelOperativoComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
   }
 
-  // onGridReady(params) {
-  //   this.gridApi = params.api;
-  //   this.gridColumnApi = params.columnApi;
+  onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
 
-  //   this.http
-  //     .get("https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinners.json")
-  //     .subscribe(data => {
-  //       this.rowData = data;
-  //     });
-  // }
+    // this.http
+    //   .get("https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinners.json")
+    //   .subscribe(data => {
+    //     this.rowData = data;
+    //   });
+  }
 
-  // getContextMenuItems(params) {
-  //   var result = [
-  //     {
-  //       name: "Alert " + params.value,
-  //       action: function() {
-  //         window.alert("Alerting about " + params.value);
-  //       },
-  //       cssClasses: ["redFont", "bold"]
-  //     },
-  //     {
-  //       name: "Always Disabled",
-  //       disabled: true,
-  //       tooltip: "Very long tooltip, did I mention that I am very long, well I am! Long!  Very Long!"
-  //     },
-  //     {
-  //       name: "Country",
-  //       subMenu: [
-  //         {
-  //           name: "Ireland",
-  //           action: function() {
-  //             console.log("Ireland was pressed");
-  //           },
-  //           icon: createFlagImg("ie")
-  //         },
-  //         {
-  //           name: "UK",
-  //           action: function() {
-  //             console.log("UK was pressed");
-  //           },
-  //           icon: createFlagImg("gb")
-  //         },
-  //         {
-  //           name: "France",
-  //           action: function() {
-  //             console.log("France was pressed");
-  //           },
-  //           icon: createFlagImg("fr")
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       name: "Person",
-  //       subMenu: [
-  //         {
-  //           name: "Niall",
-  //           action: function() {
-  //             console.log("Niall was pressed");
-  //           }
-  //         },
-  //         {
-  //           name: "Sean",
-  //           action: function() {
-  //             console.log("Sean was pressed");
-  //           }
-  //         },
-  //         {
-  //           name: "John",
-  //           action: function() {
-  //             console.log("John was pressed");
-  //           }
-  //         },
-  //         {
-  //           name: "Alberto",
-  //           action: function() {
-  //             console.log("Alberto was pressed");
-  //           }
-  //         },
-  //         {
-  //           name: "Tony",
-  //           action: function() {
-  //             console.log("Tony was pressed");
-  //           }
-  //         },
-  //         {
-  //           name: "Andrew",
-  //           action: function() {
-  //             console.log("Andrew was pressed");
-  //           }
-  //         },
-  //         {
-  //           name: "Kev",
-  //           action: function() {
-  //             console.log("Kev was pressed");
-  //           }
-  //         },
-  //         {
-  //           name: "Will",
-  //           action: function() {
-  //             console.log("Will was pressed");
-  //           }
-  //         },
-  //         {
-  //           name: "Armaan",
-  //           action: function() {
-  //             console.log("Armaan was pressed");
-  //           }
-  //         }
-  //       ]
-  //     },
-  //     "separator",
-  //     {
-  //       name: "Windows",
-  //       shortcut: "Alt + W",
-  //       action: function() {
-  //         console.log("Windows Item Selected");
-  //       },
-  //       icon: '<img src="../images/skills/windows.png"/>'
-  //     },
-  //     {
-  //       name: "Mac",
-  //       shortcut: "Alt + M",
-  //       action: function() {
-  //         console.log("Mac Item Selected");
-  //       },
-  //       icon: '<img src="../images/skills/mac.png"/>'
-  //     },
-  //     "separator",
-  //     {
-  //       name: "Checked",
-  //       checked: true,
-  //       action: function() {
-  //         console.log("Checked Selected");
-  //       },
-  //       icon: '<img src="../images/skills/mac.png"/>'
-  //     },
-  //     "copy",
-  //     "separator",
-  //     "chartRange"
-  //   ];
-  //   return result;
-  // }
+  getContextMenuItems(params) {
+    var result = [
+      {
+        name: "Alert " + params.value,
+        action: function() {
+          window.alert("Alerting about " + params.value);
+        },
+        cssClasses: ["redFont", "bold"]
+      },
+      {
+        name: "Always Disabled",
+        disabled: true,
+        tooltip: "Very long tooltip, did I mention that I am very long, well I am! Long!  Very Long!"
+      },
+      {
+        name: "Country",
+        subMenu: [
+          {
+            name: "Ireland",
+            action: function() {
+              console.log("Ireland was pressed");
+            },
+            icon: createFlagImg("ie")
+          },
+          {
+            name: "UK",
+            action: function() {
+              console.log("UK was pressed");
+            },
+            icon: createFlagImg("gb")
+          },
+          {
+            name: "France",
+            action: function() {
+              console.log("France was pressed");
+            },
+            icon: createFlagImg("fr")
+          }
+        ]
+      },
+      {
+        name: "Person",
+        subMenu: [
+          {
+            name: "Niall",
+            action: function() {
+              console.log("Niall was pressed");
+            }
+          },
+          {
+            name: "Sean",
+            action: function() {
+              console.log("Sean was pressed");
+            }
+          },
+          {
+            name: "John",
+            action: function() {
+              console.log("John was pressed");
+            }
+          },
+          {
+            name: "Alberto",
+            action: function() {
+              console.log("Alberto was pressed");
+            }
+          },
+          {
+            name: "Tony",
+            action: function() {
+              console.log("Tony was pressed");
+            }
+          },
+          {
+            name: "Andrew",
+            action: function() {
+              console.log("Andrew was pressed");
+            }
+          },
+          {
+            name: "Kev",
+            action: function() {
+              console.log("Kev was pressed");
+            }
+          },
+          {
+            name: "Will",
+            action: function() {
+              console.log("Will was pressed");
+            }
+          },
+          {
+            name: "Armaan",
+            action: function() {
+              console.log("Armaan was pressed");
+            }
+          }
+        ]
+      },
+      // "separator",
+      // {
+      //   name: "Windows",
+      //   shortcut: "Alt + W",
+      //   action: function() {
+      //     console.log("Windows Item Selected");
+      //   },
+      //   icon: '<img src="../images/skills/windows.png"/>'
+      // },
+      // {
+      //   name: "Mac",
+      //   shortcut: "Alt + M",
+      //   action: function() {
+      //     console.log("Mac Item Selected");
+      //   },
+      //   icon: '<img src="../images/skills/mac.png"/>'
+      // },
+      "separator",
+      {
+        name: "Checked",
+        checked: true,
+        action: function() {
+          console.log("Checked Selected");
+        },
+        icon: '<img src="../images/skills/mac.png"/>'
+      },
+      "copy",
+      "separator",
+      "chartRange"
+    ];
+    return result;
+  }
 
 }
-// function createFlagImg(flag) {
-//   return '<img border="0" width="15" height="10" src="https://flags.fmcdn.net/data/flags/mini/' + flag + '.png"/>';
-// }
+function createFlagImg(flag) {
+  return '<img border="0" width="15" height="10" src="https://flags.fmcdn.net/data/flags/mini/' + flag + '.png"/>';
+}

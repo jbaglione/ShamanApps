@@ -32,6 +32,7 @@
         "@ionic/pwa-elements": "^1.4.1",
         "ag-grid-angular": "^21.2.2",
         "ag-grid-community": "^21.2.2",
+        "ag-grid-enterprise": "^21.2.2",
         "ajv": "^6.10.2",
         "core-js": "^3.0.1",
         "file-saver": "^2.0.2",

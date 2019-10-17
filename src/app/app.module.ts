@@ -12,6 +12,7 @@ import { FileService } from '@app/modules/shared/services/files.service';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AgGridModule } from 'ag-grid-angular';
 
+
 @NgModule({
   declarations: [
     AppComponent
