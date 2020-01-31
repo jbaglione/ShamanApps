@@ -34,6 +34,14 @@ export class CommonService {
     this.snackBar.open(name, '', config);
   }
 
+  public showSnackBarSucces(name): void {
+    const config: MatSnackBarConfig = new MatSnackBarConfig();
+    config.duration = AppConfig.snackBarDuration;
+    // config.verticalPosition = 'top';
+    config.panelClass = ['style-succes'];
+    this.snackBar.open(name, 'OK', config);
+  }
+
   public createGetRequets(data: string[]) {
     const getRequests = [];
     data.forEach(url =>

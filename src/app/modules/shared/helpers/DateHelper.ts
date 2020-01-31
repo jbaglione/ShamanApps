@@ -10,4 +10,10 @@ export class DateHelper {
     const mi = today.getMinutes();
     const s = today.getSeconds();
     return y.toString() + m.toString() + d.toString() + '_' + h + '-' + mi + '-' + s;
-  }  }
+  }
+  static dateDiff(dt2: Date, dt1: Date) {
+   let diff = (dt2.getTime() - dt1.getTime()) / 1000;
+   diff /= (60 * 60);
+   return Math.abs(Math.round(diff));
+  }
+}

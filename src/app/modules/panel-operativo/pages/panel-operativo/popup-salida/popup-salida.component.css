@@ -1,29 +1,35 @@
-.mat-column-codigo {
-    flex: 0 0 100px;
+.mat-column-fecha {
+    flex: 0 0 85px;
 }
 
-.mat-column-concepto {
-    flex: 0 0 *px;
+.mat-column-hora {
+    flex: 0 0 80px;
 }
 
-.mat-column-cantidad {
-    flex: 0 0 70px;
+.very-short-form-field {
+    max-width: 80px;
 }
 
-.mat-column-unitario {
-    flex: 0 0 100px;
+.short-form-field {
+    max-width: 110px;
 }
 
-.mat-column-importe {
-    flex: 0 0 100px;
+.long-form-field {
+    min-width: 300px;
 }
 
-.align-currency {
-    justify-content: flex-end;
+.very-long-form-field {
+    min-width: 440px;
 }
 
 table {
     width: 100%;
+}
+
+.flex-container.flex-row {
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
 }
 
 @media(max-width: 600px) {
@@ -43,23 +49,5 @@ table {
     .mat-footer-row,
     .mat-row {
         min-height: 26px !important;
-    }
-    .mat-cell-first {
-        padding-left: 0px !important;
-    }
-    .mat-cell-button {
-        width: auto !important;
-    }
-    .mat-column-concepto {
-        flex: auto !important;
-    }
-    .mat-column-cantidad {
-        flex: auto !important;
-    }
-    .mat-column-unitario {
-        flex: auto !important;
-    }
-    .mat-column-importe {
-        flex: auto !important;
     }
 }

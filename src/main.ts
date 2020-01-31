@@ -7,7 +7,11 @@ import { environment } from './environments/environment';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 import 'hammerjs';
+import { LicenseManager } from 'ag-grid-enterprise';
 
+
+// tslint:disable-next-line: max-line-length
+LicenseManager.setLicenseKey('Evaluation_License_Not_For_Production_16_December_2019__MTU3NjQ1NDQwMDAwMA==b4a8074d5060c37167e7bcb36abee4e1');
 
 if (environment.production) {
   enableProdMode();

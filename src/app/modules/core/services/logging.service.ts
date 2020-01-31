@@ -44,7 +44,9 @@ export class LoggingService {
         )
       };
 
-      that.httpClient.post(AppConfig.proxyCORSUrl  + AppConfig.loggingWebHook,  JSON.stringify(that.messageToSend), options).subscribe();
+      let messageToSend = JSON.stringify(that.messageToSend);
+      that.httpClient.post(AppConfig.proxyCORSUrl + AppConfig.urlWebHook + AppConfig.keyWebHook,  messageToSend, options).subscribe();
+
     });
   }
 }

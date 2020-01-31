@@ -1,49 +1,120 @@
-<h1 mat-dialog-title>Apertura Valorización Servicio {{nroInterno}}</h1>
+<h1 mat-dialog-title>Despacho de Servicios</h1>
 <mat-dialog-content style="border-top: 1px solid #dadce0;">
     <br />
-    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <!-- <ng-container matColumnDef="nroIncidente">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Incidente</mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Incidente:</span> {{element.nroIncidente}}
-            </mat-cell>
-        </ng-container> -->
-        <ng-container matColumnDef="codigo">
-            <mat-header-cell *matHeaderCellDef> Codigo </mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Codigo:</span>{{element.codigo}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="concepto">
-            <mat-header-cell *matHeaderCellDef> Concepto </mat-header-cell>
-            <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Concepto:</span>{{element.concepto}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="cantidad">
-            <mat-header-cell *matHeaderCellDef class="align-currency"> Cantidad </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="align-currency">
-                <span class="mobile-label">Cantidad:</span>{{element.cantidad}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="unitario">
-            <mat-header-cell *matHeaderCellDef class="align-currency"> Unitario </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="align-currency">
-                <span class="mobile-label">Unitario:</span>{{element.unitario | currency}}
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="importe">
-            <mat-header-cell *matHeaderCellDef class="align-currency"> Importe </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="align-currency">
-                <span class="mobile-label">Importe:</span>{{element.importe | currency}}
-            </mat-cell>
-        </ng-container>
+    <form class="example-form mt-10" [formGroup]="despServicioForm" (ngSubmit)="aceptar()" novalidate="novalidate">
 
-        <mat-header-row *matHeaderRowDef="dcServicioRenglones"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: dcServicioRenglones;"></mat-row>
-    </mat-table>
+        <h3 mat-dialog-title>Incidente</h3>
+        <mat-form-field class="ml-5 mr-5" style="width: 178px;">
+            <input matInput [matDatepicker]="picker3" placeholder="Fecha" formControlName="fecha" name="dpFecha">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="ml-5 mr-5 very-short-form-field">
+            <input matInput placeholder="Nro." formControlName="numero" type="number">
+        </mat-form-field>
+        <mat-form-field class="ml-5 mr-5 very-short-form-field">
+            <input matInput placeholder="Gdo." formControlName="grado" type="text" [style.backgroundColor]="gdoColor">
+        </mat-form-field>
+        <mat-form-field class="ml-5 mr-5 short-form-field">
+            <input matInput placeholder="Cliente" formControlName="cliente" type="text">
+        </mat-form-field>
+        <mat-form-field class="ml-5 mr-5">
+            <mat-select placeholder="Despachar" formControlName="vista" (selectionChange)="showSugerencias()">
+                <mat-option *ngFor="let item of vistas" [value]="item.id ">
+                    {{item.descripcion}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="!despServicioForm.controls.vista.valid">
+                Debe seleccionar un despacho valido.
+            </mat-error>
+        </mat-form-field>
+        <button mat-icon-button matTooltip='Geo Empresas' (click)="geoEmpresas()" [disabled]="btnGeoEmpresasDisabled">
+                  <!--[disabled]="matTableLoadingService.activo$ | async"> -->
+              <mat-icon>location_on</mat-icon>
+          </button>
 
+        <mat-form-field class="ml-5 mr-5 very-long-form-field">
+            <input matInput placeholder="Localidad / Domicilio" formControlName="localidad" type="text">
+        </mat-form-field>
+        <mat-checkbox formControlName="chkAptoGrado" class="ml-5 mr-5" (change)="showSugerencias()">Móviles apto Grado</mat-checkbox>
+        <mat-checkbox formControlName="chkMovilZona" class="ml-5 mr-5" (change)="showSugerencias()">Móviles de Zona</mat-checkbox>
+
+
+        <mat-table [dataSource]="movilesSugerencias" class="mat-elevation-z8">
+            <ng-container matColumnDef="movil">
+                <mat-header-cell *matHeaderCellDef>{{MovilCaption}}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">{{MovilCaption}}:</span>{{element.movil}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="flgObservaciones">
+                <mat-header-cell *matHeaderCellDef>I</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">I:</span>{{element.flgObservaciones}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="tipoMovil">
+                <mat-header-cell *matHeaderCellDef>{{TipoMovilCaption}}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">{{TipoMovilCaption}}:</span>{{element.tipoMovil}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="estado">
+                <mat-header-cell *matHeaderCellDef>{{EstadoCaption}}</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">{{EstadoCaption}}:</span>{{element.estado}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="distanciaTiempo">
+                <mat-header-cell *matHeaderCellDef class="align-currency">{{DistanciaTiempoCaption}}</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="align-currency">
+                    <span class="mobile-label">{{DistanciaTiempoCaption}}:</span>{{element.distanciaTiempo}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="mapa">
+                <mat-header-cell *matHeaderCellDef class="align-currency">{{LinkCaption}}</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="align-currency">
+                    <span class="mobile-label">{{LinkCaption}}:</span>{{element.mapa}}
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="dcMovilesSugerencias"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: dcMovilesSugerencias;" (mouseover)="onMouseOver(row)" [ngClass]="{'mat-elevation-z8' : row.id == rowid}" (click)="cargarMovil(row)"></mat-row>
+        </mat-table>
+        <br />
+        <h3>{{grpMovil}}</h3>
+        <mat-form-field class="ml-5 mr-5 very-short-form-field">
+            <input matInput placeholder={{lblMovil}} formControlName="movil" type="number" matTooltip={{MovilCaption}}>
+        </mat-form-field>
+        <mat-form-field class="ml-5 mr-5 short-form-field">
+            <input matInput placeholder={{lblEstado}} formControlName="estado" type="text" matTooltip={{EstadoCaption}} disabled>
+        </mat-form-field>
+        <mat-form-field class="ml-5 mr-5">
+            <input matInput placeholder={{lblTipoMovil}} formControlName="tipoMovil" type="text" matTooltip={{TipoMovilCaption}} disabled>
+        </mat-form-field>
+        <mat-form-field class="ml-5 mr-5" style="width: 350px;">
+            <input matInput placeholder={{DistanciaTiempoCaption}} formControlName="observaciones" type="text">
+        </mat-form-field>
+    </form>
 </mat-dialog-content>
-<mat-dialog-actions style="float:right ">
-    <button mat-raised-button [mat-dialog-close]=" ">OK</button>
+<mat-dialog-actions>
+    <div>
+        <div style="width: 590px;float: left;">
+            <p>Determine el servicio y luego asigne el móvil que desee despachar. Tambien determine si desea mandar un mensaje al móvil con los datos del servicio...</p>
+        </div>
+        <div style="float: right; justify-items: right; margin-top: 5px;">
+            <button mat-raised-button color="accent" (click)="onNoClick() ">Cancelar</button>
+            <button mat-raised-button type="submit" (click)="aceptar()">Aceptar</button>
+        </div>
+    </div>
 </mat-dialog-actions>
+<!-- 'link',
+        'sel',
+        'gpsFecHorTransmision',
+        'gpsLatitud',
+        'gpsLongitud',
+        'distancia',
+        'tiempo',
+        'nroPrioridad',
+        'modoCobertura',
+        'observaciones' -->

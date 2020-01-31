@@ -32,8 +32,12 @@ export const AppConfig: any = {
   // votesLimit: 3,
   // topHeroesLimit: 4,
   snackBarDuration: 3700,
-  loggingWebHook: 'https://hooks.slack.com/services/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',
+
+  urlWebHook: 'https://hooks.slack.com/services/',
+  keyWebHook: 'TT0T9SN07/BT18GDRML/46yjXnY4HTkkv2urBebYIq4I',
   getApiURL: 'https://api.ipify.org?format=json',
   proxyCORSUrl: 'https://cors-anywhere.herokuapp.com/',
+
+
   version: '1.2.0-beta'
 };
