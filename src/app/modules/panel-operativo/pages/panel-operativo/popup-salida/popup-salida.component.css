@@ -1,8 +1,24 @@
-.mat-column-fecha {
-    flex: 0 0 85px;
+.mat-column-movil {
+    flex: 0 0 80px;
 }
 
-.mat-column-hora {
+.mat-column-flgObservaciones {
+    flex: 0 0 20px;
+}
+
+.mat-column-tipoMovil {
+    flex: 0 0 200px;
+}
+
+.mat-column-estado {
+    flex: 0 0 150px;
+}
+
+.mat-column-distanciaTiempo {
+    flex: 0 0 180px;
+}
+
+.mat-column-mapa {
     flex: 0 0 80px;
 }
 

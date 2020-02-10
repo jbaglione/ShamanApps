@@ -52,7 +52,10 @@ export class PanelOperativoComponent implements OnInit, OnDestroy {
     this.gridOptions.components = {
       cellRendererReclamo: this.CellRendererReclamo,
       cellRendererAviso: this.CellRendererAviso,
-      cellRendererEnviado: this.CellRendererEnviado
+      cellRendererEnviado: this.CellRendererEnviado,
+      cellRendererNroIncidente: this.CellRendererNroIncidente,
+      cellRendererTpoDesplazamiento: this.CellRendererTpoDesplazamiento,
+      cellRendererTpoAtencion: this.CellRendererTpoAtencion
     };
   }
 
@@ -123,8 +126,72 @@ export class PanelOperativoComponent implements OnInit, OnDestroy {
     element.appendChild(imageElement);
     // element.appendChild(document.createTextNode(params.value));
     return element;
-   }
+  }
 
+  CellRendererNroIncidente(params) {
+    const element = document.createElement('span');
+    // const imageElement = document.createElement('img');
+    console.log(params);
+    if (params.data.flgSimultaneo === 1) {
+      params.value = (params.value + 's');
+    } else if (params.data.viajeId === 'VUE') {
+      params.value = (params.value + 'r');
+    }
+
+    element.appendChild(document.createTextNode(params.value));
+    return element;
+  }
+
+  CellRendererTpoDesplazamiento(params) {
+    const element = document.createElement('span');
+
+    let vClr = false;
+    if (params.node.data.ultimoSuceso === 'O'
+      || params.node.data.ultimoSuceso === 'G'
+      || params.node.data.ultimoSuceso === 'B') {
+      vClr = true;
+    }
+    // tslint:disable: radix
+    if (parseInt(params.node.data.clrDesplazamiento) !== 0
+      && params.node.data.ultimoSuceso === 'S') {
+      return { backgroundColor: '#' + params.node.data.clrDesplazamiento };
+    } else if (parseInt(params.node.data.clrDerivacion) !== 0 &&
+      (params.node.data.ultimoSuceso === 'D' || params.node.data.ultimoSuceso === 'H')) {
+      element.appendChild(document.createTextNode(params.node.data.virTpoDerivacion));
+      if (params.node.data.ultimoSuceso !== 'H') {
+        return { backgroundColor: '#' + params.node.data.clrDerivacion };
+      }
+    }
+    return element.appendChild(document.createTextNode(params.valueFormatted));
+  }
+
+  CellRendererTpoAtencion(params) {
+    const element = document.createElement('span');
+
+    let vClr = false;
+    if (params.node.data.ultimoSuceso === 'O'
+      || params.node.data.ultimoSuceso === 'G'
+      || params.node.data.ultimoSuceso === 'B'
+      || params.node.data.ultimoSuceso === 'S'
+      || params.node.data.ultimoSuceso === 'D') {
+      vClr = true;
+    }
+
+    if (parseInt(params.node.data.clrAtencion) !== 0
+      && params.node.data.ultimoSuceso === 'A') {
+      return { backgroundColor: '#' + params.node.data.clrAtencion };
+    } else if (params.node.data.ultimoSuceso === 'H') {
+      element.appendChild(document.createTextNode(params.node.data.virTpoInternacion));
+      if (parseInt(params.node.data.clrInternacion) !== 0) {
+        return { backgroundColor: '#' + params.node.data.clrInternacion };
+      }
+    } else if (params.node.data.ultimoSuceso === 'D') {
+      element.appendChild(document.createTextNode('0'));
+      return element;
+    }
+    element.appendChild(document.createTextNode(params.valueFormatted));
+    return element;
+  }
 
   ngOnInit() {
     this.subscription = timer(0, 10000).pipe(
@@ -163,8 +230,13 @@ export class PanelOperativoComponent implements OnInit, OnDestroy {
           return { 'font-weight': 'bold', backgroundColor: '#' + params.node.data.gradoColor };
         }
       },
-      { headerName: 'Cliente', field: 'cliente', width: 85, sortable: true, filter: true },
-      { headerName: 'Inc', field: 'nroIncidente', width: 75, sortable: true, filter: true },
+      {
+        headerName: 'Cliente', field: 'cliente', width: 85, sortable: true, filter: true,
+        cellStyle(params) {
+          return { 'font-weight': 'bold', backgroundColor: '#' + params.node.data.colorCliente };
+        }
+      },
+      { headerName: 'Inc', field: 'nroIncidente', width: 75, sortable: true, filter: true, cellRenderer: 'cellRendererNroIncidente' },
       { headerName: '!', field: 'flgReclamo', width: 45, maxWidth: 45, sortable: true, filter: true, cellRenderer: 'cellRendererReclamo' },
       // new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Servicio Reclamado", 1, 1),
       // new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Gestión Derivación", 9, 25),
@@ -184,25 +256,57 @@ export class PanelOperativoComponent implements OnInit, OnDestroy {
       {
         headerName: 'Movil', field: 'movil', width: 75, sortable: true, filter: true,
         cellStyle(params) {
-          return { 'font-weight': 'bold', Color: '#' + params.node.data.MovilColor };
+          if (params.node.data.flgMovilPreasignado === 1) {
+            return { 'font-weight': 'bold', color: '#0000FF' };
+          } else {
+            return { 'font-weight': 'bold', color: '#000000' };
+          }
         }
       },
       { headerName: 'M', field: 'flgEnviado', width: 50, maxWidth: 50, sortable: true, filter: true, cellRenderer: 'cellRendererEnviado' },
-      // new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Sin Mensaje", 0, -1),
-      // new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Error", 1, 4),
-      // new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Enviado OK", 2, 3),
-      // new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Enviando", 3, 2),
-      // new DevExpress.XtraEditors.Controls.ImageComboBoxItem("Evaluando", 4, 28)}),
-      // this.ImgMensaje.Name = "ImgMensaje",
-
       // if(pSelScreen! = scrOperativa.Programados) {
       { headerName: 'Ll/Tur', field: 'horLlamada', width: 75, valueFormatter: this.dateFormatter, sortable: true, filter: true },
-      { headerName: 'Dsp', field: 'tpoDespacho', width: 80, valueFormatter: this.minuteFormatter, sortable: true, filter: true },
-      { headerName: 'Sal', field: 'tpoSalida', width: 80, valueFormatter: this.minuteFormatter, sortable: true, filter: true },
-      { headerName: 'Dpl', field: 'tpoDesplazamiento', width: 80, valueFormatter: this.minuteFormatter, sortable: true, filter: true },
-      { headerName: 'Ate', field: 'tpoAtencion', width: 80, valueFormatter: this.minuteFormatter, sortable: true, filter: true },
+      {
+        headerName: 'Dsp', field: 'tpoDespacho', width: 80, valueFormatter: this.minuteFormatter, sortable: true, filter: true,
+        cellStyle(params) {
+          if (parseInt(params.node.data.clrDespacho) !== 0 &&
+            (params.node.data.ultimoSuceso !== 'O' || params.node.data.ultimoSuceso !== 'G')) {
+            return { backgroundColor: '#' + params.node.data.clrDespacho };
+          }
+        }
+      },
+      {
+        headerName: 'Sal', field: 'tpoSalida', width: 80, valueFormatter: this.minuteFormatter, sortable: true, filter: true,
+        cellStyle(params) {
+          let vClr = false;
+          if (params.node.data.ultimoSuceso !== 'O' || params.node.data.ultimoSuceso !== 'G') {
+            vClr = true;
+          }
+          // if ((shamanConfig.flgTpoSalidaBase == 1)) {
+          if (parseInt(params.node.data.clrSalida) !== 0 && params.node.data.ultimoSuceso === 'B') {
+            return { backgroundColor: '#' + params.node.data.clrSalida };
+          }
+          // }
+        }
+      },
+      {
+        headerName: 'Dpl', field: 'tpoDesplazamiento', width: 80, valueFormatter: this.minuteFormatter, sortable: true,
+        filter: true, cellRenderer: 'cellRendererTpoDesplazamiento'
+      },
+      {
+        headerName: 'Ate', field: 'tpoAtencion', width: 80, valueFormatter: this.minuteFormatter, sortable: true, filter: true,
+        cellRenderer: 'cellRendererTpoAtencion'
+      },
       // if (setIntToBool(shamanConfig.opeColumnaTpoLlegada)) {
-      { headerName: 'Lle', field: 'tpoLlegada', width: 80, valueFormatter: this.minuteFormatter, sortable: true, filter: true },
+      {
+        headerName: 'Lle', field: 'tpoLlegada', width: 80, valueFormatter: this.minuteFormatter, sortable: true, filter: true,
+        cellStyle(params) {
+          if (parseInt(params.node.data.clrLlegada) !== 0) {
+            return { backgroundColor: '#' + params.node.data.clrLlegada };
+          }
+        }
+
+      },
       { headerName: 'Paciente', field: 'paciente', sortable: true, filter: true },
       { headerName: 'Referencias', field: 'dmReferencia', sortable: true, filter: true },
       // }
@@ -213,7 +317,7 @@ export class PanelOperativoComponent implements OnInit, OnDestroy {
       // }
       // else {
       // { headerName: 'fecLlamada', field: 'fecLlamada', sortable: true, filter: true },
-      // { headerName: 'horLlamada', field: 'horLlamada', sortable: true, filter: true },
+      // { headerName: 'horLlamada', field: 'nhorLlamada', sortable: true, filter: true },
       // { headerName: 'Paciente', field: 'paciente', sortable: true, filter: true },
       // { headerName: 'dmReferencia', field: 'dmReferencia', sortable: true, filter: true },
       // }

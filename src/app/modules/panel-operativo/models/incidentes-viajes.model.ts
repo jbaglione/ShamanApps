@@ -20,8 +20,13 @@ export interface IncidentesViajes {
     impLiquidacion: number;
 
     incidenteDomicilio: IncidentesDomicilios;
-    movil: Moviles;
+    // movil: Moviles;
     movilPreasignado: Moviles;
+
+    movilId: number;
+    movilPreasignadoId: number;
+    movilApoyoId: number;
+
 
     // diagnostico: Diagnosticos;
     // motivoNoRealizacion: MotivosNoRealizacion;

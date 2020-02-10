@@ -1,101 +1,109 @@
 <h1 mat-dialog-title>Despacho de Servicios</h1>
 <mat-dialog-content style="border-top: 1px solid #dadce0;">
     <br />
-    <form class="example-form mt-10" [formGroup]="despServicioForm" (ngSubmit)="aceptar()" novalidate="novalidate">
-
-        <h3 mat-dialog-title>Incidente</h3>
-        <mat-form-field class="ml-5 mr-5" style="width: 178px;">
-            <input matInput [matDatepicker]="picker3" placeholder="Fecha" formControlName="fecha" name="dpFecha">
-            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-            <mat-datepicker #picker3></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field class="ml-5 mr-5 very-short-form-field">
-            <input matInput placeholder="Nro." formControlName="numero" type="number">
-        </mat-form-field>
-        <mat-form-field class="ml-5 mr-5 very-short-form-field">
-            <input matInput placeholder="Gdo." formControlName="grado" type="text" [style.backgroundColor]="gdoColor">
-        </mat-form-field>
-        <mat-form-field class="ml-5 mr-5 short-form-field">
-            <input matInput placeholder="Cliente" formControlName="cliente" type="text">
-        </mat-form-field>
-        <mat-form-field class="ml-5 mr-5">
-            <mat-select placeholder="Despachar" formControlName="vista" (selectionChange)="showSugerencias()">
-                <mat-option *ngFor="let item of vistas" [value]="item.id ">
-                    {{item.descripcion}}
-                </mat-option>
-            </mat-select>
-            <mat-error *ngIf="!despServicioForm.controls.vista.valid">
-                Debe seleccionar un despacho valido.
-            </mat-error>
-        </mat-form-field>
-        <button mat-icon-button matTooltip='Geo Empresas' (click)="geoEmpresas()" [disabled]="btnGeoEmpresasDisabled">
-                  <!--[disabled]="matTableLoadingService.activo$ | async"> -->
-              <mat-icon>location_on</mat-icon>
-          </button>
-
-        <mat-form-field class="ml-5 mr-5 very-long-form-field">
-            <input matInput placeholder="Localidad / Domicilio" formControlName="localidad" type="text">
-        </mat-form-field>
-        <mat-checkbox formControlName="chkAptoGrado" class="ml-5 mr-5" (change)="showSugerencias()">Móviles apto Grado</mat-checkbox>
-        <mat-checkbox formControlName="chkMovilZona" class="ml-5 mr-5" (change)="showSugerencias()">Móviles de Zona</mat-checkbox>
+    <div *ngIf="this.isLoading" style="display: flex; justify-content: center; align-items: center; height: 200px;">
+        <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+        </mat-progress-spinner>
+    </div>
 
 
-        <mat-table [dataSource]="movilesSugerencias" class="mat-elevation-z8">
-            <ng-container matColumnDef="movil">
-                <mat-header-cell *matHeaderCellDef>{{MovilCaption}}</mat-header-cell>
-                <mat-cell *matCellDef="let element">
-                    <span class="mobile-label">{{MovilCaption}}:</span>{{element.movil}}
-                </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="flgObservaciones">
-                <mat-header-cell *matHeaderCellDef>I</mat-header-cell>
-                <mat-cell *matCellDef="let element">
-                    <span class="mobile-label">I:</span>{{element.flgObservaciones}}
-                </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="tipoMovil">
-                <mat-header-cell *matHeaderCellDef>{{TipoMovilCaption}}</mat-header-cell>
-                <mat-cell *matCellDef="let element">
-                    <span class="mobile-label">{{TipoMovilCaption}}:</span>{{element.tipoMovil}}
-                </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="estado">
-                <mat-header-cell *matHeaderCellDef>{{EstadoCaption}}</mat-header-cell>
-                <mat-cell *matCellDef="let element">
-                    <span class="mobile-label">{{EstadoCaption}}:</span>{{element.estado}}
-                </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="distanciaTiempo">
-                <mat-header-cell *matHeaderCellDef class="align-currency">{{DistanciaTiempoCaption}}</mat-header-cell>
-                <mat-cell *matCellDef="let element" class="align-currency">
-                    <span class="mobile-label">{{DistanciaTiempoCaption}}:</span>{{element.distanciaTiempo}}
-                </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="mapa">
-                <mat-header-cell *matHeaderCellDef class="align-currency">{{LinkCaption}}</mat-header-cell>
-                <mat-cell *matCellDef="let element" class="align-currency">
-                    <span class="mobile-label">{{LinkCaption}}:</span>{{element.mapa}}
-                </mat-cell>
-            </ng-container>
+    <div *ngIf="!this.isLoading" fxLayout="row" fxLayout.xs="column">
+        <form class="example-form mt-10" [formGroup]="despServicioForm" (ngSubmit)="aceptar()" novalidate="novalidate">
 
-            <mat-header-row *matHeaderRowDef="dcMovilesSugerencias"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: dcMovilesSugerencias;" (mouseover)="onMouseOver(row)" [ngClass]="{'mat-elevation-z8' : row.id == rowid}" (click)="cargarMovil(row)"></mat-row>
-        </mat-table>
-        <br />
-        <h3>{{grpMovil}}</h3>
-        <mat-form-field class="ml-5 mr-5 very-short-form-field">
-            <input matInput placeholder={{lblMovil}} formControlName="movil" type="number" matTooltip={{MovilCaption}}>
-        </mat-form-field>
-        <mat-form-field class="ml-5 mr-5 short-form-field">
-            <input matInput placeholder={{lblEstado}} formControlName="estado" type="text" matTooltip={{EstadoCaption}} disabled>
-        </mat-form-field>
-        <mat-form-field class="ml-5 mr-5">
-            <input matInput placeholder={{lblTipoMovil}} formControlName="tipoMovil" type="text" matTooltip={{TipoMovilCaption}} disabled>
-        </mat-form-field>
-        <mat-form-field class="ml-5 mr-5" style="width: 350px;">
-            <input matInput placeholder={{DistanciaTiempoCaption}} formControlName="observaciones" type="text">
-        </mat-form-field>
-    </form>
+            <h3 mat-dialog-title>Incidente</h3>
+            <mat-form-field class="ml-5 mr-5" style="width: 178px;">
+                <input matInput [matDatepicker]="picker3" placeholder="Fecha" formControlName="fecha" name="dpFecha">
+                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="ml-5 mr-5 very-short-form-field">
+                <input matInput placeholder="Nro." formControlName="numero" type="number">
+            </mat-form-field>
+            <mat-form-field class="ml-5 mr-5 very-short-form-field">
+                <input matInput placeholder="Gdo." formControlName="grado" type="text" [style.backgroundColor]="gdoColor">
+            </mat-form-field>
+            <mat-form-field class="ml-5 mr-5 short-form-field">
+                <input matInput placeholder="Cliente" formControlName="cliente" type="text">
+            </mat-form-field>
+            <mat-form-field class="ml-5 mr-5">
+                <mat-select placeholder="Despachar" formControlName="vista" (selectionChange)="showSugerencias()">
+                    <mat-option *ngFor="let item of vistas" [value]="item.id ">
+                        {{item.descripcion}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="!despServicioForm.controls.vista.valid">
+                    Debe seleccionar un despacho valido.
+                </mat-error>
+            </mat-form-field>
+            <button mat-icon-button matTooltip='Geo Empresas' (click)="geoEmpresas()" type="button" [disabled]="btnGeoEmpresasDisabled">
+                    <!--[disabled]="matTableLoadingService.activo$ | async"> -->
+                <mat-icon>location_on</mat-icon>
+            </button>
+
+            <mat-form-field class="ml-5 mr-5 very-long-form-field">
+                <input matInput placeholder="Localidad / Domicilio" formControlName="localidad" type="text">
+            </mat-form-field>
+            <mat-checkbox formControlName="chkAptoGrado" class="ml-5 mr-5" (change)="showSugerencias()">Móviles apto Grado</mat-checkbox>
+            <mat-checkbox formControlName="chkMovilZona" class="ml-5 mr-5" (change)="showSugerencias()">Móviles de Zona</mat-checkbox>
+
+
+            <mat-table [dataSource]="movilesSugerencias" class="mat-elevation-z8">
+                <ng-container matColumnDef="movil">
+                    <mat-header-cell *matHeaderCellDef>{{MovilCaption}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">{{MovilCaption}}:</span>{{element.movil}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="flgObservaciones">
+                    <mat-header-cell *matHeaderCellDef>I</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">I:</span>{{element.flgObservaciones}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="tipoMovil">
+                    <mat-header-cell *matHeaderCellDef>{{TipoMovilCaption}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">{{TipoMovilCaption}}:</span>{{element.tipoMovil}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="estado">
+                    <mat-header-cell *matHeaderCellDef>{{EstadoCaption}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <span class="mobile-label">{{EstadoCaption}}:</span>{{element.estado}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="distanciaTiempo">
+                    <mat-header-cell *matHeaderCellDef class="align-currency">{{DistanciaTiempoCaption}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="align-currency">
+                        <span class="mobile-label">{{DistanciaTiempoCaption}}:</span>{{element.distanciaTiempo}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="mapa">
+                    <mat-header-cell *matHeaderCellDef class="align-currency">{{LinkCaption}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element" class="align-currency">
+                        <span class="mobile-label">{{LinkCaption}}:</span>{{element.mapa}}
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="dcMovilesSugerencias"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: dcMovilesSugerencias;" (mouseover)="onMouseOver(row)" [ngClass]="{'mat-elevation-z8' : row.id == rowid}" (click)="cargarMovil(row)"></mat-row>
+            </mat-table>
+            <br />
+            <h3>{{grpMovil}}</h3>
+            <mat-form-field class="ml-5 mr-5 very-short-form-field">
+                <input matInput placeholder={{lblMovil}} formControlName="movil" type="text" matTooltip={{MovilCaption}} [disabled]="true">
+            </mat-form-field>
+            <mat-form-field class="ml-5 mr-5 short-form-field">
+                <input matInput placeholder={{lblEstado}} formControlName="estado" type="text" matTooltip={{EstadoCaption}} [disabled]="true">
+            </mat-form-field>
+            <mat-form-field class="ml-5 mr-5">
+                <input matInput placeholder={{lblTipoMovil}} formControlName="tipoMovil" type="text" matTooltip={{TipoMovilCaption}} [disabled]="true">
+            </mat-form-field>
+            <mat-form-field class="ml-5 mr-5" style="width: 350px;">
+                <input matInput placeholder="Observaciones" formControlName="observaciones" type="text">
+            </mat-form-field>
+        </form>
+    </div>
 </mat-dialog-content>
 <mat-dialog-actions>
     <div>

@@ -35,7 +35,7 @@ export class PopUpSalidaComponent {
   viajeId = '';
   isDeleted = true;
   wSepDecimal = ',';
-
+  isLoading = true;
   dcMovilesSugerencias: string[] = [
     // 'id',
     'movil',
@@ -84,16 +84,19 @@ export class PopUpSalidaComponent {
     public dialog: MatDialog,
     private commonService: CommonService
   ) {
+
     this.CreateFormGroup();
     // const that = this;
     panelOperativoService.GetLastSuceso$(dialogData.incidenteId).subscribe(vUlt => {
       if (vUlt === 'D' || vUlt === 'H') {
+        this.isLoading = false;
         this.commonService.showSnackBar('El servicio ya se encuentra en instancia de derivación');
         this.dialogRef.close();
       } else {
         panelOperativoService.GetViaje$(dialogData.incidenteId).subscribe(data => {
           // if (this.AccessibleDescription == 'popupPreasignacion') {
-          if (data.movil != null && data.movil.id > 0) {
+          if (data.movilId > 0) {
+            this.isLoading = false;
             this.commonService.showSnackBar('El servicio ya tiene un móvil despachado');
             this.dialogRef.close();
           } else {
@@ -117,9 +120,9 @@ export class PopUpSalidaComponent {
       cliente: new FormControl({ value: '' }, [Validators.required]),
       localidad: new FormControl({ value: '' }, [Validators.required, Validators.minLength(3)]),
       vista: new FormControl({ value: '0' }, [Validators.required]),
-      movil: new FormControl({ value: '' }, [Validators.required]),
-      estado: new FormControl({ value: '', }, [Validators.required]),
-      tipoMovil: new FormControl({ value: '' }, [Validators.required]),
+      movil: new FormControl({ value: '' , disabled: true}, [Validators.required]),
+      estado: new FormControl({ value: '', disabled: true }, [Validators.required]),
+      tipoMovil: new FormControl({ value: '', disabled: true}, [Validators.required]),
       accion: new FormControl({ value: '', }),
       observaciones: new FormControl({ value: '' }),
       motivoDemora: new FormControl({ value: '', }),
@@ -153,7 +156,8 @@ export class PopUpSalidaComponent {
         observaciones: null,
       });
 
-      if (this.viaje.incidenteDomicilio.incidente.gradoOperativo.clasificacionId === GdoClasificacion.gdoIntDomiciliaria) {
+      // tslint:disable-next-line: triple-equals
+      if (this.viaje.incidenteDomicilio.incidente.gradoOperativo.clasificacionId == GdoClasificacion.gdoIntDomiciliaria) {
         this.vistas.push(new listable('2', 'Visitadores'));
         this.despServicioForm.patchValue({vista: '2' });
       } else {
@@ -170,7 +174,8 @@ export class PopUpSalidaComponent {
     this.dialogRef.close();
   }
   geoEmpresas(): void {
-    this.dialogRef.close();
+    this.flgGeoEmpresas = true;
+    this.showSugerencias();
   }
   showSugerencias() {
     const aptoGrado = this.despServicioForm.controls.chkAptoGrado.value;
@@ -204,8 +209,8 @@ export class PopUpSalidaComponent {
       case '1':
         this.grpMovil = 'Empresa';
         this.lblMovil = 'Empresa';
-        this.lblEstado = 'Nombre';
-        this.lblTipoMovil = 'Tipo de Cobertura';
+        this.lblEstado = 'Tipo de Cobertura';
+        this.lblTipoMovil = 'Nombre';
         this.MovilCaption = 'Cod';
         this.TipoMovilCaption = 'Empresa';
         this.EstadoCaption = 'Tipo de Cobertura';
@@ -242,7 +247,7 @@ export class PopUpSalidaComponent {
       this.movilesSugerencias = data;
       // this.setData();
 
-      if (vista !== 1) {
+      if (vista !== '1') {
         // dt.Columns["Distancia"].ReadOnly = false;
         // dt.Columns["Tiempo"].ReadOnly = false;
         // dt.Columns["DistanciaTiempo"].ReadOnly = false;
@@ -256,10 +261,12 @@ export class PopUpSalidaComponent {
               itemSugerencia.distancia = 9999;
               itemSugerencia.tiempo = 9999;
               itemSugerencia.distanciaTiempo = 'El domicilio no ha sido georreferenciado';
+              this.isLoading = false;
             } else if (DateHelper.dateDiff(new Date(itemSugerencia.gpsFecHorTransmision), new Date())  >= 5) {
               itemSugerencia.distancia = 9999;
               itemSugerencia.tiempo = 9999;
               itemSugerencia.distanciaTiempo = 'Registro GPS superior a 5 hrs.';
+              this.isLoading = false;
             } else {
               this.panelOperativoService.GetDistanciaTiempo(itemSugerencia.gpsLatitud.toString().replace(',', '.'),
               itemSugerencia.gpsLongitud.toString().replace(',', '.'),
@@ -303,6 +310,7 @@ export class PopUpSalidaComponent {
             itemSugerencia.tiempo = 9999;
             itemSugerencia.distanciaTiempo = 'No hay registros GPS';
           }
+          this.isLoading = false;
         });
       }
       // DataView dv = new DataView(dt);
@@ -310,7 +318,7 @@ export class PopUpSalidaComponent {
       //   dv.Sort = 'NroPrioridad, Movil';
       // }
       // this.grdMoviles.DataSource = dv;
-
+      this.isLoading = false;
       });
 
     // ShowSugerencias();
@@ -368,9 +376,9 @@ getLocalidadId(): number {
   try {
     if (this.despServicioForm.controls.chkMovilZona) {
       getLocalidadId = this.viaje.incidenteDomicilio.localidad.id;
-    } // else if (this.flgGeoEmpresas) {
-    //  getLocalidadId = this.viaje.incidenteDomicilio.localidad.id;
-    // }
+    } else if (this.flgGeoEmpresas) {
+      getLocalidadId = this.viaje.incidenteDomicilio.localidad.id;
+    }
     return getLocalidadId;
   } catch (Error) {
     console.log(Error.message);
@@ -385,8 +393,7 @@ cargarMovil(row: any) {
   this.despServicioForm.patchValue({
     movil: row.movil,
     estado: row.estado,
-    tipoMovil: row.tipoMovil,
-    observaciones: row.distanciaTiempo
+    tipoMovil: row.tipoMovil
   });
 }
 

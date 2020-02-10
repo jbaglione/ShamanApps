@@ -71,7 +71,7 @@ export class PanelOperativoService {
       .set('pCliIte', pCliIte.toString())
       .set('pLatitud', pLatitud.toString())
       .set('pLongitud', pLongitud.toString())
-      .set('pFlgGeoEmpresas', pFlgGeoEmpresas.toString());
+      .set('pGeoEmp', pFlgGeoEmpresas.toString());
 
     const url = `${this.panelOperativoApiUrl}/GetSugerenciaDespacho`;
     return this.httpClient.get<MovilesSugerencias[]>(url, { params });
