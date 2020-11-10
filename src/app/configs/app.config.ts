@@ -17,7 +17,7 @@ export const AppConfig: any = {
 
     // QA
     // security: 'https://telmed.paramedicapps.com.ar/extranet-v2-security-test/security/',
-    api: 'https://telmed.paramedicapps.com.ar/extranet-v2-api-test/api/',
+    // api: 'https://telmed.paramedicapps.com.ar/extranet-v2-api-test/api/',
     oldExranet: 'https://telmed.paramedicapps.com.ar/old-version-test/'
 
     // Produccion

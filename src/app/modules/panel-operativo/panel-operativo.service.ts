@@ -14,13 +14,14 @@ export class PanelOperativoService {
 
 
   panelOperativoApiUrl: string;
+  incidentesSucesosApiUrl: string;
   // private http: Http,
   constructor(
     private httpClient: HttpClient,
     public snackBar: MatSnackBar
   ) {
-    this.panelOperativoApiUrl =
-      AppConfig.endpoints.apiShaman + 'gruposoperativos';
+    this.panelOperativoApiUrl = AppConfig.endpoints.apiShaman + 'gruposoperativos';
+    this.incidentesSucesosApiUrl = AppConfig.endpoints.apiShaman + 'IncidentesSucesos';
   }
 
   private handleError<T>(
@@ -47,12 +48,17 @@ export class PanelOperativoService {
   }
 
   public GetPanelOperativo$(): Observable<PanelOperativo[]> {
-    const url = `${this.panelOperativoApiUrl}/PanelOperativo`;
+    const url = `${this.panelOperativoApiUrl}/GetPanelOperativo`;
     return this.httpClient.get<PanelOperativo[]>(url);
   }
 
+  // public GetPanelOperativo$(): Observable<PanelOperativo[]> {
+  //   const url = `${this.panelOperativoApiUrl}/PanelOperativo`;
+  //   return this.httpClient.get<PanelOperativo[]>(url);
+  // }
+
   public GetLastSuceso$(viajeId: number): Observable<string> {
-    const url = `${this.panelOperativoApiUrl}/GetLastSuceso/${viajeId}`;
+    const url = `${this.incidentesSucesosApiUrl}/GetLastSuceso/${viajeId}`;
     return this.httpClient.get<string>(url);
   }
 

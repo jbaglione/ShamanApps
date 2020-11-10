@@ -177,13 +177,25 @@ export class PanelOperativoComponent implements OnInit, OnDestroy {
       vClr = true;
     }
 
-    if (parseInt(params.node.data.clrAtencion) !== 0
-      && params.node.data.ultimoSuceso === 'A') {
-      return { backgroundColor: '#' + params.node.data.clrAtencion };
-    } else if (params.node.data.ultimoSuceso === 'H') {
+    // Revisar todos los return backgroundColor
+    // if (parseInt(params.node.data.clrAtencion) !== 0
+    //   && params.node.data.ultimoSuceso === 'A') {
+    //     let color = parseInt(params.node.data.clrAtencion);
+    //     if ( color !== 0) {
+    //       if (color < 0) {
+    //         color = color * -1;
+    //       }
+    //       return { backgroundColor: '#' + color };
+    //   }
+    // } else
+    if (params.node.data.ultimoSuceso === 'H') {
       element.appendChild(document.createTextNode(params.node.data.virTpoInternacion));
-      if (parseInt(params.node.data.clrInternacion) !== 0) {
-        return { backgroundColor: '#' + params.node.data.clrInternacion };
+      let color = parseInt(params.node.data.clrInternacion);
+      if ( color !== 0) {
+        if (color < 0) {
+          color = color * -1;
+        }
+        return { backgroundColor: '#' + color };
       }
     } else if (params.node.data.ultimoSuceso === 'D') {
       element.appendChild(document.createTextNode('0'));
