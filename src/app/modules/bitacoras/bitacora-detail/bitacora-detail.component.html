@@ -1,16 +1,19 @@
-<div class="container-padding">
-    <div class="mb-10">
-        <button mat-raised-button class="mr-5" [routerLink]="['/bitacoras']">Volver</button>
-        <button mat-raised-button type="submit" (click)="guardarBitacora()">Guardar</button>
-    </div>
-    <form class="example-form mt-10" [formGroup]="bitacoraForm" (ngSubmit)="guardarBitacora()" novalidate="novalidate">
+<div class="wrapper-go-to-back">
+    <button class="mat-button-icon-small" mat-icon-button type="button" mat-button (click)="backPage()" matTooltip="Retroceder a la página anterior.">
+      <mat-icon>arrow_back</mat-icon>
+  </button>
+    <span class="sub-title">{{site.nombre}}</span>
+</div>
+
+<div class="padding-container">
+    <form class="example-form mt-10" [formGroup]="bitacoraForm" (ngSubmit)="guardarBitacora()">
         <div fxLayout="column">
             <!-- Cabecera -->
             <div>
                 <mat-form-field class="ml-5 mr-5 very-short-form-field" [hidden]="bitacora.id==0">
                     <input matInput placeholder="Número" formControlName="numero" type="number">
                 </mat-form-field>
-                <mat-form-field class="ml-5 mr-5" style="width: 178px;">
+                <mat-form-field class="ml-5 mr-5" class="date-form-field">
                     <input matInput [matDatepicker]="picker3" placeholder="Fecha" formControlName="fecha" name="dpFecha">
                     <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                     <mat-datepicker #picker3></mat-datepicker>
@@ -29,7 +32,7 @@
                     </mat-error>
                 </mat-form-field>
                 <mat-form-field class="ml-5 mr-5">
-                    <input matInput placeholder="Titulo" formControlName="titulo" type="text" name="txtTitulo">
+                    <input matInput placeholder="Titulo" formControlName="titulo" class="uppercase" type="text" name="txtTitulo">
                     <mat-error *ngIf="!bitacoraForm.controls.titulo.valid">
                         Ingrese un titulo valido.
                     </mat-error>
@@ -42,20 +45,15 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <!-- Cuerpo -->
             <div fxLayout="row" fxLayout.xs="column">
                 <!-- Registraciones -->
                 <div [hidden]="bitacora.id==0" fxLayoutAlign="strech" fxFlex=390px fxFlex.xs=95>
                     <mat-card fxFlex>
-                        <mat-card-header style="background-color: #f5f5f5">
-                            <button mat-icon-button type="button" [hidden]="this.bitacora.registraciones[this.bitacora.registraciones.length - 1].id == 0">
-                                <mat-icon class="icon-center" style="margin-right: 5px;" (click)="nuevaRegistracion();">
-                                    add_circle</mat-icon>
-                            </button>
-                            <p>Registraciones</p>
+                        <mat-card-header style="background-color: #f5f5f5" class="mat-elevation-z7">
+                            <app-google-button title="Crear una nueva Registración" text="Crear Registración" (click)="nuevaRegistracion();" type="button"></app-google-button>
                         </mat-card-header>
                         <mat-card-content>
-                            <mat-table id="tableR" [dataSource]="mtRegistraciones" matSort class="mat-elevation-z8">
+                            <mat-table id="tableR" [dataSource]="mtRegistraciones" matSort class="mat-elevation-z7">
                                 <ng-container matColumnDef="usuario">
                                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                                         Usuario </mat-header-cell>
@@ -81,7 +79,7 @@
                                     <mat-cell *matCellDef="let element"> {{element.descripcion}} </mat-cell>
                                 </ng-container>
                                 <mat-header-row *matHeaderRowDef="dcRegistraciones"></mat-header-row>
-                                <mat-row *matRowDef="let row; columns: dcRegistraciones;" (click)="verRegistracion(row)" [style.background]="highlightedRows.indexOf(row) != -1 ? 'lightblue' : ''"></mat-row>
+                                <mat-row *matRowDef="let row; columns: dcRegistraciones;" (click)="verRegistracion(row)" [style.background]="highlightedRows.indexOf(row) != -1 ? 'lightblue' : ''" (mouseover)="onMouseOver(row)" [ngClass]="{'mat-elevation-z3' : row.id == rowid}"></mat-row>
                             </mat-table>
                         </mat-card-content>
                     </mat-card>
@@ -92,34 +90,45 @@
                 <div [className]="bitacora.id == 0 ? 'rightPanelNew' : 'rightPanelEdit'" fxLayoutAlign="strech" fxFlex.xs=95 fxFlex="100">
                     <!-- <div fxLayoutAlign="strech"> -->
                     <mat-card fxFlex>
-                        <mat-card-header style="background-color: #f5f5f5">
-                            <p>Descripción</p>
-                        </mat-card-header>
-                        <mat-card-content>
-                            <mat-form-field style="width:100% !important;">
-                                <!-- style="width:100% !important" -->
-                                <textarea matInput placeholder=" Escriba aqui lo que nos quiere comentar " formControlName="reg_descripcion" #ta_reg_descripcion></textarea>
-                            </mat-form-field>
-                            <mat-error *ngIf="!bitacoraForm.controls.reg_descripcion.valid && bitacoraForm.controls.reg_descripcion.enabled">
-                                Debe ingresar una Descripción.
-                            </mat-error>
-                            <br />
-                            <!-- <mat-divider></mat-divider> -->
-                            <ngx-gallery class="gallery " [options]="adjuntosGalery.galleryOptions " [images]="adjuntosGalery.galleryImages "></ngx-gallery>
-                            <!-- <mat-list>
-                            <h3 mat-subheader *ngIf="reg_adjuntos !=n ull && reg_adjuntos.length> 0">Adjuntos</h3>
-                                <mat-list-item *ngFor="let adjunto of reg_adjuntos">
-                                    <h4 mat-line><a [href]="adjunto.fullPath | safe" target="_blank">{{adjunto.name}}</a></h4>
-                                    <img [src]="adjunto.fullPath | safe" width=35px height=35px>
-                                </mat-list-item>
-                                </mat-list> -->
-                            <div *ngIf='bitacora.id != 0 && idRegistracionSeleccionada != 0'>
-                                <app-upload entidad="Bitacoras" [idFirstEntidad]=bitacora.id.toString() [idSecondEntidad]=idRegistracionSeleccionada.toString() [currentNumberOfFiles]=GetNroRegistros() (emitirData)="recargarAdjuntos($event)"></app-upload>
-                            </div>
-                        </mat-card-content>
+                        <div class="mat-elevation-z7">
+                            <mat-card-header style="background-color: #f5f5f5; background-color: #f5f5f5;
+                        height: 48px; align-items: center; font-weight: 500; color: darkslategrey;">
+                                <p style="margin: 0px;">Detalle</p>
+                            </mat-card-header>
+                            <mat-card-content style="padding: 15px;">
+                                <mat-form-field style="width:100% !important; margin-top: 10px;">
+                                    <!-- [cdkAutosizeMinRows]=2 -->
+                                    <textarea matInput placeholder="Descripción" formControlName="reg_descripcion" class="uppercase" #ta_reg_descripcion cdkTextareaAutosize #autosize="cdkTextareaAutosize"></textarea>
+                                    <mat-hint align="start" *ngIf="regDescripcionEnable"><strong>Escriba aqui lo que nos quiere comentar</strong> </mat-hint>
+                                </mat-form-field>
+                                <mat-error *ngIf="!bitacoraForm.controls.reg_descripcion.valid && regDescripcionEnable">
+                                    Debe ingresar una Descripción.
+                                </mat-error>
+                                <br />
+                                <!-- <mat-divider></mat-divider> -->
+                                <div class="gallery">
+                                    <ngx-gallery [options]="adjuntosGalery.galleryOptions " [images]="adjuntosGalery.galleryImages" style="min-height: 150px;"></ngx-gallery>
+                                </div>
+
+                                <div>
+                                    <app-upload [disabledValue]="!bitacoraForm.controls.reg_descripcion.valid" entidad="Bitacoras" [idFirstEntidad]=bitacora.idForAjd [idSecondEntidad]=bitacora.idForAjdSubEnt [currentNumberOfFiles]=GetNroRegistros() (emitirData)="recargarAdjuntos($event)"></app-upload>
+                                </div>
+                            </mat-card-content>
+                        </div>
                     </mat-card>
                 </div>
             </div>
         </div>
+        <div class="boxMobile">
+            <button mat-raised-button type="submit" [disabled]="!bitacoraForm.controls.reg_descripcion.valid || isLoading" class="boxMobileChild" style="margin-top: 10px;">Guardar</button>
+        </div>
+        <!-- DEBUG -->
+        <!-- <pre>{{bitacoraForm.get('numero').valid}}</pre>
+        <pre>{{bitacoraForm.get('fecha').valid}}</pre>
+        <pre>{{bitacoraForm.get('motivo').valid}}</pre>
+        <pre>{{bitacoraForm.get('titulo').valid}}</pre>
+        <pre>{{bitacoraForm.get('estado').valid}}</pre>
+        <pre>{{bitacoraForm.get('reg_descripcion').valid}}</pre> -->
+
     </form>
 </div>

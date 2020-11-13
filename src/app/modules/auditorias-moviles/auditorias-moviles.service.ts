@@ -5,13 +5,13 @@ import { Observable, of, throwError as observableThrowError } from 'rxjs';
 // import { LoggerService } from '../../services/logger.service';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Auditoria } from './models/auditoria';
-import { listable } from 'src/app/models/listable.model';
+import { Listable } from 'src/app/models/listable.model';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { ClienteConsumo } from 'src/app/models/cliente-consumo';
 import { ClientePotencial } from 'src/app/models/cliente-potencial.model';
 import { ClienteReclamo } from 'src/app/models/cliente-reclamo';
 import { ClienteCuentaCorriente } from 'src/app/models/cliente-cuentacorriente';
-// import { Auditoria } from '@app/models/clientes-auditoria';
+// import { Auditoria } from '@app/models/clientes-gestion';
 
 @Injectable()
 export class AuditoriasMovilesService {
@@ -26,12 +26,12 @@ export class AuditoriasMovilesService {
   clienteName: string;
 
   constructor(private httpClient: HttpClient, public snackBar: MatSnackBar) {
-    this.actividadesApiUrl = AppConfig.endpoints.api + 'AuditoriasMoviles';
-    this.auditoriasMovilesApiUrl = AppConfig.endpoints.api + 'AuditoriasMoviles';
-    this.consumosApiUrl = AppConfig.endpoints.api + 'ClienteConsumos';
-    this.reclamosApiUrl = AppConfig.endpoints.api + 'ClienteReclamos';
-    this.cuentaCorrienteApiUrl = AppConfig.endpoints.api + 'ClienteCuentaCorriente';
-    this.vendedoresApiUrl = AppConfig.endpoints.api + 'Vendedores';
+    this.actividadesApiUrl = AppConfig.settings.endpoints.api + 'AuditoriasMoviles';
+    this.auditoriasMovilesApiUrl = AppConfig.settings.endpoints.api + 'AuditoriasMoviles';
+    this.consumosApiUrl = AppConfig.settings.endpoints.api + 'ClienteConsumos';
+    this.reclamosApiUrl = AppConfig.settings.endpoints.api + 'ClienteReclamos';
+    this.cuentaCorrienteApiUrl = AppConfig.settings.endpoints.api + 'ClienteCuentaCorriente';
+    this.vendedoresApiUrl = AppConfig.settings.endpoints.api + 'Vendedores';
   }
 
   // private handleError<T>(operation = 'operation', result?: T, showMessage: boolean = true) {
@@ -62,7 +62,7 @@ export class AuditoriasMovilesService {
   }
 
   public getVendedores() {
-    return this.httpClient.get<listable[]>(this.vendedoresApiUrl).pipe(
+    return this.httpClient.get<Listable[]>(this.vendedoresApiUrl).pipe(
       shareReplay()
       // tap(() => LoggerService.log('fetched GetVendedores')),
       // catchError(this.handleError<listable[]>('GetVendedores'))
@@ -104,53 +104,53 @@ export class AuditoriasMovilesService {
     );
   }
 
-  public GetTiposAuditoria(movilId: string): Observable<listable[]> {
+  public GetTiposAuditoria(movilId: string): Observable<Listable> {
     const url = `${this.auditoriasMovilesApiUrl}/GetTiposAuditoria/${movilId}`;
-    return this.httpClient.get<listable[]>(url).pipe(
+    return this.httpClient.get<Listable>(url).pipe(
       shareReplay()
       // tap(() => LoggerService.log('fetched GetTiposAuditoria')),
-      // catchError(this.handleError<listable[]>('obtener los tipos de Auditoria'))
+      // catchError(this.handleError<listable>('obtener los tipos de Auditoria'))
     );
   }
 
-  public GetMoviles(): Observable<listable[]> {
+  public GetMoviles(): Observable<Listable> {
     const url = `${this.auditoriasMovilesApiUrl}/GetMoviles`;
-    return this.httpClient.get<listable[]>(url).pipe(
+    return this.httpClient.get<Listable>(url).pipe(
       shareReplay()
     );
   }
 
-  public GetChoferes(): Observable<listable[]> {
+  public GetChoferes(): Observable<Listable> {
     const url = `${this.auditoriasMovilesApiUrl}/GetPersonal`;
-    return this.httpClient.get<listable[]>(url).pipe(
+    return this.httpClient.get<Listable>(url).pipe(
       shareReplay()
     );
   }
 
-  public GetMedicos(): Observable<listable[]> {
+  public GetMedicos(): Observable<Listable> {
     const url = `${this.auditoriasMovilesApiUrl}/GetPersonal`;
-    return this.httpClient.get<listable[]>(url).pipe(
+    return this.httpClient.get<Listable>(url).pipe(
       shareReplay()
     );
   }
 
-  public GetEnfermeros(): Observable<listable[]> {
+  public GetEnfermeros(): Observable<Listable> {
     const url = `${this.auditoriasMovilesApiUrl}/GetPersonal`;
-    return this.httpClient.get<listable[]>(url).pipe(
+    return this.httpClient.get<Listable>(url).pipe(
       shareReplay()
     );
   }
 
-  public GetBasesOperativas(): Observable<listable[]> {
+  public GetBasesOperativas(): Observable<Listable> {
     const url = `${this.auditoriasMovilesApiUrl}/GetBasesOperativas`;
-    return this.httpClient.get<listable[]>(url).pipe(
+    return this.httpClient.get<Listable>(url).pipe(
       shareReplay()
     );
   }
 
-  public GetPrestadores(): Observable<listable[]> {
+  public GetPrestadores(): Observable<Listable> {
     const url = `${this.auditoriasMovilesApiUrl}/GetPrestadores`;
-    return this.httpClient.get<listable[]>(url).pipe(
+    return this.httpClient.get<Listable>(url).pipe(
       shareReplay()
     );
   }
@@ -164,10 +164,10 @@ export class AuditoriasMovilesService {
     );
   }
 
-  public CreateAuditoria(auditoria: Auditoria) {
-    const isNew = auditoria.id === 0;
+  public CreateAuditoria(gestion: Auditoria) {
+    const isNew = gestion.id === 0;
     const url = `${this.auditoriasMovilesApiUrl}`;
-    const body = JSON.stringify(auditoria);
+    const body = JSON.stringify(gestion);
     const headerOptions = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient.post(url, body, { headers: headerOptions }).pipe(
       tap(() => {
@@ -257,7 +257,7 @@ export class AuditoriasMovilesService {
 
   private showSnackBar(name): void {
     const config: any = new MatSnackBarConfig();
-    config.duration = AppConfig.snackBarDuration;
+    config.duration = AppConfig.settings.snackBarDuration;
     this.snackBar.open(name, 'OK', config);
   }
 }

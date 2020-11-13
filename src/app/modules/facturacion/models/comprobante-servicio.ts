@@ -1,5 +1,5 @@
 import { ServicioImagen } from './servicio-imagen.model';
-import { NgxGalleryOptions, NgxGalleryImage } from 'ngx-gallery';
+import { NgxGalleryOptions, NgxGalleryImage } from '@kolkov/ngx-gallery';
 import { ExportMatTableToXlxs } from '@app/modules/shared/helpers/export-mat-table-to-xlxs';
 import { DatePipe } from '@angular/common';
 
@@ -23,6 +23,7 @@ export interface ComprobanteServicio {
   recargos: number;
   importe: number;
   ordenesFiles: string;
+  ordenPdfFullPath: string;
   servicioImagenes: ServicioImagen[];
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
@@ -50,7 +51,7 @@ export class ComprobanteServicioForExcel extends ExportMatTableToXlxs {
   transform(comprobanteServicio: ComprobanteServicio): ComprobanteServicioForExcel {
       const forExcel = new ComprobanteServicioForExcel();
       if (comprobanteServicio != null) {
-        const datePipe = new DatePipe('en-US');//es-AR');
+        const datePipe = new DatePipe('en-US'); // es-AR';
         forExcel.Incidente = comprobanteServicio.nroIncidente;
         forExcel.Fecha =  datePipe.transform(comprobanteServicio.formatedFecha, 'dd/MM/yyyy');
         forExcel.Concepto = comprobanteServicio.conceptoId;

@@ -1,11 +1,11 @@
 .mat-raised-button {
-  background-color: mat-color($extranet-app-primary);
-  color: mat-color($extranet-app-primary, default-contrast);
-  line-height: 30px !important;
+    background-color: mat-color($extranet-app-primary);
+    color: mat-color($extranet-app-primary, default-contrast);
+    line-height: 30px !important;
 }
 
 .mat-tab-label {
-  height: 35px !important;
+    height: 35px !important;
 }
 
 .mat-sidenav-container,
@@ -13,7 +13,6 @@
 .mat-tab-body-content {
     transform: none !important;
 }
-
 
 // .mat-raised-button {
 //     color: mat-color($extranet-app-primary);
@@ -25,10 +24,30 @@
 //     color: mat-color($extranet-app-primary, default-contrast);
 //     margin: 3px !important;
 // }
-
 // .mat-button {
 //     color: mat-color($extranet-app-accent);
 //     background-color: mat-color($extranet-app-primary, default-contrast);
 //     margin: 3px !important;
 // }
+.toast-alerta {
+    background-color: #d84315 !important;
+    background-image: none !important;
+    font-weight: 500;
+}
 
+.toast-alerta:before {
+    position: absolute;
+    font-family: 'FontAwesome';
+    // top: ;
+    left: 10px;
+    font-size: 30px;
+    content: "\f0f3";
+}
+
+.wrapper-go-to-back {
+    width: 100%;
+    background-color: #2b51a1;
+    color: white;
+    font-weight: 600;
+    height: 35px;
+}

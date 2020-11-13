@@ -1,12 +1,22 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router, RouterEvent, NavigationStart, NavigationCancel, NavigationError, NavigationEnd } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import {
+  Router,
+  RouterEvent,
+  NavigationStart,
+  NavigationCancel,
+  NavigationError,
+  NavigationEnd,
+  ActivatedRoute
+} from '@angular/router';
+import { Subscription, Observable, fromEvent } from 'rxjs';
 import { AuthenticationService } from '@app/modules/security/authentication.service';
 import { Usuario, GrupoAccesosMicrositios } from '@app/modules/security/models';
 import { ProgressBarService } from '@app/modules/shared/services/progress-bar.service';
-import { MatSidenav } from '@angular/material';
-import { SidenavService } from '../../services/sidenav.service';
+import { MatSidenav } from '@angular/material/sidenav';
 import { VendedorService } from '@app/modules/shared/services/vendedor.service';
+import { MensajesService } from '@app/modules/mensajeria/services/mensajes.service';
+import { AlertasService } from '@app/modules/mensajeria/services/alertas.service';
+import { SecureLayoutService } from '../../services/secure-layout.service';
 
 @Component({
   selector: 'app-secure-layout',
@@ -15,23 +25,29 @@ import { VendedorService } from '@app/modules/shared/services/vendedor.service';
 })
 
 export class SecureLayoutComponent implements OnInit, OnDestroy {
-  @ViewChild(MatSidenav, {static: true}) sidenav: MatSidenav;
+  @ViewChild('snav', { static: true }) sidenav: MatSidenav;
+  @ViewChild('snavAlertas', { static: true }) snavAlertas: MatSidenav;
+
   private tituloRef: Subscription = null;
-  loginStatus$: Observable<boolean>;
   userName$: Observable<string>;
+  cantidadMensajesPendientes$: Observable<number>;
+  cantidadAlertas$: Observable<number>;
 
   private currentUserRef: Subscription = null;
   over = 'over';
   user: Usuario;
   titulo: string;
   grupoAccesosMicrositios: Observable<GrupoAccesosMicrositios[]>;
+  flag = true;
 
   constructor(
     private authenticationService: AuthenticationService,
     public progressBarService: ProgressBarService,
     public vendedorService: VendedorService,
     private router: Router,
-    private sidenavService: SidenavService
+    private mensajeservice: MensajesService,
+    private alertasService: AlertasService,
+    private secureLayoutService: SecureLayoutService
   ) {
     router.events.subscribe((event: RouterEvent) => {
       this.navigationInterceptor(event);
@@ -39,10 +55,14 @@ export class SecureLayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sidenavService.setSidenav(this.sidenav);
-    this.loginStatus$ = this.authenticationService.isLoggesIn;
+    this.secureLayoutService.setSidenavMenu(this.sidenav);
+    this.secureLayoutService.setSidenavAlertas(this.snavAlertas);
     this.userName$ = this.authenticationService.currentUserName;
+    this.cantidadMensajesPendientes$ = this.mensajeservice.currentCantMensjesPendientes;
+    this.cantidadAlertas$ = this.alertasService.currentCantAlertas;
     this.grupoAccesosMicrositios = this.authenticationService.getGruposMicrositios();
+    this.mensajeservice.RefreshCantidadMensajesPendientes();
+    this.alertasService.RefreshCantidadAlertas();
   }
 
   ngOnDestroy(): void {
@@ -54,15 +74,19 @@ export class SecureLayoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  goToPage(urlPage: string, pageId: string ): void {
+  goToPage(urlPage: string, pageId: string): void {
     this.sidenav.close();
-    this.authenticationService.setCurrentPageId(parseInt(pageId));
+    this.authenticationService.currentPageId = parseInt(pageId);
     this.router.navigateByUrl(urlPage);
   }
 
   logout() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
+  }
+
+  showMessages() {
+    this.router.navigateByUrl('/mensajeria/mensajes');
   }
 
   navigationInterceptor(event: RouterEvent): void {

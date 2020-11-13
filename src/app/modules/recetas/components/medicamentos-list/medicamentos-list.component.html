@@ -1,0 +1,91 @@
+<mat-card>
+    <mat-card-header>
+        <mat-icon mat-card-avatar>local_pharmacy</mat-icon>
+        <mat-card-title>Medicamentos</mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        <form class="example-form mt-10" [formGroup]="medicamentoForm">
+            <!-- Cabecera -->
+            <div *ngIf="recetaId == 0 || !editDisabled">
+                <mat-form-field class="ml-5 mr-5 medium-form-field-50-100" [hidden]="true">
+                    <input matInput placeholder="id" formControlName="id">
+                </mat-form-field>
+                <mat-form-field class="ml-5 mr-5 very-short-form-field-50-100">
+                    <input matInput placeholder="Nº" formControlName="nroRenglon" type="number">
+                </mat-form-field>
+                <mat-form-field class="ml-5 mr-5 medium-form-field-50-100">
+                    <input matInput placeholder="Nombre" formControlName="nombre" class="uppercase" (change)='nombreChange($event)'>
+                </mat-form-field>
+                <mat-form-field class="ml-5 mr-5 medium-form-field-50-100">
+                    <input matInput placeholder="Droga" formControlName="droga" class="uppercase">
+                </mat-form-field>
+                <mat-form-field class="ml-5 mr-5 medium-form-field-50-100">
+                    <input matInput placeholder="Presentación" formControlName="presentacion" class="uppercase">
+                </mat-form-field>
+                <mat-form-field class="ml-5 mr-5 long-form-field">
+                    <input matInput placeholder="Observaciones" formControlName="observaciones" class="uppercase">
+                </mat-form-field>
+                <mat-form-field class="ml-5 mr-5 very-short-form-field-30-30">
+                    <input matInput placeholder="Cantidad" formControlName="cantidad" type="number">
+                </mat-form-field>
+                <mat-form-field class="ml-5 mr-5 medium-form-field-50-100" [hidden]="true">
+                    <input matInput placeholder="abreviaturaId" formControlName="abreviaturaId">
+                </mat-form-field>
+
+                <div class="boxMobile">
+                    <button *ngIf="this.medicamentoForm.controls.nroRenglon.value != 0" mat-raised-button (click)="modificarMedicamento()" class="boxMobileChild ml-5 mr-5">Modificar</button>
+                    <button *ngIf="this.medicamentoForm.controls.nroRenglon.value != 0" mat-raised-button color="accent" (click)="cleanMedicamentoFormControls()" class="boxMobileChild ml-5 mr-5">Descartar</button>
+                    <app-google-button *ngIf="this.medicamentoForm.controls.nroRenglon.value == 0" title="Agregar Medicamento" text="Agregar" (click)="nuevoMedicamento();" class="boxMobileChild ml-5 mr-5"></app-google-button>
+                    <button *ngIf="this.medicamentoForm.controls.nroRenglon.value == 0" class="mat-button-icon-small boxMobileChild ml-5 mr-5" mat-icon-button type="button " mat-button (click)="openSearch() " matTooltip="Buscar Medicamentos en Vademecum. ">
+                    <mat-icon>search</mat-icon>
+                  </button>
+                </div>
+            </div>
+        </form>
+        <mat-divider></mat-divider>
+        <div *ngIf="this.isLoading" style="display: flex; justify-content: center; align-items: center; height: 200px;">
+            <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+            </mat-progress-spinner>
+        </div>
+        <!-- Lista Medicamentos-->
+        <div *ngIf="!this.isLoading" class="auto-container">
+            <table mat-table [dataSource]="mtMedicamentos" matSort #table>
+                <ng-container matColumnDef="nroRenglon" sticky>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nº</th>
+                    <td mat-cell *matCellDef="let element">{{element.nroRenglon}}</td>
+                </ng-container>
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                    <td mat-cell *matCellDef="let element">{{element.nombre}}</td>
+                </ng-container>
+                <ng-container matColumnDef="droga">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Droga</th>
+                    <td mat-cell *matCellDef="let element">{{element.droga}}</td>
+                </ng-container>
+                <ng-container matColumnDef="presentacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Presentación</th>
+                    <td mat-cell *matCellDef="let element">{{element.presentacion}}</td>
+                </ng-container>
+                <ng-container matColumnDef="observaciones">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Observaciones</th>
+                    <td mat-cell *matCellDef="let element">{{element.observaciones}}</td>
+                </ng-container>
+                <ng-container matColumnDef="cantidad">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
+                    <td mat-cell *matCellDef="let element">{{element.cantidad}}</td>
+                </ng-container>
+                <ng-container matColumnDef="delete">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Eliminar</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button (click)="dialogEliminarMedicamento(element)" mat-icon-button color='warn' matTooltip='Eliminar esta medicamento' [disabled]="medicamentoForm.controls.nroRenglon.value != 0 || (recetaId != 0 && editDisabled)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="dcMedicamentos"></tr>
+                <tr mat-row *matRowDef="let row; columns: dcMedicamentos;" (click)="selMedicamento(row)" [style.background]="highlightedRows.indexOf(row) != -1 ? 'lightblue' : ''" (mouseover)="onMouseOver(row)" [ngClass]="{'mat-elevation-z3' : row.id == rowid}"></tr>
+            </table>
+        </div>
+    </mat-card-content>
+</mat-card>

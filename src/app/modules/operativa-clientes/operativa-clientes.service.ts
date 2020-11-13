@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AppConfig } from 'src/app/configs/app.config';
 import { Electro } from './models/electro.model';
 import { shareReplay } from 'rxjs/operators';
+import { CommonService } from '../shared/services/common.service';
 
 @Injectable()
 export class OperativaClientesService {
@@ -12,10 +13,10 @@ export class OperativaClientesService {
   // private http: Http,
   constructor(
     private httpClient: HttpClient,
-    public snackBar: MatSnackBar
+    private commonServices: CommonService
   ) {
     this.operativaClientesApiUrl =
-      AppConfig.endpoints.api + 'OperativaClientes';
+      AppConfig.settings.endpoints.api + 'OperativaClientes';
   }
 
   private handleError<T>(
@@ -34,7 +35,7 @@ export class OperativaClientesService {
       }
 
       if (showMessage) {
-        this.showSnackBar('Ha ocurrido un error al ' + operation);
+        this.commonServices.showSnackBarFatal('Ha ocurrido un error al ' + operation);
       }
 
       return of(result as T);
@@ -46,9 +47,4 @@ export class OperativaClientesService {
     return this.httpClient.get<Electro[]>(url);
   }
 
-  private showSnackBar(name): void {
-    const config: any = new MatSnackBarConfig();
-    config.duration = AppConfig.snackBarDuration;
-    this.snackBar.open(name, 'OK', config);
-  }
 }

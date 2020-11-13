@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AppConfig } from 'src/app/configs/app.config';
 import { Comprobante } from './models/comprobante';
 import { ComprobanteServicio } from './models/comprobante-servicio';
 import { ServicioRenglon } from './models/comprobante-servicio-renglon';
 // import { LoggerService } from '@app/services/logger.service';
 import { catchError, tap } from 'rxjs/operators';
+import { FilesZipped } from '@app/models/FilesZipped';
 
 @Injectable()
 export class FacturacionService {
@@ -18,7 +19,7 @@ export class FacturacionService {
     public snackBar: MatSnackBar
   ) {
     this.facturacionApiUrl =
-      AppConfig.endpoints.api + 'Facturacion';
+      AppConfig.settings.endpoints.api + 'Facturacion';
   }
 
   private handleError<T>(
@@ -54,6 +55,16 @@ export class FacturacionService {
     );
   }
 
+  getComprobanteServiciosZip(comprobanteId: number): Observable<FilesZipped> {
+    const url = `${this.facturacionApiUrl}/GetComprobanteServiciosZip/${comprobanteId}`;
+    return this.httpClient.get<FilesZipped>(url).pipe(
+      // tap(() => LoggerService.log(`fetched GetComprobanteServicios id=${comprobanteId}`)),
+      catchError(this.handleError<FilesZipped>('obtener comprobante de servicios en zip'))
+    );
+  }
+
+
+
   // getRenglones(comprobanteId: string, comprobanteId: string): Observable<ComprobanteServicioRenglon[]> {
   //   const url = `${this.facturacionApiUrl}/FacturacionRechazados/Desde/${desde.toDateString()}/Hasta/${hasta.toDateString()}`;
   //   return this.httpClient.get<ComprobanteServicioRenglon[]>(url);
@@ -77,7 +88,7 @@ export class FacturacionService {
 
   showSnackBar(name): void {
     const config: any = new MatSnackBarConfig();
-    config.duration = AppConfig.snackBarDuration;
+    config.duration = AppConfig.settings.snackBarDuration;
     this.snackBar.open(name, 'OK', config);
   }
 }

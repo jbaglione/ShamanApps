@@ -1,11 +1,11 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PanelOperativoService } from '@app/modules/panel-operativo/panel-operativo.service';
 import { IncidentesViajes } from '@app/modules/panel-operativo/models/incidentes-viajes.model';
 import { Moviles } from '@app/modules/panel-operativo/models/moviles.model';
 import { MovilesSugerencias } from '@app/modules/panel-operativo/models/moviles-sugerencias.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { listable } from '@app/models/listable.model';
+import { Listable } from '@app/models/listable.model';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonService } from '@app/modules/shared/services/common.service';
 import { DateHelper } from '@app/modules/shared/helpers/DateHelper';
@@ -58,7 +58,7 @@ export class PopUpSalidaComponent {
   movilesSugerencias: MovilesSugerencias[];
 
   // En Vb usaba mov-1, emp-2, etc... pero luego siempre leia el index.
-  vistas: listable[] = [{ descripcion: 'Móviles', id: '0' }, { descripcion: 'Empresas Prestadoras', id: '1' }];
+  vistas: Listable[] = [{ descripcion: 'Móviles', id: '0' }, { descripcion: 'Empresas Prestadoras', id: '1' }];
   viaje: IncidentesViajes;
   despServicioForm: FormGroup;
   gdoColor: string;
@@ -158,7 +158,7 @@ export class PopUpSalidaComponent {
 
       // tslint:disable-next-line: triple-equals
       if (this.viaje.incidenteDomicilio.incidente.gradoOperativo.clasificacionId == GdoClasificacion.gdoIntDomiciliaria) {
-        this.vistas.push(new listable('2', 'Visitadores'));
+        this.vistas.push(new Listable('2', 'Visitadores'));
         this.despServicioForm.patchValue({vista: '2' });
       } else {
         this.despServicioForm.patchValue({vista: '0' });
@@ -262,7 +262,7 @@ export class PopUpSalidaComponent {
               itemSugerencia.tiempo = 9999;
               itemSugerencia.distanciaTiempo = 'El domicilio no ha sido georreferenciado';
               this.isLoading = false;
-            } else if (DateHelper.dateDiff(new Date(itemSugerencia.gpsFecHorTransmision), new Date())  >= 5) {
+            } else if (DateHelper.DateDiff(new Date(itemSugerencia.gpsFecHorTransmision), new Date())  >= 5) {
               itemSugerencia.distancia = 9999;
               itemSugerencia.tiempo = 9999;
               itemSugerencia.distanciaTiempo = 'Registro GPS superior a 5 hrs.';

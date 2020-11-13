@@ -3,17 +3,74 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Shaman</title>
+    <title>Paramedic Extranet</title>
     <base href="/" />
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0,maximum-scale=1.0, minimum-scale=1.0" />
     <link rel="icon" href="assets/images/favicon.png" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <script src="https://maps.googleapis.com/maps/api/js?&libraries=places&key=AIzaSyBoHQDbkKRsgwwhEnAuD4hJupG_PjN1noY"></script>
     <script src="assets/prefixfree.js"></script>
-    <!-- <script src="https://unpkg.com/@ionic/pwa-elements@0.0.14/dist/ionicpwaelements.js"></script> -->
-    <script type="module" src="https://unpkg.com/@ionic/pwa-elements@latest/dist/ionicpwaelements/ionicpwaelements.esm.js"></script>
-    <script nomodule src="https://unpkg.com/@ionic/pwa-elements@latest/dist/ionicpwaelements/ionicpwaelements.js"></script>
+
+    <!-- inline spinner styles to be able to display spinner right away -->
+    <style type="text/css">
+        body,
+        html {
+            height: 100%;
+        }
+
+        .app-loading {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .app-loading .spinner {
+            height: 200px;
+            width: 200px;
+            animation: rotate 2s linear infinite;
+            transform-origin: center center;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .app-loading .spinner .path {
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+            animation: dash 1.5s ease-in-out infinite;
+            stroke-linecap: round;
+            stroke: #ddd;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes dash {
+            0% {
+                stroke-dasharray: 1, 200;
+                stroke-dashoffset: 0;
+            }
+            50% {
+                stroke-dasharray: 89, 200;
+                stroke-dashoffset: -35px;
+            }
+            100% {
+                stroke-dasharray: 89, 200;
+                stroke-dashoffset: -124px;
+            }
+        }
+    </style>
 </head>
 
 <script>
@@ -64,7 +121,16 @@
 </script>
 
 <body class="mat-typography">
-    <app-root></app-root>
+    <app-root>
+        <!-- loading layout replaced by app after startupp -->
+        <div class="app-loading">
+            <img width="100px" height="100px" src="data:image/png;base64,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"
+                alt="My App Logo">
+            <svg class="spinner" viewBox="25 25 50 50">
+          <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+        </div>
+    </app-root>
 </body>
 
 </html>

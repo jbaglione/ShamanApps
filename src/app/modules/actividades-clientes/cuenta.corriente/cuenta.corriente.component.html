@@ -1,5 +1,6 @@
 <mat-form-field class="ml-5 mr-5">
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+    <button matPrefix mat-icon-button><mat-icon>search</mat-icon></button>
 </mat-form-field>
 
 <div class="mat-elevation-z8">

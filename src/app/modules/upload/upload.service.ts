@@ -12,7 +12,7 @@ export class UploadService {
   url: string;
 
   constructor(private http: HttpClient) {
-    this.url = AppConfig.endpoints.api + 'Upload';
+    this.url = AppConfig.settings.endpoints.api + 'Upload';
   }
 
   public upload(files: Set<File>): { [key: string]: Observable<number> } {

@@ -1,0 +1,48 @@
+<div style="padding: 15px">
+    <!-- style="padding-top: 15px; padding-right: 15px; padding-left: 15px;"> -->
+    <mat-form-field class="ml-5 mr-5 medium-form-field" *ngIf="descripcionShow">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+        <button matPrefix mat-icon-button><mat-icon>search</mat-icon></button>
+    </mat-form-field>
+    <mat-form-field class="ml-5 mr-5" [class.short-long-form-field]="!this.diaShow" [class.short-form-field]="this.diaShow">
+        <mat-select placeholder="Periodo" [formControl]="periodoSelect" (selectionChange)="periodoChange($event.value)">
+            <mat-option *ngFor="let item of periodos" [value]="item?.id">
+                {{item?.descripcion}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="ml-5 mr-5 short-form-field" *ngIf="diaShow">
+        <mat-select placeholder="Dia" [formControl]="diaSelect" name="dia">
+            <mat-option *ngFor="let item of dias" [value]="item.id">
+                {{item.descripcion}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="ml-5 mr-5" [class.short-long-form-field]="!this.tipoShow" [class.short-form-field]="this.tipoShow" *ngIf="estadoShow">
+        <mat-select placeholder="Estado" [formControl]="estadoSelect" (selectionChange)="getMoviles()">
+            <mat-option *ngFor="let item of estados" [value]="item.id">
+                {{item.descripcion}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="ml-5 mr-5 short-form-field" *ngIf="tipoShow">
+        <mat-select placeholder="Tipo" [formControl]="tipoSelect" (selectionChange)="getMoviles()">
+            <mat-option *ngFor="let item of tipos" [value]="item.id">
+                {{item.descripcion}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="ml-5 mr-5 long-form-field">
+        <mat-select [placeholder]="esEmpresa? 'Empresas' : 'Moviles'" [formControl]="movilSelect">
+            <mat-option *ngFor="let item of moviles" [value]="item">
+                {{item?.descripcion}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div class="boxMobile">
+        <button mat-raised-button type="submit" (click)="getData()" [disabled]="isLoading" class="boxMobileChild">Consultar</button>
+        <button *ngIf="userAcceso == 3" mat-raised-button class="ml-5 mr-5 boxMobileChild" color="warn" (click)="reliquidar()">Reliquidar</button>
+        <button *ngIf="userAcceso != 3" mat-raised-button class="ml-5 mr-5 boxMobileChild" color="accent" (click)="exportToExcel()">Excel</button>
+    </div>
+</div>

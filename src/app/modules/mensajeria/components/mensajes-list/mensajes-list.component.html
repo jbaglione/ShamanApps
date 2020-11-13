@@ -1,0 +1,27 @@
+<div class="spinner-wrapper" *ngIf="cargandoMensajes; else listadoMensajes">
+  <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="80">
+  </mat-progress-spinner>
+</div>
+
+<ng-template #listadoMensajes>
+  <mat-nav-list *ngIf="mensajesItems != null && mensajesItems.length != 0; else sinMensajes">
+    <ng-container *ngFor="let item of mensajesItems; let last = last">
+      <a mat-list-item (click)="seleccionarMensajeItem(item)" >
+        <div [className]="mensajeItemSelected == item ? 'item-selected ' : 'wrapper-mensaje-item'">
+          <app-mensaje-item [mensajeItem]="item"></app-mensaje-item>
+        </div>
+      </a>
+      <mat-divider *ngIf="!last"></mat-divider>
+    </ng-container>
+  </mat-nav-list>
+</ng-template>
+
+<ng-template #sinMensajes>
+  <div class="sin-mensajes">
+      <div>
+          <mat-icon>email</mat-icon>
+      </div>
+      <p>No tiene mensajes</p>
+  </div>
+</ng-template>
+

@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UploadService } from '../upload.service';
 import { forkJoin } from 'rxjs';
+import { CommonService } from '@app/modules/shared/services/common.service';
 
 export interface DialogData {
   entidad: string;
@@ -16,7 +17,7 @@ export interface DialogData {
   styleUrls: ['./dialog-upload.component.css']
 })
 export class DialogUploadComponent implements OnInit {
-  @ViewChild('file', {static: false}) file;
+  @ViewChild('file') file;
   progress;
   canBeClosed = true;
   primaryButtonText = 'Subir';
@@ -25,9 +26,11 @@ export class DialogUploadComponent implements OnInit {
   uploadSuccessful = false;
 
   public files: Set<File> = new Set();
+
   constructor(public dialogRef: MatDialogRef<DialogUploadComponent>,
     public uploadService: UploadService,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private commonService: CommonService) {
     uploadService.entidad = data.entidad;
     uploadService.idFirstEntidad = data.idFirstEntidad;
     uploadService.idSecondEntidad = data.idSecondEntidad;
@@ -45,7 +48,7 @@ export class DialogUploadComponent implements OnInit {
           this.files.add(files[key]);
         } else {
           console.log(files[key].name + ' no es una imagen valida');
-          alert(files[key].name + ' no es una imagen valida');
+          this.commonService.showSnackBar(files[key].name + ' no es una imagen valida');
         }
       }
     }
@@ -55,35 +58,32 @@ export class DialogUploadComponent implements OnInit {
     this.file.nativeElement.click();
   }
 
-private esImagen(tipoArchivo:string):Boolean{
-   return (tipoArchivo === '' || tipoArchivo === undefined)?false:tipoArchivo.startsWith('image');
-}
+  private esImagen(tipoArchivo: string): Boolean {
+    return (tipoArchivo === '' || tipoArchivo === undefined) ? false : tipoArchivo.startsWith('image');
+  }
 
   closeDialog() {
     // if everything was uploaded already, just close the dialog
     if (this.uploadSuccessful) {
-      return this.dialogRef.close();
+      return this.dialogRef.close('OK');
     }
-
     // set the component state to "uploading"
     this.uploading = true;
 
     // start the upload and save the progress map
     this.progress = this.uploadService.upload(this.files);
-    console.log(this.progress);
     for (const key in this.progress) {
-      this.progress[key].progress.subscribe(val => console.log(val));
-
+      if (this.progress.hasOwnProperty(key)) {
+        this.progress[key].progress.subscribe(val => console.log(val));
+      }
     }
-
     // convert the progress map into an array
     let allProgressObservables = [];
     for (let key in this.progress) {
-      allProgressObservables.push(this.progress[key].progress);
+      if (this.progress.hasOwnProperty(key)) {
+        allProgressObservables.push(this.progress[key].progress);
+      }
     }
-
-    // Adjust the state variables
-
     // The OK-button should have the text "Finish" now
     this.primaryButtonText = 'Finalizar';
 

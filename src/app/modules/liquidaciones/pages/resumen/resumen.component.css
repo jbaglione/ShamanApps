@@ -1,0 +1,52 @@
+.auto-container {
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-column-importe {
+    text-align: right;
+}
+
+.like-link {
+    /* text-decoration: underline; */
+    text-decoration-color: blue;
+    color: blue;
+}
+
+.like-link :hover {
+    text-decoration: underline;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-container>div {
+    width: 31%;
+    margin: 10px;
+    min-width: 289px;
+}
+
+.display-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+}
+
+.empty-table {
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+@media(max-width: 600px) {
+    .flex-container>div {
+        width: 100%;
+        margin-left: 2px !important;
+    }
+}

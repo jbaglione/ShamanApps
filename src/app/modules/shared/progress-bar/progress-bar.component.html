@@ -1,3 +1,6 @@
-<div class="progress-bar-login" [ngStyle]="{ 'top.px': topbar }"  *ngIf="activa$ | async">
-  <mat-progress-bar [color]="pbColor" [mode]="pbMode" [bufferValue]="pbBufferValue" [style.[matTooltipPosition]="above"></mat-progress-bar>
+<div class="progress-bar-login" [ngStyle]="{ 'top.px': topbar }" *ngIf="activa$ | async">
+    <mat-progress-bar [color]="pbColor" [mode]="pbMode" [bufferValue]="pbBufferValue" [style.[matTooltipPosition]="above"></mat-progress-bar>
+    <div *ngIf="(info$ | async).length > 0" class="progress-bar-info">
+        <p>{{info$ | async}}</p>
+    </div>
 </div>

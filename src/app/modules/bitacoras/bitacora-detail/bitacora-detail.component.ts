@@ -1,9 +1,12 @@
-import { Component, OnInit, ElementRef, ViewChild, QueryList } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, QueryList, NgZone } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatTableDataSource, MatSort, MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 
-import { listable } from '../../../models/listable.model';
+import { Listable } from '../../../models/listable.model';
 import { Bitacora } from 'src/app/models/bitacora.model';
 import { Registracion } from 'src/app/models/registracion.model';
 import { Adjunto, AdjuntoGalery } from 'src/app/models/adjunto.model';
@@ -12,8 +15,12 @@ import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { BitacorasService } from '../bitacoras.service';
 import { AuthenticationService } from '../../security/authentication.service';
 import { CommonService } from '../../shared/services/common.service';
-import { NgxGalleryComponent, NgxGalleryOptions, NgxGalleryImage } from 'ngx-gallery';
+import { NgxGalleryComponent, NgxGalleryOptions, NgxGalleryImage } from '@kolkov/ngx-gallery';
 import { saveAs } from 'file-saver';
+import { take } from 'rxjs/operators';
+import { async } from 'q';
+import { ProgressBarService } from '@app/modules/shared/services/progress-bar.service';
+import { SiteInfo } from '@app/models/site-info.model';
 
 @Component({
   selector: 'app-bitacora-detail',
@@ -22,28 +29,47 @@ import { saveAs } from 'file-saver';
 })
 
 export class BitacoraDetailComponent implements OnInit {
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
-  @ViewChild('ta_reg_descripcion', {static: false}) ta_reg_descripcion: ElementRef;
-  @ViewChild(NgxGalleryComponent, {static: false}) query: QueryList<NgxGalleryComponent>;
-
-  idRegistracionSeleccionada = 0;
+  private sort: MatSort;
 
   bitacora: Bitacora = new Bitacora();
-  motivos: listable;
-  estados: listable;
-  tempText: string;
+  bitacoraForm: FormGroup;
 
-  adjuntosGalery: AdjuntoGalery = new AdjuntoGalery();
+  motivos: Listable[];
+  estados: Listable[];
+  tempText: string;
+  advertenciaMostrada = false;
+
   highlightedRows = [];
 
   dcRegistraciones: string[] = ['usuario', 'fecha', 'hora'];
   mtRegistraciones = new MatTableDataSource();
+  idRegistracionSeleccionada = '0';
 
-  bitacoraForm: FormGroup;
+  haveNewImage: boolean;
+  adjuntosGalery: AdjuntoGalery = new AdjuntoGalery();
 
+  isLoading = false;
   resultDialog: boolean;
+  regDescripcionEnable: boolean;
+  rowid = -1;
   // Usar si quiero mostrar el nuevo numero antes.
-  newBitacoraNro: number;
+  // newBitacoraNro: number;
+  site: SiteInfo = new SiteInfo('bitacoras', 'Bitácoras', 'Bitácora', 'F');
+
+
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
+    this.sort = ms;
+    this.mtRegistraciones.sort = this.sort;
+  }
+  @ViewChild('ta_reg_descripcion') ta_reg_descripcion: ElementRef;
+  @ViewChild(NgxGalleryComponent) query: QueryList<NgxGalleryComponent>;
+  @ViewChild('autosize') autosize: CdkTextareaAutosize;
+
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this._ngZone.onStable.pipe(take(1))
+        .subscribe(() => this.autosize.resizeToFitContent(true));
+  }
 
   constructor(
     private bitacorasService: BitacorasService,
@@ -52,128 +78,133 @@ export class BitacoraDetailComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private _ngZone: NgZone,
+    private progressBarService: ProgressBarService
   ) {
+
+    if (router.url.includes('hallazgos')) {
+      this.site.url = 'hallazgos';
+      this.site.nombre = 'Hallazgos';
+      this.site.nombreSingular = 'Hallazgo';
+      this.site.nombreGenero = 'M';
+    }
+
     activatedRoute.params.subscribe(params => {
-      this.bitacora.id = params['id'] === 'nuevo' ? 0 : parseFloat(params['id']);
-      this.bitacorasService.GetMotivos().subscribe(data => this.motivos = data);
-      this.bitacorasService.GetEstados().subscribe(data => this.estados = data);
-      // Usar si quiero mostrar el nuevo numero antes.
-      // this.bitacorasService.GetNewBitacoraNro().subscribe(data => this.newBitacoraNro = data);
+      this.bitacora.id = params['id'] === 'nuevo' || params['id'] === 'nueva' ? 0 : parseFloat(params['id']);
 
-      // Creo el formulario con ReactiveForm
-      this.bitacoraForm = new FormGroup({
-        // 'id': new FormControl({ value: '0', }, [Validators.required]),
-        'numero': new FormControl({ value: '0', disabled: this.bitacora.id !== 0 }, [Validators.required]),
-        'fecha': new FormControl({ value: new Date(), disabled: this.bitacora.id !== 0 }, [Validators.required]),
-        'motivo': new FormControl({ value: '', disabled: this.bitacora.id !== 0 }, [Validators.required]),
-        'titulo': new FormControl({ value: '', disabled: this.bitacora.id !== 0 }, [Validators.required, Validators.minLength(3)]),
-        'estado': new FormControl({ value: '0', disabled: true }, [Validators.required]),
-
-        // Panel Registraciones detalle:
-        'reg_descripcion': new FormControl('', [Validators.required]),
+      this.setIsLoading(true);
+      this.bitacorasService.GetEstados().subscribe(data => {
+        this.setIsLoading(false);
+        this.estados = data;
       });
+    });
+  }
 
-      if (this.bitacora.id !== 0) {
-        this.bitacorasService.GetBitacora(this.bitacora.id).subscribe(data => {
-          this.bitacora = data;
-          this.loadBitacora();
-          commonService.setTitulo('Bitacora ' + this.bitacora.titulo);
-        });
-      } else {
-        commonService.setTitulo('Nueva Bitacora');
+  ngOnInit() {
+
+    this.bitacoraForm = new FormGroup({
+      numero: new FormControl({ value: '0', disabled: this.bitacora.id !== 0 }, [Validators.required]),
+      fecha: new FormControl({ value: new Date(), disabled: this.bitacora.id !== 0 }, [Validators.required]),
+      motivo: new FormControl({ value: '', disabled: this.bitacora.id !== 0 }, [Validators.required]),
+      titulo: new FormControl({ value: '', disabled: this.bitacora.id !== 0 }, [Validators.required, Validators.minLength(3)]),
+      estado: new FormControl({ value: '0', disabled: true }, [Validators.required]),
+      // Panel Registraciones detalle:
+      reg_descripcion: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    });
+
+    this.setIsLoading(true);
+    this.bitacorasService.GetMotivos().subscribe(data => {
+      this.setIsLoading(false);
+      this.motivos = data;
+      if (this.motivos.length == 1) {
+        this.bitacoraForm.controls.motivo.setValue(this.motivos[0].id);
       }
     });
+
+    // Usar si quiero mostrar el nuevo numero antes.
+    // this.bitacorasService.GetNewBitacoraNro().subscribe(data => this.newBitacoraNro = data);
+    if (this.bitacora.id !== 0) {
+      const that = this;
+      this.setIsLoading(true);
+      this.bitacorasService.GetBitacora(this.bitacora.id).subscribe(data => {
+        this.setIsLoading(false);
+        this.bitacora = this.SetNewBitacora(data);
+        this.loadBitacora();
+        this.commonService.setTitulo(this.site.nombreSingular + this.bitacora.titulo);
+      });
+    } else {
+      this.commonService.setTitulo(this.site.nombreGenero == 'M' ? 'Nuevo' : 'Nueva' + this.site.nombreSingular);
+      this.regDescripcionEnable = true;
+    }
+    // this.mtRegistraciones.sort = this.sort;
+    this.adjuntosGalery.galleryOptions = new Array<NgxGalleryOptions>();
   }
 
   verRegistracion(row: any) {
     const that = this;
     const registracion = new Registracion();
-    registracion.id = parseInt(row['id']);
+    registracion.id = row['id'];
     registracion.adjuntos = row['adjuntos'];
     registracion.descripcion = row['descripcion'];
 
+    if (registracion.id !== '0' && this.bitacoraForm.controls.reg_descripcion.value === ''
+      && this.bitacora.registraciones[this.bitacora.registraciones.length - 1].id == '0') {
 
-
-    if (registracion.id !== 0 && this.bitacoraForm.controls.reg_descripcion.value === ''
-      && this.bitacora.registraciones[this.bitacora.registraciones.length - 1].id === 0) {
-      this.ta_reg_descripcion.nativeElement.focus();
-      // this.ta_reg_descripcion.nativeElement.disable = false;
-      this.bitacoraForm.controls.reg_descripcion.enable();
+      this.dialog.open(DialogComponent, {
+        width: '300px',
+        data: { title: 'Advertencia', content: '¿Desea descartar la nueva registración?', yesText: 'Mantener', noText: 'Descartar' }
+      }).afterClosed().subscribe(result => {
+        if (!result) {
+          this.bitacora.registraciones.splice(this.bitacora.registraciones.length - 1);
+          this.mtRegistraciones.data = this.bitacora.registraciones;
+          this.verRegistracion(this.bitacora.registraciones[this.bitacora.registraciones.length - 1]);
+        }
+      });
+      this.SetEnableRegistracion(true);
     } else {
 
       // Deshabilitar edicion.
-      if (registracion.id !== 0) {
-        this.bitacoraForm.controls.reg_descripcion.disable();
-        if (this.idRegistracionSeleccionada == 0) {
+      if (registracion.id != '0') {
+        if (this.idRegistracionSeleccionada == '0') {
           this.tempText = this.bitacoraForm.controls.reg_descripcion.value;
         }
 
         this.bitacoraForm.patchValue({
           reg_descripcion: registracion.descripcion,
         });
-        // this.ta_reg_descripcion.nativeElement.disable = true;
+        this.SetEnableRegistracion(false);
+
       } else {
-        // this.bitacoraForm.controls.reg_descripcion.setValue(this.tempText);
         this.bitacoraForm.patchValue({
           reg_descripcion:  this.tempText,
         });
-        this.bitacoraForm.controls.reg_descripcion.enable();
-        this.ta_reg_descripcion.nativeElement.focus();
+        this.SetEnableRegistracion(true);
       }
 
       this.highlightedRows = [];
       this.highlightedRows.push(row);
       this.idRegistracionSeleccionada = registracion.id;
+      this.bitacora.idForAjdSubEnt = registracion.id.toString();
 
-      this.adjuntosGalery.adjuntos = new Array<Adjunto>();
-      this.adjuntosGalery.galleryOptions = new Array<NgxGalleryOptions>();
-      this.adjuntosGalery.galleryImages = new Array<NgxGalleryImage>();
-
-      this.adjuntosGalery.adjuntos = registracion.adjuntos;
-      if (this.adjuntosGalery.adjuntos != null && this.adjuntosGalery.adjuntos.length > 0) {
-        // TODO: borrar
-        // this.adjuntosGalery.adjuntos[0].fullPath = 'https://estaticos.elperiodico.com/resources/jpg/6/8/1530540262286.jpg';
-
-        this.adjuntosGalery.galleryOptions = that.buildGalleryOptionsObject(this.adjuntosGalery);
-        this.adjuntosGalery.adjuntos.forEach(function (adjunto) {
-          // TODO: borrar
-          // adjunto.fullPath = 'https://www.imagen.com.mx/assets/img/imagen_share.png';
-          that.adjuntosGalery.galleryImages.push(that.buildGalleryImage(adjunto.fullPath));
-        });
-      } else {
-        // if(this.adjuntosGalery.galleryOptions.length > 0)
-        // this.adjuntosGalery.galleryOptions.forEach(function (option) {
-        //   option.height = '0px';
-        // });
-        this.adjuntosGalery.galleryOptions = that.buildGalleryOptionsObject(this.adjuntosGalery);
-      }
-      console.log(registracion);
-      console.log(this.idRegistracionSeleccionada);
+      this.SetGalery(registracion, that);
     }
-
-    // console.log(JSON.stringify(registracion));
   }
-
-
 
   loadBitacora() {
 
     if (this.bitacora.motivo == null || this.bitacora.estado == null || JSON.stringify(this.bitacora.registraciones) === '[]') {
       this.resultDialog = false;
-      this.openDialog('Error Datos', 'Hubo un error en la carga de datos. ¿Desea abrir el registro igual?');
+      this.openDialogError('Error Datos', 'Hubo un error en la carga de datos. ¿Desea abrir el registro igual?');
       return;
-      // TODO: arreglar dialogo navegacion.
-      // this.bitacorasService.showSnackBar('Error en los datos');
     }
 
     if (this.bitacora.registraciones == null || JSON.stringify(this.bitacora.registraciones) === '[]') {
       this.bitacora.registraciones.push(new Registracion());
-      this.mtRegistraciones.data = this.bitacora.registraciones;
-    } else {
-      this.mtRegistraciones.data = this.bitacora.registraciones;
     }
-
     this.verRegistracion(this.bitacora.registraciones[this.bitacora.registraciones.length - 1]);
+
+    this.mtRegistraciones.data = this.bitacora.registraciones;
+    this.mtRegistraciones.sort = this.sort;
 
     // Seteo los valores del formulario. (parchValue=algunos, setValue=todos.)
     this.bitacoraForm.patchValue({
@@ -181,108 +212,213 @@ export class BitacoraDetailComponent implements OnInit {
       numero: this.bitacora.nro,
       titulo: this.bitacora.titulo,
       fecha: this.bitacora.fecha,
-      motivo: this.bitacora.motivo == null ? new listable('1', '') : this.bitacora.motivo.id,
-      estado: this.bitacora.estado == null ? new listable('1', '') : this.bitacora.estado.id,
+      motivo: this.bitacora.motivo == null ? new Listable('1', '') : this.bitacora.motivo.id,
+      estado: this.bitacora.estado == null ? new Listable('1', '') : this.bitacora.estado.id,
     });
   }
 
-  openDialog(pTitle: string, pContent: string): void {
+  openDialogError(pTitle: string, pContent: string): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '250px',
-      data: { title: pTitle, content: pContent }
+      data: { title: pTitle, content: pContent, noText: 'No', yesText: 'Si'}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.resultDialog = result;
-      // TODO: arreglar dialogo navegacion.
       if (!this.resultDialog) {
-        this.router.navigate(['/bitacoras']);
+        this.router.navigate([`/${this.site.url}`]);
       }
-      console.log(this.resultDialog);
     });
-  }
-  ngOnInit() {
-    this.mtRegistraciones.sort = this.sort;
   }
 
   nuevaRegistracion() {
     if (this.bitacora.registraciones.length === 9) {
-      this.commonService.showSnackBar('No se pueden cargar mas registros a esta Bitacora');
+      this.commonService.showSnackBar(`No se pueden cargar mas registros a ${(this.site.nombreGenero == 'M' ? 'este' : 'esta') + this.site.nombreSingular}`);
       return;
     }
-
+    if (this.bitacora.registraciones[this.bitacora.registraciones.length - 1].id === '0') {
+        this.ta_reg_descripcion.nativeElement.focus();
+        this.commonService.showSnackBar('Tiene una Registración sin guardar');
+        return;
+      }
     this.bitacora.registraciones.push(new Registracion);
     this.mtRegistraciones.data = this.bitacora.registraciones;
     this.tempText = '';
     this.verRegistracion(this.bitacora.registraciones[this.bitacora.registraciones.length - 1]);
-    this.ta_reg_descripcion.nativeElement.focus();
-    this.bitacoraForm.controls.reg_descripcion.enable();
-    console.log(this.bitacora);
+    this.SetEnableRegistracion(true);
+
   }
 
-  guardarBitacora() {
-    console.log(this.bitacoraForm.value);
-    if (this.bitacoraForm.valid) {
+  async backPage() {
+    if (this.bitacora.registraciones[this.bitacora.registraciones.length - 1].id == '0') {
 
-      const indice: number = this.bitacora.registraciones.length - 1;
+      if (await this.dialog.open(DialogComponent, { width: '300px', data: {
+          title: 'Advertencia', content: 'Tiene una Registración sin guardar ¿Desea salir de todos modos? ',
+          yesText: 'Salir', noText: 'Seguir editando'}}).afterClosed().toPromise()) {
+            this.router.navigate([`/${this.site.url}`]);
+      }
+    } else {
+      this.router.navigate([`/${this.site.url}`]);
+    }
+  }
 
-      if (this.bitacora.registraciones[indice].id == 0) {
+  async guardarBitacora() {
+    this.markFormGroupTouched(this.bitacoraForm);
 
-        // this.bitacora.nro = this.bitacoraForm.controls.nro.value;
-        this.bitacora.titulo = this.bitacoraForm.controls.titulo.value;
-        this.bitacora.fecha = this.bitacoraForm.controls.fecha.value;
-        this.bitacora.motivo = new listable(this.bitacoraForm.controls.motivo.value, '');
-        this.bitacora.estado = new listable(this.bitacoraForm.controls.estado.value, '');
+    if (this.bitacoraFormValidCustom()) {
+      if (await this.Confirmar()) {
+        const indice: number = this.bitacora.registraciones.length - 1;
 
-        this.bitacora.registraciones[indice].descripcion = this.bitacoraForm.controls.reg_descripcion.value;
-        // this.bitacora.registraciones[indice].adjuntos = this.reg_adjuntos;
-        this.bitacora.registraciones[indice].hora = new Date().toTimeString().substring(0, 5);
-        this.bitacora.registraciones[indice].usuario = this.authenticationService.currentUserValue.nombre;
-        // this.bitacora.registraciones = null;
+        if (this.bitacora.registraciones[indice].id == '0') {
+          this.bitacora.titulo = this.bitacoraForm.controls.titulo.value;
+          this.bitacora.fecha = this.bitacoraForm.controls.fecha.value;
+          this.bitacora.motivo = new Listable(this.bitacoraForm.controls.motivo.value, '');
+          this.bitacora.estado = new Listable(this.bitacoraForm.controls.estado.value, '');
 
-        this.bitacorasService.CreateBitacora(this.bitacora).subscribe((newBitacora) => {
-
-          if (newBitacora != null && newBitacora !== undefined) {
-            console.log(JSON.stringify(newBitacora));
-            this.bitacora = newBitacora as Bitacora;
-            this.loadBitacora();
-          }
-
-        }, (response: Response) => {
-          if (response.status === 500) {
-            console.log('errorHasOcurred');
-          }
-        });
-        // console.log(JSON.stringify(registracion));
+          this.bitacora.registraciones[indice].descripcion = this.bitacoraForm.controls.reg_descripcion.value;
+          this.bitacora.registraciones[indice].hora = new Date().toTimeString().substring(0, 5);
+          this.bitacora.registraciones[indice].usuario = this.authenticationService.currentUser.nombre;
+          this.bitacora.isHallazgo = this.site.nombre == 'Hallazgos';
+          const that = this;
+          this.setIsLoading(true);
+          this.bitacorasService.CreateBitacora(this.bitacora, this.site).subscribe((newBitacora) => {
+            if (newBitacora != null && newBitacora !== undefined) {
+              // this.bitacora = this.SetNewBitacora(newBitacora as Bitacora);
+              // this.loadBitacora();
+              this.router.navigate([`/${this.site.url}`]);
+            }
+            this.setIsLoading(false);
+          }, error => {
+            this.setIsLoading(false);
+            if (this.bitacora.id == 0) {
+              this.router.navigate([`/${this.site.url}`]);
+            } else {
+              this.ngOnInit();
+            }
+            throw error;
+          });
+        }
       }
     }
+  }
+
+  async Confirmar() {
+    if (!this.advertenciaMostrada) {
+      this.advertenciaMostrada = true;
+      return await this.dialog.open(DialogComponent, {
+        width: '300px',
+        data: {
+          title: 'Advertencia', content: 'Si guarda la Registración ya no podra editarla ni agregarle imagenes',
+          yesText: 'Guardar', noText: 'Seguir editando'
+        }
+      }).afterClosed().toPromise();
+    } else {
+      return Promise.resolve(true);
+    }
+  }
+
+  bitacoraFormValidCustom(): boolean {
+    // this.bitacoraForm.valid allready return false if a control requiered is disabled.
+    // if is necesary check all properties one by one
+    if (this.bitacora.id !== 0) {
+      if (!this.bitacoraForm.valid && !this.haveNewImage) {
+        this.commonService.showSnackBar('No hay cambios para guardar.');
+        return false;
+      }
+    } else if (!this.bitacoraForm.valid) {
+        return false;
+    }
+    return true;
+  }
+
+  markFormGroupTouched(formGroup: FormGroup) {
+    (<any>Object).values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+
+      if (control.controls) {
+        this.markFormGroupTouched(control);
+      }
+    });
   }
 
   recargarAdjuntos(event) {
-
+    const that = this;
+    this.setIsLoading(true);
     if (event === 'OK') {
-      if (this.bitacora.id !== 0) {
-        this.bitacorasService.GetBitacora(this.bitacora.id).subscribe(data => {
-          this.bitacora.registraciones = data.registraciones;
+        this.bitacorasService.GetImages(this.bitacora.idForAjd, this.bitacora.idForAjdSubEnt).subscribe(data => {
+          const indice: number = this.bitacora.registraciones.length - 1;
+          let regSel = this.bitacora.registraciones.find(x => x.id == this.idRegistracionSeleccionada);
+          if (regSel.id == '0') {
+            this.bitacora.registraciones[indice].descripcion = this.bitacoraForm.controls.reg_descripcion.value;
+            this.bitacora.registraciones[indice].hora = new Date().toTimeString().substring(0, 5);
+            this.bitacora.registraciones[indice].usuario = this.authenticationService.currentUser.nombre;
+            regSel = this.bitacora.registraciones[indice];
+          }
+          regSel.adjuntos = data;
+
           this.mtRegistraciones.data = this.bitacora.registraciones;
-          this.verRegistracion(this.bitacora.registraciones.find(x => x.id == this.idRegistracionSeleccionada));
+          this.haveNewImage = true;
+          this.SetGalery(regSel, that);
+          this.setIsLoading(false);
         });
-      }
     }
   }
+
   GetNroRegistros(): number {
-    // if (this.reg_adjuntos != null)
-    //   return this.reg_adjuntos.length;
-    // else return 0;
     if (this.adjuntosGalery != null && this.adjuntosGalery.adjuntos != null) {
       return this.adjuntosGalery.adjuntos.length;
     } else { return 0; }
   }
 
-  isNew(): boolean {
-    return this.bitacora.id === 0;
+  SetNewBitacora(data: Bitacora): Bitacora {
+    return new Bitacora(
+      data.id,
+      data.nro,
+      data.fecha,
+      data.hora,
+      data.titulo,
+      data.motivo,
+      data.administrador,
+      data.estado,
+      data.ultFechaHora,
+      data.diasRta,
+      data.duracion,
+      data.registraciones
+    );
   }
+
+  private SetEnableRegistracion(enabled: boolean) {
+    if (enabled) {
+      this.ta_reg_descripcion.nativeElement.focus();
+      this.bitacoraForm.controls.reg_descripcion.enable();
+      this.regDescripcionEnable = true;
+    } else {
+      this.bitacoraForm.controls.reg_descripcion.disable();
+      this.regDescripcionEnable = false;
+    }
+  }
+
+  onMouseOver(element) {
+    this.rowid = element.id; // this.mtBitacoras.data.findIndex(x => x.id == element.id);
+    console.log(this.rowid);
+  }
+
+  //#region Galery
+  private SetGalery(registracion: Registracion, that: this) {
+    this.adjuntosGalery.adjuntos = new Array<Adjunto>();
+    this.adjuntosGalery.galleryOptions = new Array<NgxGalleryOptions>();
+    this.adjuntosGalery.galleryImages = new Array<NgxGalleryImage>();
+    this.adjuntosGalery.adjuntos = registracion.adjuntos;
+    if (this.adjuntosGalery.adjuntos != null && this.adjuntosGalery.adjuntos.length > 0) {
+      this.adjuntosGalery.galleryOptions = that.buildGalleryOptionsObject(this.adjuntosGalery);
+      this.adjuntosGalery.adjuntos.forEach(function (adjunto) {
+        that.adjuntosGalery.galleryImages.push(that.buildGalleryImage(adjunto.fullPath));
+      });
+    } else {
+      this.adjuntosGalery.galleryOptions = that.buildGalleryOptionsObject(this.adjuntosGalery);
+    }
+  }
+
   buildGalleryOptionsObject(adjuntoGalery: AdjuntoGalery): NgxGalleryOptions[] {
     return [{
       image: false,
@@ -315,6 +451,18 @@ export class BitacoraDetailComponent implements OnInit {
       description: ''
     };
   }
+//#endregion
+
+setIsLoading(isDownloading: boolean, info = '' ) {
+  if (isDownloading) {
+    this.isLoading = true;
+    this.progressBarService.activarProgressBar(info);
+  } else {
+    this.isLoading = false;
+    this.progressBarService.desactivarProgressBar();
+  }
+}
+
 }
 
 function download(adjuntoGalery: AdjuntoGalery): (event: Event) => void {
@@ -324,3 +472,4 @@ function download(adjuntoGalery: AdjuntoGalery): (event: Event) => void {
     }.bind(adjuntoGalery);
   }
 }
+

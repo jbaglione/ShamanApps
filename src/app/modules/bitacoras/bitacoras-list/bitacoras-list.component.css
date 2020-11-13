@@ -1,6 +1,5 @@
-.bitacora-list-container
-{
-  padding: 15px 25px 25px 25px;
+.bitacora-list-container {
+    padding: 15px 25px 25px 25px;
 }
 
 table {
@@ -47,6 +46,21 @@ table {
 .mat-column-duracion {
     flex: 0 0 80px;
     display: none;
+}
+
+.circle {
+    border-radius: 50%;
+    line-height: 27px;
+    text-align: center;
+    border: 1px solid #959595;
+}
+
+.mat-row:hover {
+    cursor: pointer;
+}
+
+[mat-row].remove-background {
+    background: none;
 }
 
 @media(max-width: 600px) {

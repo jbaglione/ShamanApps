@@ -1,0 +1,98 @@
+<h1 mat-dialog-title>{{titulo}}</h1>
+<mat-dialog-content style="border-top: 1px solid #dadce0;">
+    <br />
+    <form class="example-form" [formGroup]="conformidadForm" (ngSubmit)="guardarReclamo()" novalidate="novalidate">
+        <table cellspacing="0">
+            <tr>
+                <td>
+                    <mat-radio-group formControlName="flgConforme" style="padding-bottom:15px;">
+                        <!-- <div class="input-group-addon">
+                            <mat-icon class="icon-center" color="succes">check_circle_outline</mat-icon>
+                            <mat-radio-button [value]="1">ESTOY CONFORME</mat-radio-button>
+                        </div>
+                        <div class="input-group-addon">
+                            <mat-icon class="icon-center" color="warn">cancel_outline</mat-icon>
+                            <mat-radio-button [value]="0">NO ESTOY CONFORME</mat-radio-button>
+                        </div> -->
+                        <mat-radio-button [value]="1">ESTOY CONFORME</mat-radio-button>
+                        <mat-radio-button [value]="0">NO ESTOY CONFORME</mat-radio-button>
+                    </mat-radio-group>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br />
+                    <mat-form-field class="long-form-field">
+                        <mat-select placeholder="Seleccione Motivo" formControlName="motivoSeleccionado">
+                            <mat-option *ngFor="let item of motivos" [value]="item">
+                                {{item.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <!--DIFERENCIAS-->
+                    <mat-form-field class='ml-5 mr-5 short-form-field'>
+                        <input matInput currencyMask placeholder='Su diferencia:' formControlName='virImpDiferencia'>
+                    </mat-form-field>
+                    <mat-form-field class='ml-5 mr-5 short-form-field'>
+                        <input matInput currencyMask placeholder='Nuestro Valor:' formControlName='virImpLiquidado'>
+                    </mat-form-field>
+                    <mat-form-field class='ml-5 mr-5 short-form-field '>
+                        <input matInput currencyMask placeholder='Valor Esperado: ' formControlName='importe'>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-form-field class="long-form-field ">
+                        <textarea matInput placeholder='Observaciones' formControlName='observaciones' rows=3></textarea>
+                    </mat-form-field>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong *ngIf="conformidadForm.controls.flgRespuesta.value =='0'" class="icon-label">
+                        <mat-icon class="oldGold">error</mat-icon>
+                        <span style="margin-left: 3px;">Su reclamo está pendiente de aprobación.</span>
+                    </strong>
+                    <strong *ngIf="conformidadForm.controls.flgRespuesta.value =='1'" class="icon-label">
+                      <mat-icon color="primary">check_circle_outline</mat-icon>
+                      <span style="margin-left: 3px;">Su reclamo ha sido aceptado.</span>
+                  </strong>
+                    <strong *ngIf="conformidadForm.controls.flgRespuesta.value =='2'" class="icon-label">
+                    <mat-icon color="warn">cancel_outline</mat-icon>
+                    <span style="margin-left: 3px;">Su reclamo ha sido rechazado.</span>
+                </strong>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-radio-group formControlName="flgRespuesta">
+                        <mat-radio-button [value]="0" style="margin-right: 6px;">Pendiente</mat-radio-button>
+                        <mat-radio-button [value]="1" style="margin-right: 6px;">Aceptado</mat-radio-button>
+                        <mat-radio-button [value]="2" style="margin-right: 6px;">Rechazado</mat-radio-button>
+                    </mat-radio-group>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <mat-form-field class="long-form-field ">
+                        <textarea matInput placeholder='Respuesta recibida' formControlName='respuesta' rows=3></textarea>
+                    </mat-form-field>
+                </td>
+            </tr>
+
+        </table>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right ">
+    <button mat-raised-button color='accent' (click)='onNoClick()'>Cancelar</button>
+    <button mat-raised-button type='submit' (click)='guardarReclamo()' [disabled]='(userAcceso == 2 && conformidadForm.controls.flgConforme.value == 1) ||
+                (userAcceso == 1 && conformidadForm.controls.cerrado.value == 1)'>Guardar</button>
+</mat-dialog-actions>
+<!-- DEBUG -->
+<!-- <pre>USER ACCESO: {{userAcceso}}</pre>
+<pre>flg Respuesta: {{conformidadForm.controls.flgRespuesta.value}}</pre> -->

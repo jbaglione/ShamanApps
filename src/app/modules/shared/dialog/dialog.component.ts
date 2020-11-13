@@ -1,13 +1,15 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface DialogData {
   title: string;
   content: string;
+  noText: string;
+  yesText: string;
 }
 
 @Component({
-  selector: 'dialog-component',
+  selector: 'app-dialog-component',
   templateUrl: 'dialog.component.html',
 })
 export class DialogComponent {

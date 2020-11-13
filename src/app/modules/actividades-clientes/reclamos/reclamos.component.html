@@ -1,5 +1,6 @@
 <mat-form-field class="ml-5 mr-5">
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+    <button matPrefix mat-icon-button><mat-icon>search</mat-icon></button>
 </mat-form-field>
 <mat-form-field class="ml-5 mr-5">
     <input matInput [matDatepicker]="picker1" placeholder="Fecha Desde" [formControl]="desde" name="dpDesde">
@@ -98,5 +99,5 @@
     </mat-table>
     <mat-paginator [pageSizeOptions]="[7, 10, 25, 100] " [hidden]="mtClienteReclamos.data.length == 0 || (matTableLoadingService.activo$ | async)"></mat-paginator>
     <app-mat-table-loading></app-mat-table-loading>
-    <app-mat-table-not-found [activo]="mtClienteReclamos.data.length === 0 && !(matTableLoadingService.activo$ | async)" ></app-mat-table-not-found>
+    <app-mat-table-not-found [activo]="mtClienteReclamos.data.length === 0 && !(matTableLoadingService.activo$ | async)"></app-mat-table-not-found>
 </div>

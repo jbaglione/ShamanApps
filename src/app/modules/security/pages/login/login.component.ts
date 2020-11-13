@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AuthenticationService } from '@app/modules/security/authentication.service';
 import { DialogForgotPasswordComponent } from '../../components/dialog-forgot-password/dialog-forgot-password.component';
 import { first } from 'rxjs/operators';
@@ -28,10 +28,10 @@ export class LoginComponent implements OnInit {
     private dialog: MatDialog,
     private authenticationService: AuthenticationService,
     private progressBarService: ProgressBarService,
-    private vendedorService: VendedorService
+    private vendedorService: VendedorService,
   ) {
     // redirect to home if already logged in
-    if (this.authenticationService.currentUserValue) {
+    if (this.authenticationService.currentUser) {
       this.router.navigate(['/']);
     }
   }

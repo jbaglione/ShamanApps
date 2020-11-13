@@ -1,0 +1,22 @@
+<div class="padding-container">
+    <div class="flex-container">
+        <div class="mat-elevation-z6 table-custom-margin">
+            <h2>Pocentaje de Cumplimiento {{cumplimiento}} %</h2>
+            <div class="auto-container">
+                <canvas id=barra baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+          </canvas>
+            </div>
+            <!-- <button mat-button mat-raised-button color="primary" (click)="randomize()">Update</button> -->
+        </div>
+        <div class="mat-elevation-z6 table-custom-margin">
+            <h2>Horas Condicionales {{condicionales}}</h2>
+            <P *ngIf="condicionalesTotal > 0">Valores en horas y minutos</P>
+            <div class="auto-container">
+                <canvas *ngIf="condicionalesTotal > 0" baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" [options]="pieChartOptions" [plugins]="pieChartPlugins" [colors]="pieChartColors" [legend]="pieChartLegend"></canvas>
+                <div *ngIf="condicionalesTotal == 0" style="text-align: center; padding-top: 40px; padding-bottom: 40px;">
+                    NO SE ENCONTRARON EVENTOS CONDICIONALES PARA EL PERIODO SELECCIONADO
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

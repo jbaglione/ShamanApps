@@ -1,6 +1,6 @@
 import { AuthenticationService } from './../../security/authentication.service';
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppConfig } from '../../../configs/app.config';
 
 @Component({
@@ -10,7 +10,7 @@ import { AppConfig } from '../../../configs/app.config';
 })
 export class AfiliacionesDetailComponent implements OnInit {
 
-  url_1: string = AppConfig.endpoints.oldExranet + 'afiliacionesPopUp?GetDirectClienteId=';
+  url_1: string = AppConfig.settings.endpoints.oldExranet + 'afiliacionesPopUp?GetDirectClienteId=';
   url_2 = '&GetDirectSolicitud=true';
   url_3 = '&Acceso=';
   url_4 = '&Estado=';
@@ -26,7 +26,7 @@ export class AfiliacionesDetailComponent implements OnInit {
                     this.url_2 +
                     this.url_3 + data.acceso +
                     this.url_4 + data.estado +
-                    this.url_5 + authenticationService.currentUserValue.tokenInfo.accessToken;
+                    this.url_5 + authenticationService.currentUser.tokenInfo.accessToken;
   }
   onNoClick(): void {
     this.dialogRef.close();

@@ -1,0 +1,24 @@
+{
+    "endpoints": {
+        "security": "https://localhost:44377/security/",
+        "api": "https://localhost:44319/api/",
+        "apiShaman": "https://localhost:44318/api/",
+        "oldExranet": "http://localhost:2128/",
+        "gestionApi": "http://localhost:60001/"
+    },
+
+    "vademecums": [
+        { "id": 1, "descripcion": "https://ar.prvademecum.com/" },
+        { "id": 2, "descripcion": "https://trazabilidad.pami.org.ar/trazamed/consultaCatalogoByGTIN.tz" }
+    ],
+
+    "apiKey": "AIzaSyBoHQDbkKRsgwwhEnAuD4hJupG_PjN1noY",
+    "snackBarDuration": 3700,
+
+    "urlWebHook": "https://hooks.slack.com/services/",
+    "keyWebHook": "TMPQUADN0/BRW06A728/EbggNlwnQwICyhIxuUP4kPru",
+    "getApiURL": "https://api.ipify.org?format=json",
+
+    "proxyCORSUrl": "https://cors-anywhere.herokuapp.com/",
+    "version": "2.8.8-rc DESARROLLO"
+}

@@ -2,13 +2,16 @@ import { VendedorService } from './../../shared/services/vendedor.service';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { AfiliacionesService } from '../afiliaciones.service';
 import { CommonService } from '@app/modules/shared/services/common.service';
 import { AuthenticationService } from '@app/modules/security/authentication.service';
 
-import { listable } from 'src/app/models/listable.model';
+import { Listable } from 'src/app/models/listable.model';
 import { AfiliacionesDetailComponent } from '../afiliaciones-detail/afiliaciones-detail.component';
 import { ClientePotencial, ClientePotencialForExcel } from 'src/app/models/cliente-potencial.model';
 import { PotencialExitoComponent } from '../dialog-potencial-exito/dialog-potencial-exito.component';
@@ -34,7 +37,7 @@ export class AfiliacionesListComponent implements OnInit {
   vendedoresSelect: FormControl;
 
   // Listados para combos
-  tiposClientes: listable[] = [
+  tiposClientes: Listable[] = [
     { descripcion: 'Todos', id: '0' },
     { descripcion: 'Potenciales', id: '1' },
     { descripcion: 'Preparados', id: '2' },
@@ -42,7 +45,7 @@ export class AfiliacionesListComponent implements OnInit {
     { descripcion: 'Inactivos', id: '4' },
     { descripcion: 'Suspendidos', id: '5' }
   ];
-  vendedores: listable[];
+  vendedores: Listable[];
 
   clientesPotenciales$: Observable<ClientePotencial[]>;
   // Datos para grilla
@@ -62,7 +65,7 @@ export class AfiliacionesListComponent implements OnInit {
   mtClientesPotenciales: MatTableDataSource<ClientePotencial> = new MatTableDataSource();
   private paginator: MatPaginator;
   private sort: MatSort;
-  tooltipExito: listable[] = [
+  tooltipExito: Listable[] = [
     { descripcion: 'Todos', id: '0' },
     { descripcion: 'Cambiar potencial de Exito', id: '1' },
     { descripcion: 'Cambiar estado Preparado', id: '2' },
@@ -79,12 +82,12 @@ export class AfiliacionesListComponent implements OnInit {
     { descripcion: 'Suspendidos', icon: 'pause_circle_outline', color: 'accent' }
   ];
 
-  @ViewChild(MatSort, {static: false}) set matSort(ms: MatSort) {
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
     this.sort = ms;
     this.setDataSourceAttributes();
   }
 
-  @ViewChild(MatPaginator, {static: false}) set matPaginator(mp: MatPaginator) {
+  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
     this.paginator = mp;
     this.setDataSourceAttributes();
   }
@@ -97,15 +100,14 @@ export class AfiliacionesListComponent implements OnInit {
     public matTableLoadingService: MatTableLoadingService,
     public dialog: MatDialog,
     private router: Router,
-    private fileService: FileService,
-    private deviceService: DeviceDetectorService
+    private fileService: FileService
   ) {
     this.commonService.setTitulo('Clientes Potenciales');
-    this.isMobile = this.deviceService.isMobile();
+    this.isMobile = false;
   }
 
   ngOnInit() {
-      this.userAcceso = this.authenticationService.getAccesosCurrentUser().toString();
+      this.userAcceso = this.authenticationService.currentAcceso.toString();
     this.descripcionInput = new FormControl('');
     this.tiposClientesSelect = new FormControl(this.tiposClientes[0].id);
     this.vendedoresSelect = new FormControl(0);
@@ -124,8 +126,10 @@ export class AfiliacionesListComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim();
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    if (filterValue) {
+      filterValue = filterValue.trim();
+      filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    }
     this.mtClientesPotenciales.filter = filterValue;
   }
 
@@ -176,8 +180,6 @@ export class AfiliacionesListComponent implements OnInit {
   }
 
   cambiarPotencialExito(element: ClientePotencial = null): void {
-
-    // alert('id' + id);
     const dialogRef = this.dialog.open(PotencialExitoComponent, {
       width: '95vw',
       maxWidth: '380px',
@@ -197,9 +199,5 @@ export class AfiliacionesListComponent implements OnInit {
 
   shareToExcel() {
     this.fileService.exportMatTable(new ClientePotencialForExcel(), this.mtClientesPotenciales, 'afiliaciones', true);
-  }
-
-  takePhoto() {
-    this.fileService.takePhoto();
   }
 }

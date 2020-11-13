@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { NgxGalleryModule } from 'ngx-gallery';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { SharedModule } from '@app/modules/shared/shared.module';
 import { FacturacionRoutingModule } from './facturacion-routing.module';
 import { ComprobantesComponent } from './pages/comprobantes/comprobantes.component';
@@ -15,7 +15,6 @@ import { FacturacionService } from './facturacion.service';
     FacturacionRoutingModule,
     NgxGalleryModule
   ],
-  entryComponents: [ServicioRenglonComponent],
   exports: [
     ServicioRenglonComponent
   ],

@@ -10,7 +10,7 @@ import { AppConfig } from '@app/configs/app.config';
 export class PublicLayoutComponent implements OnInit {
   currentDate: string;
   anio: number;
-  version = AppConfig.version;
+  version = AppConfig.settings.version;
 
   constructor() {}
 

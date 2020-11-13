@@ -1,0 +1,97 @@
+<h1 mat-dialog-title>Detalle del servicio: {{incidenteDetalle?.fecIncidente | date: 'dd/MM/yyyy'}} - {{incidenteDetalle?.nroIncidente}}</h1>
+<mat-dialog-content style="border-top: 1px solid #dadce0;">
+    <br />
+
+    <table class="full-width" cellspacing="0">
+        <tr>
+            <td>
+                <mat-form-field class="ml-5 mr-5 long-form-field">
+                    <input matInput type="text" placeholder="Paciente" value="{{incidenteDetalle?.paciente}}" disabled>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field class="ml-5 mr-5 medium-form-field">
+                    <input matInput type="text" placeholder="Grado" value="{{incidenteDetalle?.concepto}}" disabled>
+                </mat-form-field>
+                <mat-form-field class="ml-5 mr-5 medium-form-field">
+                    <input matInput type="text" placeholder="Sexo/Edad:" value="{{incidenteDetalle?.sexo + ' / ' + incidenteDetalle?.edad}}" disabled>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field class="ml-5 mr-5 long-form-field">
+                    <input matInput type="text" placeholder="Origen" value="{{incidenteDetalle?.origen}}" disabled>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field class="ml-5 mr-5 long-form-field">
+                    <input matInput type="text" placeholder="Motivo" value="{{incidenteDetalle?.motivo}}" disabled>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr *ngIf="incidenteDetalle?.destino.length > 1">
+            <td>
+                <mat-form-field class="ml-5 mr-5 long-form-field">
+                    <input matInput type="text" placeholder="Destino" value="{{incidenteDetalle?.destino}}" disabled>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr *ngIf="incidenteDetalle?.anexo1.length > 1">
+            <td>
+                <mat-form-field class="ml-5 mr-5 long-form-field">
+                    <input matInput type="text" placeholder="Anexo I:" value="{{incidenteDetalle?.anexo1}}" disabled>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr *ngIf="incidenteDetalle?.anexo2.length > 1">
+            <td>
+                <mat-form-field class="ml-5 mr-5 long-form-field">
+                    <input matInput type="text" placeholder="Anexo II:" value="{{incidenteDetalle?.anexo2}}" disabled>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field class="ml-5 mr-5 medium-form-field">
+                    <input matInput type="text" placeholder="Importe" value="{{incidenteDetalle?.importe | currency}}" disabled>
+                </mat-form-field>
+                <mat-form-field class="ml-5 mr-5 medium-form-field">
+                    <input matInput type="text" placeholder="CoPago" value="{{incidenteDetalle?.coPago | currency}}" disabled>
+                </mat-form-field>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field class="ml-5 mr-5 medium-form-field">
+                    <input matInput type="text" placeholder="Hora Despacho" value="{{incidenteDetalle?.horDespacho | date: 'HH:mm'}}" disabled>
+                </mat-form-field>
+                <mat-form-field class="ml-5 mr-5 medium-form-field">
+                    <input matInput type="text" placeholder="Hora Llegada" value="{{incidenteDetalle?.horLlegada | date: 'HH:mm'}}" disabled>
+                </mat-form-field>
+            </td>
+        </tr>
+    </table>
+    <div class="mat-elevation-z8">
+        <mat-table [dataSource]="incidenteDetalle?.incidenteCalculoList">
+            <ng-container matColumnDef="subConcepto">
+                <mat-header-cell *matHeaderCellDef>Composición del Cálculo...</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.subConcepto}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="importe">
+                <mat-header-cell *matHeaderCellDef class="align-currency">Importe</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="align-currency">{{element.importe | currency}}</mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="dcIncidenteDetalles"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: dcIncidenteDetalles;"></mat-row>
+        </mat-table>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right ">
+    <button mat-raised-button [mat-dialog-close]=" ">OK</button>
+</mat-dialog-actions>

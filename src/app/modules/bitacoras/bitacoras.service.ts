@@ -5,18 +5,23 @@ import { AppConfig } from '../../configs/app.config';
 import { Observable, of } from 'rxjs';
 // import { LoggerService } from '../../services/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Bitacora } from '@app/models/bitacora.model';
-import { listable } from '@app/models/listable.model';
+import { Listable } from '@app/models/listable.model';
+import { Adjunto } from '@app/models/adjunto.model';
+import { NotificationService } from '../core/services/notification.service';
+import { CommonService } from '../shared/services/common.service';
+import { SiteInfo } from '@app/models/site-info.model';
 
 @Injectable()
 export class BitacorasService {
-  pamiUrl: string;
   bitacoraApiUrl: string;
   // private http: Http,
-  constructor(private httpClient: HttpClient, public snackBar: MatSnackBar) {
-    this.bitacoraApiUrl = AppConfig.endpoints.api + 'bitacoras';
-    this.pamiUrl = AppConfig.endpoints.pami;
+  constructor(private httpClient: HttpClient,
+    public snackBar: MatSnackBar,
+    private notificationService: NotificationService,
+    private commonServices: CommonService) {
+    this.bitacoraApiUrl = AppConfig.settings.endpoints.api + 'bitacoras';
   }
 
   // #region Mock
@@ -44,7 +49,8 @@ export class BitacorasService {
       }
 
       if (showMessage) {
-        this.showSnackBar('Ha ocurrido un error al ' + operation);
+        // this.showSnackBar('Ha ocurrido un error al ' + operation);
+        this.notificationService.showError('Ha ocurrido un error al ' + operation);
       }
 
       return of(result as T);
@@ -52,10 +58,10 @@ export class BitacorasService {
   }
 
   public GetBitacoras(): Observable<Bitacora[]> {
-    const url = `${this.bitacoraApiUrl}`;
+    const url = `${this.bitacoraApiUrl}/GetBitacoras`;
     return this.httpClient.get<Bitacora[]>(url).pipe(
       // tap(() => LoggerService.log('fetched GetBitacoras')),
-      catchError(this.handleError<Bitacora[]>('Obtener las Bitacoras'))
+      catchError(this.handleError<Bitacora[]>('obtener los Hallazgos'))
     );
   }
 
@@ -64,7 +70,7 @@ export class BitacorasService {
     const headerOptions = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `${token}` });
     return this.httpClient.get<Bitacora[]>(url, { headers: headerOptions }).pipe(
       // tap(() => LoggerService.log('fetched GetBitacorasToken')),
-      catchError(this.handleError<Bitacora[]>('Obtener las Bitacoras'))
+      catchError(this.handleError<Bitacora[]>('obtener los Hallazgos'))
     );
   }
 
@@ -72,35 +78,44 @@ export class BitacorasService {
     const url = `${this.bitacoraApiUrl}/${id}`;
     return this.httpClient.get<Bitacora>(url).pipe(
       // tap(() => LoggerService.log(`fetched bitacora id=${id}`)),
-      catchError(this.handleError<Bitacora>(`Obtener la Bitacora`))
+      catchError(this.handleError<Bitacora>(`obtener el Hallazgo`))
     );
   }
 
-  public GetMotivos(): Observable<listable> {
-    const url = `${this.bitacoraApiUrl}Listables/GetMotivos`;
-    return this.httpClient.get<listable>(url).pipe(
+  public GetImages(idForAjd: string, idForAjdSubEnt: string): Observable<Adjunto[]> {
+    const url = `${this.bitacoraApiUrl}/${idForAjd}/${idForAjdSubEnt}`;
+    return this.httpClient.get<Adjunto[]>(url).pipe(
+      // tap(() => LoggerService.log('fetched GetBitacoras')),
+      catchError(this.handleError<Adjunto[]>('obtener las Imagenes'))
+    );
+  }
+
+
+  public GetMotivos(): Observable<Listable[]> {
+    const url = `${this.bitacoraApiUrl}/GetMotivos`;
+    return this.httpClient.get<Listable[]>(url).pipe(
       // tap(() => LoggerService.log('fetched GetMotivos')),
-      catchError(this.handleError<listable>('Obtener los Motivos'))
+      catchError(this.handleError<Listable[]>('obtener los Motivos'))
     );
   }
 
-  public GetEstados(): Observable<listable> {
-    const url = `${this.bitacoraApiUrl}Listables/GetEstados`;
-    return this.httpClient.get<listable>(url).pipe(
+  public GetEstados(): Observable<Listable[]> {
+    const url = `${this.bitacoraApiUrl}/GetEstados`;
+    return this.httpClient.get<Listable[]>(url).pipe(
       // tap(() => LoggerService.log('fetched GetEstados')),
-      catchError(this.handleError<listable>('Obtener los Estados'))
+      catchError(this.handleError<Listable[]>('obtener los Estados'))
     );
   }
 
   public GetNewBitacoraNro(): Observable<number> {
-    const url = `${this.bitacoraApiUrl}GetNewBitacoraNro`;
+    const url = `${this.bitacoraApiUrl}/GetNewBitacoraNro`;
     return this.httpClient.get<number>(url).pipe(
       // tap(() => LoggerService.log('fetched GetNewBitacoraNro')),
-      catchError(this.handleError<number>('Obtener datos'))
+      catchError(this.handleError<number>('obtener datos'))
     );
   }
 
-  public CreateBitacora(bitacora: Bitacora) {
+  public CreateBitacora(bitacora: Bitacora, site: SiteInfo) {
     const isNew = bitacora.id == 0;
     const url = `${this.bitacoraApiUrl}`;
     const body = JSON.stringify(bitacora);
@@ -108,15 +123,11 @@ export class BitacorasService {
     return this.httpClient.post(url, body, { headers: headerOptions }).pipe(
       tap(() => {
         // LoggerService.log('fetched CreateBitacora');
-        this.showSnackBar(isNew ? 'Bitacora creada' : 'Bitacora actualizada');
+        this.commonServices.showSnackBarSucces(isNew ? site.nombreSingular + (site.nombreGenero == 'M' ? ' creado' : ' creada') :
+                                                       site.nombreSingular + (site.nombreGenero == 'M' ? ' actualizado' : ' actualizada'));
       }),
-      catchError(this.handleError<Bitacora>(isNew ? 'crear la Bitacora' : 'actualizar la Bitacora'))
+      catchError(this.handleError<Bitacora>(isNew ? 'crear ' + (site.nombreGenero == 'M' ? 'el ' : 'la' ) + site.nombreSingular :
+                                                    'actualizar ' + (site.nombreGenero == 'M' ? 'el ' : 'la ') + site.nombreSingular))
     );
-  }
-
-  private showSnackBar(name): void {
-    const config: any = new MatSnackBarConfig();
-    config.duration = AppConfig.snackBarDuration;
-    this.snackBar.open(name, 'OK', config);
   }
 }

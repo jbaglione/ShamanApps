@@ -1,5 +1,11 @@
 .progress-bar-login {
-  position: absolute;
-  width: 100%;
-  height: 4px;
+    position: absolute;
+    width: 100%;
+    height: 4px;
+}
+
+.progress-bar-info {
+    opacity: 0.6;
+    /* background: lightgray; */
+    text-align: center;
 }

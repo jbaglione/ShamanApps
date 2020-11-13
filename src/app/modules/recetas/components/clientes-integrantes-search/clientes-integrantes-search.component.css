@@ -1,0 +1,31 @@
+.buttons {
+    margin-left: 5px !important;
+    margin-right: 5px !important;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+table {
+    width: 100%;
+    margin-top: 1px;
+}
+
+.mat-column-nroAfiliado,
+.mat-column-nroAfiliado {
+    padding-right: 4px;
+}
+
+@media(max-width: 600px) {
+    .buttons {
+        width: 100%;
+        margin-bottom: 5px;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+    }
+    .mat-column-nroAfiliado {
+        border-right: 1px solid #e0e0e0;
+    }
+}

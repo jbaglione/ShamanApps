@@ -1,0 +1,11 @@
+<div class="mensaje-item">
+  <mat-icon class="mensaje-item-img" [ngClass]="{'new': !mensajeItem.leido}">person</mat-icon>
+  <div class="mensaje-item-text">
+    <div class= "row1-container">
+      <div class="emisor ellipsis" [ngClass]="{'new-text': !mensajeItem.leido}">{{ mensajeItem.emisor }}</div>
+      <mat-icon class="new" *ngIf= "!mensajeItem.leido">fiber_new</mat-icon>
+    </div>
+    <p class="fecha" [ngClass]="{'new-font': !mensajeItem.leido}">{{ mensajeItem.fecha | date: 'dd/MM/yyyy HH:mm' }}</p>
+    <p class="contenido ellipsis">{{ mensajeItem.contenido }}</p>
+  </div>
+</div>

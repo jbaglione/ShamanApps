@@ -1,0 +1,35 @@
+<div class="toolbar">
+    <div class="tittle">
+      Alertas
+    </div>
+    <div class="buttons">
+      <button class="mat-button-icon-small" mat-icon-button type="button" mat-button  matTooltip="Cerrar" (click)= "close()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+</div>
+<mat-nav-list class="alertas-wrapper" *ngIf="alertas != null; else sinAlertas">
+  <ng-container *ngFor="let alerta of alertas; let last = last">
+      <div class="contenido">
+          <div class="alerta-item">
+            <mat-icon class="mensaje-item-img">notification_important</mat-icon>
+            <div class="mensaje-item-text">
+              <p>
+                {{alerta.descripcion}}
+              </p>
+            </div>
+          </div>
+      </div>
+    <mat-divider *ngIf="!last"></mat-divider>
+  </ng-container>
+</mat-nav-list>
+
+<ng-template #sinAlertas>
+  <div class="sin-alertas">
+      <div>
+          <mat-icon>notification_important</mat-icon>
+      </div>
+      <p>No tiene alertas</p>
+  </div>
+</ng-template>
+

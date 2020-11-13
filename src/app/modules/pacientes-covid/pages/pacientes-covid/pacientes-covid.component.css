@@ -1,0 +1,62 @@
+table {
+    width: 100%;
+}
+
+.mat-column-nroIncidente,
+.mat-column-nroIncidente {
+    max-width: 62px;
+    padding-right: 4px;
+}
+
+.mat-column-fecIncidente,
+.mat-column-fecIncidente {
+    max-width: 90px;
+}
+
+.mat-column-observaciones {
+    max-width: 30vw !important;
+}
+
+.warn {
+    color: red;
+    font-weight: bold;
+}
+
+.remark {
+    text-decoration: royalblue;
+    font-weight: bold;
+}
+
+.button-with-icon {
+    cursor: pointer !important;
+    margin-left: 5px;
+    /* background-color: whitesmoke; */
+    line-height: 29px !important;
+    border-color: lightgray;
+    border-width: 1px;
+    border-style: solid;
+    background-color: white;
+}
+
+.button-with-icon-aligns .span-with-icon-aligns {
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    margin-left: 6px;
+}
+
+.span-with-icon-aligns-right {
+    display: inline-flex;
+    margin-right: -5px;
+    margin-left: 5px;
+}
+
+@media(max-width: 767px) {
+    .mat-column-nroIncidente {
+        border-right: 1px solid #e0e0e0;
+    }
+}

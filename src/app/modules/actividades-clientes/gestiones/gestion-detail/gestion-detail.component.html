@@ -1,8 +1,8 @@
 <h1 mat-dialog-title>Registro de Gestiones</h1>
-<mat-dialog-content style="border-top: 1px solid #dadce0;">
+<div mat-dialog-content style="border-top: 1px solid #dadce0;">
     <br />
     <form class="example-form" [formGroup]="gestionForm" (ngSubmit)="guardarGestion()" novalidate="novalidate">
-        <table class="example-full-width" cellspacing="0">
+        <table class="full-width" cellspacing="0">
             <tr>
                 <td>
                     <mat-form-field>
@@ -58,8 +58,8 @@
             </tr>
         </table>
     </form>
-</mat-dialog-content>
-<mat-dialog-actions style="float:right ">
+</div>
+<div mat-dialog-actions style="float:right ">
     <button mat-raised-button color="accent" (click)="onNoClick() ">Cancelar</button>
     <button mat-raised-button type="submit " (click)="guardarGestion() ">Guardar</button>
-</mat-dialog-actions>
+</div>

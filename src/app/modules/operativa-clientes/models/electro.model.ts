@@ -1,5 +1,5 @@
 import { ElectroImagen } from './index';
-import { NgxGalleryOptions, NgxGalleryImage } from 'ngx-gallery';
+import { NgxGalleryOptions, NgxGalleryImage } from '@kolkov/ngx-gallery';
 
 export interface Electro {
     incidenteId: number;

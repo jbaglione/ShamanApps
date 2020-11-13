@@ -1,0 +1,122 @@
+<h1 mat-dialog-title>{{titulo}}</h1>
+<div mat-dialog-content style="border-top: 1px solid #dadce0;">
+    <mat-horizontal-stepper class="align-steper-in-full" [linear]="true" #stepper>
+        <mat-step>
+            <br />
+            <h2>¿El análisis fue realizado?</h2>
+            <div mat-dialog-actions>
+                <br />
+                <button mat-raised-button class="ml-5 mr-5" color="accent" (click)="setRealizado(false, stepper)">NO</button>
+                <button mat-raised-button class="ml-5 mr-5" color="primary" (click)="setRealizado(true, stepper)">SI</button>
+            </div>
+        </mat-step>
+        <mat-step [stepControl]="realizadoForm">
+            <div *ngIf="realizado">
+                <form [formGroup]="realizadoForm">
+                    <mat-form-field class="ml-5 mr-5 medium-form-field-50-100" style="min-width: 145px !important">
+                        <input matInput [ngxMatDatetimePicker]="picker" placeholder="Fecha" formControlName="fechaHora" [min]="minDate" [max]="maxDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false" [stepHour]="1" [stepMinute]="1" [stepSecond]="1" [touchUi]="false" [hideTime]="false">
+                        </ngx-mat-datetime-picker>
+                        <mat-error *ngIf="!f.fechaHora.valid">
+                            Debe ingresar una fecha y hora valida.
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="ml-5 mr-5 medium-form-field-50-100">
+                        <mat-select placeholder="Resultado" formControlName="resultado">
+                            <mat-option *ngFor="let item of resultados" [value]="item.id ">
+                                {{item.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="!f.resultado.valid">
+                            Debe seleccionar un Resultado.
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="ml-5 mr-5 medium-form-field-50-100">
+                        <mat-select placeholder="Laboratorio" formControlName="laboratorioId">
+                            <mat-option *ngFor="let item of laboratorios" [value]="item.id ">
+                                {{item.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="!f.laboratorioId.valid">
+                            Debe seleccionar un Laboratorio.
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div class="ml-5 mr-5" style="display: inline-grid; margin-top: 5px;">
+
+                        <button *ngIf="!hasAdjunto" mat-button type="button" (click)="myInput.click()" style="line-height: 25px;" matTooltip="Subir resultado del análisis realizado en formato jpg." class="button-with-icon-aligns button-with-icon mat-elevation-z3 boxMobileChild  accent-inverted-button ml-5 mr-5">
+                          <span class="span-with-icon-aligns" aria-hidden="true" >
+                            <mat-icon>cloud_upload</mat-icon>
+                          </span>
+                          <span>Subir análisis</span>
+                          <input type="file" #myInput (change)="onFileChange($event)" accept="image/*" style="display: none"/>
+                        </button>
+
+                        <mat-error *ngIf="!f.adjuntoFile.valid && formSend" style="font-size: 75%;">
+                            Debe incluir el análisis en JPG.
+                        </mat-error>
+
+                        <div *ngIf="hasAdjunto">
+                            <span>
+                            <button mat-button type="button" (click)="openImage()" style="line-height: 25px;" matTooltip="Ver." class="button-with-icon-aligns button-with-icon mat-elevation-z3 boxMobileChild  primary-inverted-button ml-5 mr-5">
+                              <span class="span-with-icon-aligns" aria-hidden="true" >
+                                <mat-icon>assignment_turned_in</mat-icon>
+                              </span>
+                            <span>{{f.adjuntoFileName.value}}</span>
+                            </button>
+                            <mat-icon (click)="eliminarAdjuntoActual()" matTooltip="Eliminar análisis actual y cargar otro." style="cursor: pointer; font-size: 16px; margin-left: 5px;">✖</mat-icon>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div *ngIf="!realizado">
+                <h3>Por favor, indique el motivo por el cual no se realizo el análisis.</h3>
+                <form [formGroup]="noRealizadoForm">
+                    <mat-form-field>
+                        <mat-select placeholder="Motivo" formControlName="motivoNoRealizado">
+                            <mat-option *ngFor="let item of motivos" [value]="item.id ">
+                                {{item.descripcion}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="!fn.motivoNoRealizado.valid">
+                            Debe seleccionar un motivo.
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="ml-5 mr-5" style="display: inline-grid; margin-top: 5px;">
+
+                        <button *ngIf="!hasAdjuntoFn" mat-button type="button" (click)="myInput.click()" style="line-height: 25px;" matTooltip="Subir comprobante del motivo." class="button-with-icon-aligns button-with-icon mat-elevation-z3 boxMobileChild  accent-inverted-button ml-5 mr-5">
+                        <span class="span-with-icon-aligns" aria-hidden="true" >
+                          <mat-icon>cloud_upload</mat-icon>
+                        </span>
+                        <span>Subir comprobante</span>
+                        <input type="file" #myInput (change)="onFileChange($event)" accept="image/*" style="display: none"/>
+                      </button>
+
+                        <mat-error *ngIf="!fn.adjuntoFile.valid && formSend" style="font-size: 75%;">
+                            Debe incluir un comprobante en JPG.
+                        </mat-error>
+
+                        <div *ngIf="hasAdjuntoFn">
+                            <span>
+                          <button mat-button type="button" (click)="openImage()" style="line-height: 25px;" matTooltip="Ver." class="button-with-icon-aligns button-with-icon mat-elevation-z3 boxMobileChild  primary-inverted-button ml-5 mr-5">
+                            <span class="span-with-icon-aligns" aria-hidden="true" >
+                              <mat-icon>assignment_turned_in</mat-icon>
+                            </span>
+                            <span>{{fn.adjuntoFileName.value}}</span>
+                            </button>
+                            <mat-icon (click)="eliminarAdjuntoActual()" matTooltip="Eliminar comprobante actual y cargar otro." style="cursor: pointer; font-size: 16px; margin-left: 5px;">✖</mat-icon>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div mat-dialog-actions>
+                <br />
+                <button mat-raised-button class="ml-5 mr-5" color="accent" matStepperPrevious>Atras</button>
+                <button mat-raised-button class="ml-5 mr-5" color="primary" (click)="aceptar() ">Aceptar</button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>

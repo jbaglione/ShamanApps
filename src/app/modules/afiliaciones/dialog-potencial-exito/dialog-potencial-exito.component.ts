@@ -1,10 +1,10 @@
 import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { AfiliacionesService } from '../afiliaciones.service';
 import { ClientePotencial } from 'src/app/models/cliente-potencial.model';
-import { listable } from '@app/models/listable.model';
+import { Listable } from '@app/models/listable.model';
 import { DialogComponent } from '@app/modules/shared/dialog/dialog.component';
 import { CommonService } from '@app/modules/shared/services/common.service';
 
@@ -19,7 +19,7 @@ export class PotencialExitoComponent {
   idClientePotencial = 0;
   clientePotencial: ClientePotencial;
   suspendido = true;
-  motivosSuspension: listable[];
+  motivosSuspension: Listable[];
   potencialExitoForm: FormGroup;
   resultDialog: boolean;
 
@@ -101,7 +101,7 @@ export class PotencialExitoComponent {
     }
 
     // if (this.potencialExitoForm.valid) {
-      this.clientePotencial.motivoSuspension = new listable(this.potencialExitoForm.controls.motivoSuspension.value, '');
+      this.clientePotencial.motivoSuspension = new Listable(this.potencialExitoForm.controls.motivoSuspension.value, '');
 
       this.afiliacionesService.guardarPotencialExito(this.clientePotencial).subscribe((clientePotencialUpdated: any) => {
         console.log(JSON.stringify(clientePotencialUpdated));

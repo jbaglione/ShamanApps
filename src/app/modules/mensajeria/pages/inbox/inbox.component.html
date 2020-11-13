@@ -1,0 +1,10 @@
+<div class="inbox-wrapper">
+  <aside class="side-list" ngClass.xs="side-list-mobile">
+      <app-mensajes-toolbar (refreshOutput)= "($event)" (sortItemOutput)= "sortMensajesItems($event)"></app-mensajes-toolbar>
+      <app-mensajes-list [cargandoMensajes]="cargandoMensajes$ | async" [mensajesItems] = mensajesItems  (mensajetItemOutput)="setMensajeSelected($event)"></app-mensajes-list>
+  </aside>
+  <section *ngIf="!mediaObserver.isActive('xs')">
+      <app-mensaje-content [mensaje] = "mensajeSelected"></app-mensaje-content>
+  </section>
+</div>
+

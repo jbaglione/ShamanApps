@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 // import { Http } from '@angular/http';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { AppConfig } from 'src/app/configs/app.config';
 import { MoliRealizado } from './models/moli-realizado';
 import { MoliRechazado } from './models/moli-rechazado';
@@ -16,7 +16,7 @@ export class MoliService {
     public snackBar: MatSnackBar
   ) {
     this.moliApiUrl =
-      AppConfig.endpoints.api + 'Moli';
+      AppConfig.settings.endpoints.api + 'Moli';
   }
 
   private handleError<T>(
@@ -55,7 +55,7 @@ export class MoliService {
 
     showSnackBar(name): void {
     const config: any = new MatSnackBarConfig();
-    config.duration = AppConfig.snackBarDuration;
+    config.duration = AppConfig.settings.snackBarDuration;
     this.snackBar.open(name, 'OK', config);
   }
 }

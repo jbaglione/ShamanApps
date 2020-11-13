@@ -20,9 +20,10 @@ export class GlobalErrorHandler implements ErrorHandler {
     const notifier = this.injector.get(NotificationService);
 
     let message: ErrorMessage;
-    let stackTrace;
+    let stackTrace: string;
     let apiEndpoint = '-';
     let isServerError = false;
+    let error401 = false;
 
     if (error instanceof HttpErrorResponse) {
         // Server Error
@@ -30,6 +31,7 @@ export class GlobalErrorHandler implements ErrorHandler {
         stackTrace = errorService.getServerStack(error);
         apiEndpoint = error.error.apiEndpoint;
         isServerError = true;
+        error401 = (error.status == 401);
     } else {
         // Client Error
         message = errorService.getClientMessage(error);
@@ -37,8 +39,9 @@ export class GlobalErrorHandler implements ErrorHandler {
     }
     notifier.showError(message.friendly);
 
-    // Always log errors
-    logger.logError(message.original, stackTrace, apiEndpoint, isServerError);
+    if (!error401) {
+      logger.logError(message.original, stackTrace, apiEndpoint, isServerError);
+    }
 
     console.error(error);
   }

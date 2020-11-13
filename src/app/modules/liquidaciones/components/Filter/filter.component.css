@@ -1,0 +1,39 @@
+.short-form-field {
+    max-width: 110px;
+}
+
+.short-long-form-field {
+    max-width: 110px;
+}
+
+.medium-form-field {
+    min-width: 200px;
+}
+
+.long-form-field {
+    min-width: 280px;
+}
+
+.buttons {
+    margin-left: 5px !important;
+    margin-right: 5px !important;
+}
+
+@media(max-width: 600px) {
+    .buttons {
+        width: 100%;
+        margin-bottom: 5px;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+    }
+    .short-form-field {
+        max-width: 46% !important;
+        width: 46% !important;
+    }
+    .medium-form-field,
+    .short-long-form-field,
+    .long-form-field {
+        width: 95%;
+        min-width: 95%;
+    }
+}

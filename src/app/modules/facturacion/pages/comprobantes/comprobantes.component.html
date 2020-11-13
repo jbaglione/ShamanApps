@@ -1,119 +1,119 @@
-<div class="container-padding">
-  <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." [formControl]="descripcionInput" name="Descripcion">
-  </mat-form-field>
-  <br>
-  <div class="mat-elevation-z8">
+<div class="padding-container">
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+        <button matPrefix mat-icon-button><mat-icon>search</mat-icon></button>
+    </mat-form-field>
+    <br>
+    <div class="mat-elevation-z8">
 
-      <mat-table [dataSource]="mtComprobantes" matSort #table>
-          <ng-container matColumnDef="formatedFecha">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</mat-header-cell>
-              <mat-cell *matCellDef="let element">
-                  <span class="mobile-label">Fecha:</span> {{element.formatedFecha | date: 'dd/MM/yyyy'}}
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="tipoComprobante">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</mat-header-cell>
-              <mat-cell *matCellDef="let element">
-                  <span class="mobile-label">Tipo:</span> {{element.tipoComprobante}}
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="nroComprobante">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Numero</mat-header-cell>
-              <mat-cell *matCellDef="let element">
-                  <span class="mobile-label">Numero:</span> {{element.nroComprobante}}
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="importeExento">
-              <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">$ Exento</mat-header-cell>
-              <mat-cell *matCellDef="let element" class="align-currency">
-                  <span class="mobile-label">$ Exento:</span> {{element.importeExento | currency}}
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="importeGravado">
-              <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">$ Gravado</mat-header-cell>
-              <mat-cell *matCellDef="let element" class="align-currency">
-                  <span class="mobile-label">$ Gravado:</span> {{element.importeGravado | currency}}
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="porcentajeIva">
-              <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">% Iva</mat-header-cell>
-              <mat-cell *matCellDef="let element" class="align-currency">
-                  <span class="mobile-label">% Iva:</span> {{element.porcentajeIva | percent}}
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="importeIva">
-              <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">$ Iva</mat-header-cell>
-              <mat-cell *matCellDef="let element" class="align-currency">
-                  <span class="mobile-label">$ Iva:</span> {{element.importeIva | currency}}
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="porcentajeARBA">
-              <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">% ARBA</mat-header-cell>
-              <mat-cell *matCellDef="let element" class="align-currency">
-                  <span class="mobile-label">% ARBA:</span> {{element.porcentajeARBA | percent}}
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="importeARBA">
-              <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">$ ARBA</mat-header-cell>
-              <mat-cell *matCellDef="let element" class="align-currency">
-                  <span class="mobile-label">$ ARBA:</span> {{element.importeARBA | currency}}
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="porcentajeAGIP">
-              <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">% AGIP</mat-header-cell>
-              <mat-cell *matCellDef="let element" class="align-currency">
-                  <span class="mobile-label">% AGIP:</span> {{element.porcentajeAGIP | percent}}
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="importeAGIP">
-              <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">$ AGIP</mat-header-cell>
-              <mat-cell *matCellDef="let element" class="align-currency">
-                  <span class="mobile-label">$ AGIP:</span> {{element.importeAGIP | currency}}
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="importe">
-              <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency" style="margin-right: 14px;">Importe</mat-header-cell>
-              <mat-cell *matCellDef="let element" class="align-currency" style="margin-right: 14px;">
-                  <span class="mobile-label">Importe:</span> {{element.importe | currency}}
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="descargar">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Descargar</mat-header-cell>
-              <mat-cell *matCellDef="let element">
-                  <span class="mobile-label">Descargar:</span>
-                  <!-- <div *ngIf="element.getComprobantePdf"> -->
-                  <button mat-icon-button matTooltip='Obtener comprobante' (click)='getComprobantePdf(element.id)'>
+        <mat-table [dataSource]="mtComprobantes" matSort #table>
+            <ng-container matColumnDef="formatedFecha">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Fecha:</span> {{element.formatedFecha | date: 'dd/MM/yyyy'}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="tipoComprobante">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Tipo:</span> {{element.tipoComprobante}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="nroComprobante">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Numero</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Numero:</span> {{element.nroComprobante}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="importeExento">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">$ Exento</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="align-currency">
+                    <span class="mobile-label">$ Exento:</span> {{element.importeExento | currency}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="importeGravado">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">$ Gravado</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="align-currency">
+                    <span class="mobile-label">$ Gravado:</span> {{element.importeGravado | currency}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="porcentajeIva">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">% Iva</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="align-currency">
+                    <span class="mobile-label">% Iva:</span> {{element.porcentajeIva | percent}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="importeIva">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">$ Iva</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="align-currency">
+                    <span class="mobile-label">$ Iva:</span> {{element.importeIva | currency}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="porcentajeARBA">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">% ARBA</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="align-currency">
+                    <span class="mobile-label">% ARBA:</span> {{element.porcentajeARBA | percent}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="importeARBA">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">$ ARBA</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="align-currency">
+                    <span class="mobile-label">$ ARBA:</span> {{element.importeARBA | currency}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="porcentajeAGIP">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">% AGIP</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="align-currency">
+                    <span class="mobile-label">% AGIP:</span> {{element.porcentajeAGIP | percent}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="importeAGIP">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency">$ AGIP</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="align-currency">
+                    <span class="mobile-label">$ AGIP:</span> {{element.importeAGIP | currency}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="importe">
+                <mat-header-cell *matHeaderCellDef mat-sort-header class="align-currency" style="margin-right: 14px;">Importe</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="align-currency" style="margin-right: 14px;">
+                    <span class="mobile-label">Importe:</span> {{element.importe | currency}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="descargar">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Descargar</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Descargar:</span>
+                    <!-- <div *ngIf="element.getComprobantePdf"> -->
+                    <button mat-icon-button matTooltip='Obtener comprobante' (click)='getComprobantePdf(element.id)'>
                             <mat-icon>cloud_download</mat-icon>
                     </button>
-                  <!-- </div> -->
-              </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="abrir">
-              <mat-header-cell *matHeaderCellDef>
-                  Abrir
-              </mat-header-cell>
-              <mat-cell *matCellDef="let element">
-                  <span class="mobile-label">Abrir:</span>
-                  <button (click)="abrirFactura(element.id)" mat-icon-button matTooltip='Ver servicios'>
-                    <mat-icon color="primary">date_range</mat-icon>
-                </button>
-              </mat-cell>
-          </ng-container>
-          <mat-header-row *matHeaderRowDef="dcComprobantes "></mat-header-row>
-          <mat-row *matRowDef="let row; columns: dcComprobantes; "></mat-row>
-      </mat-table>
+                    <!-- </div> -->
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="abrir">
+                <mat-header-cell *matHeaderCellDef>
+                    Abrir
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Abrir:</span>
+                    <button *ngIf="element.tipoProceso != 'CAP'" (click)="abrirFactura(element.id)" mat-icon-button matTooltip='Ver servicios'>
+                        <mat-icon color="primary">date_range</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="dcComprobantes "></mat-header-row>
+            <mat-row *matRowDef="let row; columns: dcComprobantes; "></mat-row>
+        </mat-table>
 
-      <mat-paginator [pageSizeOptions]="[7, 10, 25, 100] " *ngIf="mtComprobantes.data.length != 0"></mat-paginator>
+        <mat-paginator [pageSizeOptions]="[7, 10, 25, 100] " *ngIf="mtComprobantes.data.length != 0"></mat-paginator>
 
-      <div *ngIf="isLoading && mtComprobantes.data.length === 0" style="display: flex; justify-content: center; align-items: center; height: 200px;">
-          <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
-          </mat-progress-spinner>
-      </div>
+        <div *ngIf="isLoading && mtComprobantes.data.length === 0" style="display: flex; justify-content: center; align-items: center; height: 200px;">
+            <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+            </mat-progress-spinner>
+        </div>
 
-      <div style="text-align: center; padding-top: 40px; padding-bottom: 40px;" *ngIf="!isLoading && mtComprobantes.data.length === 0">
-          <!--(mtMoliRealizados.data === null ||  -->
-          NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
-      </div>
-  </div>
+        <div style="text-align: center; padding-top: 40px; padding-bottom: 40px;" *ngIf="!isLoading && mtComprobantes.data.length === 0">
+            NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
+        </div>
+    </div>
 </div>

@@ -1,17 +1,19 @@
 import { FormControl } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+
 
 import { PanelOperativoService } from '../../panel-operativo.service';
 import { PanelOperativo } from '../../models/panel-operativo.model';
 import { CommonService } from '@app/modules/shared/services/common.service';
 import { timer, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import 'ag-grid-enterprise';
+// import 'ag-grid-enterprise';
+// import 'ag-grid-comunity';
 import { CustomTooltip } from '../../components/custom.tooltip.component';
 import * as moment from 'moment';
 import { PopUpSalidaComponent } from './popup-salida/popup-salida.component';
 import { GridOptions } from 'ag-grid-community';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-panel-operativo',
@@ -43,7 +45,7 @@ export class PanelOperativoComponent implements OnInit, OnDestroy {
     // this.gridOptions.rowData = this.createRowData();
     this.gridOptions.paginationAutoPageSize = true;
     this.gridOptions.pagination = true;
-    this.gridOptions.deltaRowDataMode = true;
+    this.gridOptions.immutableData = true;
     // this.gridOptions.getRowNodeId = this.getRowNodeId();
     this.gridOptions.allowContextMenuWithControlKey = true;
     this.gridOptions.frameworkComponents = this.frameworkComponents;
@@ -131,7 +133,7 @@ export class PanelOperativoComponent implements OnInit, OnDestroy {
   CellRendererNroIncidente(params) {
     const element = document.createElement('span');
     // const imageElement = document.createElement('img');
-    console.log(params);
+    // console.log(params);
     if (params.data.flgSimultaneo === 1) {
       params.value = (params.value + 's');
     } else if (params.data.viajeId === 'VUE') {
@@ -231,7 +233,8 @@ export class PanelOperativoComponent implements OnInit, OnDestroy {
       //   }
       // },
       // +25 width by cause filter button
-      { headerName: 'Id', field: 'id', sortable: true, filter: true, hide: true, suppressToolPanel: true },
+      { headerName: 'Id', field: 'id', sortable: true, filter: true, hide: true,
+        suppressColumnsToolPanel: true, suppressFiltersToolPanel: true },
       {
         headerName: 'Grd', field: 'grado', width: 60, sortable: true, filter: true, headerTooltip: 'Grado',
         tooltipComponent: 'customTooltip',

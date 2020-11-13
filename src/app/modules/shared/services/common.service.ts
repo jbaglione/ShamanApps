@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AppConfig } from '../../../configs/app.config';
 
 import { BehaviorSubject, Observable, of, throwError as observableThrowError } from 'rxjs';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
@@ -23,12 +23,14 @@ export class CommonService {
 
   public showSnackBar(name): void {
     const config: any = new MatSnackBarConfig();
-    config.duration = AppConfig.snackBarDuration;
+    config.duration = AppConfig.settings.snackBarDuration;
+    config.verticalPosition = 'top';
     this.snackBar.open(name, 'OK', config);
   }
+
   public showSnackBarFatal(name): void {
     const config: MatSnackBarConfig = new MatSnackBarConfig();
-    config.duration = AppConfig.snackBarDuration;
+    config.duration = AppConfig.settings.snackBarDuration;
     config.verticalPosition = 'top';
     config.panelClass = ['warn-bg'];
     this.snackBar.open(name, '', config);
@@ -36,8 +38,8 @@ export class CommonService {
 
   public showSnackBarSucces(name): void {
     const config: MatSnackBarConfig = new MatSnackBarConfig();
-    config.duration = AppConfig.snackBarDuration;
-    // config.verticalPosition = 'top';
+    config.duration = AppConfig.settings.snackBarDuration;
+    config.verticalPosition = 'top';
     config.panelClass = ['style-succes'];
     this.snackBar.open(name, 'OK', config);
   }
@@ -50,5 +52,19 @@ export class CommonService {
       )
     );
     return getRequests;
+  }
+
+  public createOneGetRequets(url: string): Observable<Blob> {
+     return this.httpClient.get(url, { responseType: 'blob' });
+  }
+
+  public getFileName(url: string) {
+    let fileName: String;
+    if (url.includes('\\')) {
+      fileName = url.substring(url.lastIndexOf('\\') + 1);
+    } else {
+      fileName = url.substring(url.lastIndexOf('/') + 1);
+    }
+    return fileName;
   }
 }

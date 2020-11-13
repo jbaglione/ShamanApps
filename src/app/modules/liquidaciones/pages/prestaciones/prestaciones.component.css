@@ -1,0 +1,65 @@
+table {
+    width: 100%;
+}
+
+.header-align-right {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 1em;
+    padding-top: 20.9px;
+    padding-bottom: 20.9px;
+}
+
+.cell-align-right {
+    text-align: end;
+    padding-right: 2em;
+}
+
+.mat-success {
+    background-color: #fff;
+    color: #27ae60;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    /* border: 1px solid #ccc; */
+    display: inline-block;
+    padding-top: 6px;
+    cursor: pointer;
+}
+
+.like-link {
+    text-decoration: underline;
+    text-decoration-color: blue;
+    color: blue;
+}
+
+.display-content-mobile {
+    display: flex;
+}
+
+@media(max-width: 767px) {
+    .mat-column-nroIncidente {
+        border-right: 1px solid #e0e0e0;
+    }
+}
+
+@media(max-width: 600px) {
+    .display-content-mobile {
+        display: contents;
+    }
+    .short-form-field {
+        max-width: 46% !important;
+        width: 46% !important;
+    }
+    .long-form-field {
+        width: 95%;
+        min-width: 95%;
+    }
+    .mat-cell-button {
+        width: auto !important;
+    }
+}

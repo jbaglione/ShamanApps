@@ -2,12 +2,10 @@ import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from '@app/modules/shared/shared.module';
 import { SecurityRoutingModule } from '@app/modules/security/security-routing.module';
-import { AuthGuard } from '@app/modules/security/helpers/index';
-import { LoginComponent } from '@app/modules/security/pages/login';
-import { AuthenticationService } from '@app/modules/security/authentication.service';
 import { DialogForgotPasswordComponent } from './components/dialog-forgot-password/dialog-forgot-password.component';
 import { DialogRegisterComponent } from './components/dialog-register/dialog-register.component';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   declarations: [

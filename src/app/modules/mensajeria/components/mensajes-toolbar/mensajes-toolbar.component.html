@@ -1,0 +1,11 @@
+<div class="toolbar">
+  <div class="tittle">
+    Inbox
+  </div>
+  <div class="buttons">
+    <!-- <app-sort-button [sortItems]= sortItems (sortItemSelectedOutput)= "setSortItem($event)"></app-sort-button> -->
+    <button class="mat-button-icon-small" mat-icon-button type="button" mat-button (click) = "refresh_click()" matTooltip="Refrescar mensajes">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+</div>

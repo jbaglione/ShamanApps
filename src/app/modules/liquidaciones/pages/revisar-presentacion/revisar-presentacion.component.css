@@ -1,0 +1,56 @@
+table {
+    width: 100%;
+}
+
+.mat-radio-button~.mat-radio-button {
+    margin-left: 16px;
+}
+
+.very-short-form-field {
+    max-width: 80px;
+}
+
+.short-form-field {
+    max-width: 31%;
+}
+
+.medium-form-field {
+    min-width: 48%;
+}
+
+.long-form-field {
+    min-width: 98%;
+}
+
+.mat-cell-first {
+    padding-left: 0px !important;
+}
+
+.aligned-with-icon {
+    position: absolute;
+    margin-top: 3px;
+    margin-left: 5px;
+    /* optional */
+}
+
+.icon-label {
+    display: flex;
+    align-items: center;
+    /* justo for demo */
+    /* border: 1px solid #ccc;
+    padding: 5px; */
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+@media(max-width: 600px) {
+    .medium-form-field {
+        min-width: 98%;
+    }
+    .short-form-field {
+        max-width: 29%;
+    }
+    .mat-radio-button~.mat-radio-button {
+        margin-left: 0px;
+    }
+}

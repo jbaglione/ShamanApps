@@ -1,6 +1,9 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component, ViewChild, OnInit, Input } from '@angular/core';
-import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
 
 import { AuthenticationService } from '../../security/authentication.service';
@@ -19,8 +22,8 @@ export class CuentaCorrienteComponent implements OnInit {
   dcClienteCuentaCorriente: string[] = ['nro', 'fecDocumento', 'tipoComprobante', 'nroComprobante', 'debe', 'haber', 'comprobante'];
   mtClienteCuentaCorriente: MatTableDataSource<ClienteCuentaCorriente>;
   clienteCuentaCorriente: ClienteCuentaCorriente[];
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   descripcionInput: FormControl;
 
@@ -43,11 +46,11 @@ export class CuentaCorrienteComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    if (filterValue != null && filterValue != '') {
+    if (filterValue) {
       filterValue = filterValue.trim();
       filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-      this.mtClienteCuentaCorriente.filter = filterValue;
     }
+      this.mtClienteCuentaCorriente.filter = filterValue;
   }
 
   getTotalCost() {

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@app/modules/shared/shared.module';
-import { NgxGalleryModule } from 'ngx-gallery';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { PanelOperativoRoutingModule } from './panel-operativo-routing.module';
 import { PanelOperativoService } from './panel-operativo.service';
 import * as agGridAngular from 'ag-grid-angular';

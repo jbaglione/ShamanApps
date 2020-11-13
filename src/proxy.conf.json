@@ -1,0 +1,10 @@
+{
+    "/extranet-api": {
+        "target": "https://extranet.paramedic.com.ar/extranet-api/api/",
+        "secure": false
+    },
+    "/extranet-security": {
+        "target": "https://extranet.paramedic.com.ar/extranet-security/security/",
+        "secure": false
+    }
+}

@@ -47,7 +47,6 @@ import { AfiliacionesService } from './afiliaciones.service';
       AfiliacionesDetailComponent,
       AfiliacionesListComponent
   ],
-  entryComponents: [PotencialExitoComponent],
     providers: [
         AfiliacionesService
     ]

@@ -1,12 +1,13 @@
 import { Component, Inject, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ClientesGestion } from 'src/app/models/clientes-gestion';
 import { ActividadesClientesService } from '../../actividades-clientes.service';
 import { DialogComponent } from '../../../shared/dialog/dialog.component';
-import { listable } from '../../../../models/listable.model';
+import { Listable } from '../../../../models/listable.model';
 import { ClienteAdjuntos } from 'src/app/models/clienteAdjuntos.model';
+import { CommonService } from '@app/modules/shared/services/common.service';
 
 @Component({
   selector: 'app-gestion-detail',
@@ -18,13 +19,13 @@ export class GestionDetailComponent {
 
   idRegistracionSeleccionada = 0;
   gestion: ClientesGestion = new ClientesGestion();
-  tiposGestion: listable;
+  tiposGestion: Listable;
   gestionForm: FormGroup;
   resultDialog: boolean;
   // Usar si quiero mostrar el nuevo numero antes.
   newGestionNro: number;
 
-  @ViewChild('myInput', {static: false})
+  @ViewChild('myInput')
   myInputVariable: ElementRef;
 
   constructor(
@@ -32,7 +33,8 @@ export class GestionDetailComponent {
     @Inject(MAT_DIALOG_DATA) public dialogData: GestionesDialogData,
     private gestionesService: ActividadesClientesService,
     public dialog: MatDialog,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private commonService: CommonService
   ) {
     this.gestion.id = dialogData.id == 'nuevo' ? 0 : parseFloat(dialogData.id);
     this.gestion.clienteId = parseFloat(dialogData.clienteId);
@@ -80,7 +82,7 @@ export class GestionDetailComponent {
 
     if (event.target.files && event.target.files.length) {
       if (event.target.files[0].type != 'application/pdf') {
-        alert(event.target.files[0].name + ' no es un archivo pdf valido');
+        this.commonService.showSnackBar(event.target.files[0].name + ' no es un archivo pdf valido');
         event.target.files = null;
         this.reset();
         this.cd.markForCheck();
@@ -109,7 +111,7 @@ export class GestionDetailComponent {
 
     this.gestionForm.patchValue({
       fecha: this.gestion.fecha,
-      tipoGestion: this.gestion.tipoGestion == null ? new listable('1', '') : this.gestion.tipoGestion.id,
+      tipoGestion: this.gestion.tipoGestion == null ? new Listable('1', '') : this.gestion.tipoGestion.id,
       observaciones: this.gestion.observaciones,
       fechaRecontacto: this.gestion.fechaRecontacto,
       adjuntoArchivo: this.gestion.adjunto.archivo
@@ -142,7 +144,7 @@ export class GestionDetailComponent {
     if (this.gestionForm.valid) {
 
       this.gestion.fecha = this.gestionForm.controls.fecha.value;
-      this.gestion.tipoGestion = new listable(this.gestionForm.controls.tipoGestion.value, '');
+      this.gestion.tipoGestion = new Listable(this.gestionForm.controls.tipoGestion.value, '');
       this.gestion.observaciones = this.gestionForm.controls.observaciones.value;
       this.gestion.fechaRecontacto = this.gestionForm.controls.fechaRecontacto.value;
       this.gestion.adjunto.archivo = this.gestionForm.controls.adjuntoArchivo.value;

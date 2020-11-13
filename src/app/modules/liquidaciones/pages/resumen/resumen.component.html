@@ -1,0 +1,131 @@
+<div class="padding-container">
+    <div class="flex-container">
+        <div class="mat-elevation-z6 table-custom-margin">
+            <div class="auto-container">
+                <table mat-table [dataSource]="mtProductividad">
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;">Productividad</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div *ngIf="element.link==0">{{element.descripcion}}</div>
+                            <a (click)="resumenDetalle(element)" *ngIf="element.link!=0 && !element.descripcion.includes('Horas Movil')" class="like-link">{{element.descripcion}}</a>
+                            <a (click)="resumenHoras(element)" *ngIf="element.link!=0 && element.descripcion.includes('Horas Movil')" class="like-link">{{element.descripcion}}</a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="importe">
+                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;">Importe</th>
+                        <td mat-cell *matCellDef="let element">{{element.importe | currency}}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="dcProductividad"></tr>
+                    <tr mat-row *matRowDef="let row; columns: dcProductividad; "></tr>
+                </table>
+            </div>
+            <div *ngIf="isLoading && mtProductividad.data.length === 0" class="display-loading">
+                <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+                </mat-progress-spinner>
+            </div>
+            <div class="empty-table" *ngIf="!isLoading && mtProductividad.data.length === 0">
+                NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
+            </div>
+        </div>
+        <div class="mat-elevation-z6 table-custom-margin">
+            <div class="auto-container">
+                <table mat-table [dataSource]="mtFactura">
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;">Su Factura</th>
+                        <td mat-cell *matCellDef="let element">{{element.descripcion}}</td>
+                        <td [hidden]="userAcceso != 1" mat-footer-cell *matFooterCellDef>
+                            <div [hidden]="mtFactura.data[0]?.flgStatus==1">* Aguarde antes de confeccionar su factura</div>
+                            <a (click)="goToCuentasCorrientes()" [hidden]="mtFactura.data[0]?.flgStatus==0" style="cursor: pointer;" title="Haga click para dirigir al sitio de facturación" class="like-link">
+                                <p>* Ya puede confeccionar su factura</p>
+                            </a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="importe">
+                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;">Importe</th>
+                        <td mat-cell *matCellDef="let element">{{element.importe | currency}}</td>
+                        <td [hidden]="userAcceso != 1" mat-footer-cell *matFooterCellDef></td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="dcFactura"></tr>
+                    <tr mat-row *matRowDef="let row; columns: dcFactura; "></tr>
+                    <tr [hidden]="userAcceso != 1" mat-footer-row *matFooterRowDef="dcFactura"></tr>
+                </table>
+            </div>
+            <div *ngIf="isLoading && mtFactura.data.length === 0" class="display-loading">
+                <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+                </mat-progress-spinner>
+            </div>
+            <div class="empty-table" *ngIf="!isLoading && mtFactura.data.length === 0">
+                NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
+            </div>
+        </div>
+        <div class="mat-elevation-z6 table-custom-margin">
+            <div class="auto-container">
+                <table mat-table [dataSource]="mtRetenciones">
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;">Retenciones Impositivias</th>
+                        <td mat-cell *matCellDef="let element">{{element.descripcion}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="importe">
+                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;">Importe</th>
+                        <td mat-cell *matCellDef="let element">{{element.importe | currency}}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="dcRetenciones"></tr>
+                    <tr mat-row *matRowDef="let row; columns: dcRetenciones; "></tr>
+                </table>
+            </div>
+            <div *ngIf="isLoading && mtRetenciones.data.length === 0" class="display-loading">
+                <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+                </mat-progress-spinner>
+            </div>
+            <div class="empty-table" *ngIf="!isLoading && mtRetenciones.data.length === 0">
+                NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
+            </div>
+        </div>
+        <div class="mat-elevation-z6 table-custom-margin">
+            <div class="auto-container">
+                <table mat-table [dataSource]="mtDescuentos">
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;">Descuentos</th>
+                        <td mat-cell *matCellDef="let element">{{element.descripcion}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="importe">
+                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;">Importe</th>
+                        <td mat-cell *matCellDef="let element">{{element.importe | currency}}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="dcDescuentos"></tr>
+                    <tr mat-row *matRowDef="let row; columns: dcDescuentos; "></tr>
+                </table>
+            </div>
+            <div *ngIf="isLoading && mtDescuentos.data.length === 0" class="display-loading">
+                <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+                </mat-progress-spinner>
+            </div>
+            <div class="empty-table" *ngIf="!isLoading && mtDescuentos.data.length === 0">
+                NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
+            </div>
+        </div>
+        <div class="mat-elevation-z6 table-custom-margin">
+            <div class="auto-container">
+                <table mat-table [dataSource]="mtPagos">
+                    <ng-container matColumnDef="descripcion">
+                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;">Pagos</th>
+                        <td mat-cell *matCellDef="let element" [style]="element.descripcion == 'Total a Cobrar'? element.importe < 0 ? 'color: red; font-weight: bold;': 'color: green; font-weight: bold;':''">{{element.descripcion}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="importe">
+                        <th mat-header-cell *matHeaderCellDef style="font-weight: bold;">Importe</th>
+                        <td mat-cell *matCellDef="let element" [style]="element.descripcion == 'Total a Cobrar'? element.importe < 0 ? 'color: red; font-weight: bold;': 'color: green; font-weight: bold;':''">{{element.importe | currency}}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="dcPagos"></tr>
+                    <tr mat-row *matRowDef="let row; columns: dcPagos; "></tr>
+                </table>
+            </div>
+            <div *ngIf="isLoading && mtPagos.data.length === 0" class="display-loading">
+                <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+                </mat-progress-spinner>
+            </div>
+            <div class="empty-table" *ngIf="!isLoading && mtPagos.data.length === 0">
+                NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
+            </div>
+        </div>
+    </div>
+</div>

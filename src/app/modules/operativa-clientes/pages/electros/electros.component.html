@@ -1,4 +1,4 @@
-<div class="container-padding">
+<div class="padding-container">
     <mat-form-field class="ml-5 mr-5">
         <input matInput [matDatepicker]="picker1" placeholder="Fecha Desde" [formControl]="desde" name="dpDesde">
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
@@ -9,15 +9,17 @@
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
-
+    <mat-form-field class="ml-5 mr-5">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+    </mat-form-field>
     <button mat-raised-button type="submit" (click)="getElectros()" [disabled]="isLoading">Buscar</button>
-    <div fxLayout="row" fxLayoutAlign="end center">
+    <!-- <div fxLayout="row" fxLayoutAlign="end center">
         <mat-form-field class="ml-5 mr-5" fxFlex="30" fxFlex.xs="100">
             <mat-icon matPrefix>filter_list</mat-icon>
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar grilla" type="text" [formControl]="descripcionInput" name="Descripcion">
         </mat-form-field>
         <br>
-    </div>
+    </div> -->
 
     <div class="mat-elevation-z8">
         <mat-table [dataSource]="mtElectros" matSort>
@@ -83,5 +85,3 @@
         </div>
     </div>
 </div>
-
-

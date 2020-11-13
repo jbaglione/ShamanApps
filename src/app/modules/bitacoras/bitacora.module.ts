@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { NgxGalleryModule } from 'ngx-gallery';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { SharedModule } from '@app/modules/shared/shared.module';
 import { UploadModule } from '@app/modules/upload/upload.module';
 import { BitacoraDetailComponent } from './bitacora-detail/bitacora-detail.component';

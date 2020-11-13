@@ -1,25 +1,21 @@
-import { Plugins, Filesystem, FilesystemDirectory, CameraResultType, Camera, Capacitor, FilesystemEncoding } from '@capacitor/core';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import { CommonService } from '@app/modules/shared/services/common.service';
 import { ExportMatTableToXlxs } from '../helpers/export-mat-table-to-xlxs';
-import { Injectable } from '@Angular/core';
+import { Injectable } from '@angular/core';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
-import { DeviceDetectorService } from 'ngx-device-detector';
 import { DateHelper } from '../helpers/DateHelper';
+import { HttpHeaders } from '@angular/common/http';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class FileService {
 
   static EXCEL_TYPE: FileType = { contentType: 'application/vnd.ms-excel', extension: '.xls', replace: 'data:application/vnd.ms-excel;base64,' };
   static EXCEL_NEW_TYPE: FileType = { contentType: 'application/vnd.ms-excel', extension: '.xlsx', replace: 'data:application/vnd.ms-excel;base64,' };
   static PDF_TYPE: FileType = { contentType: 'application/pdf', extension: '.pdf', replace: 'data:application/pdf;base64,' };
-  isMobile: boolean;
 
-  constructor(private commonService: CommonService,
-              private deviceService: DeviceDetectorService
+  constructor(private commonService: CommonService
   ) {
-    this.isMobile = this.deviceService.isMobile();
   }
 
   public exportMatTable(exportable: ExportMatTableToXlxs, mtDataSource: MatTableDataSource<any>, filename: string, share = false) {
@@ -35,265 +31,124 @@ export class FileService {
   }
 
   private exportExcel(json: any[], filename: string, share: boolean): void {
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+    // const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+
     const workbook: XLSX.WorkBook = {
-      Sheets: { data: worksheet },
+      Sheets: { data: this.GetWorkSheetAutofitColumns(json) },
       SheetNames: ['data']
     };
     const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
 
-    if (share) {
-      this.shareBuffer(excelBuffer, filename, FileService.EXCEL_NEW_TYPE);
-    } else {
-      this.saveBuffer(excelBuffer, filename, FileService.EXCEL_NEW_TYPE);
-    }
+    this.saveBuffer(excelBuffer, filename, FileService.EXCEL_NEW_TYPE);
   }
 
-  public shareBuffer(buffer: any, filename: string, fileType: FileType): void {
-    const fullFilename = filename + '_' + DateHelper.getFormattedTime() + fileType.extension;
-    const blob: Blob = new Blob([buffer], { type: fileType.contentType });
-    this.shareBlob(blob, fullFilename, fileType);
+  GetWorkSheetAutofitColumns(json: any[]): XLSX.WorkSheet {
+        let objectMaxLength = [];
+        for (let i = 0; i < json.length; i++) {
+          let value = <any>Object.values(json[i]);
+          for (let j = 0; j < value?.length; j++) {
+            if (typeof value[j] == 'number') {
+              objectMaxLength[j] = 10; // OJO con esto
+            } else {
+              objectMaxLength[j] =
+                objectMaxLength[j] >= value[j]?.length
+                  ? objectMaxLength[j]
+                  : value[j]?.length;
+            }
+          }
+        }
+        console.log(objectMaxLength);
+
+        let wscols = [
+          { width: objectMaxLength[0] + 1 },
+          { width: objectMaxLength[1] + 1 },
+          { width: objectMaxLength[2] + 1 },
+          { width: objectMaxLength[3] + 1 },
+          { width: objectMaxLength[4] + 1 },
+          { width: objectMaxLength[5] + 1 },
+          { width: objectMaxLength[6] + 1 },
+          { width: objectMaxLength[7] + 1 },
+          { width: objectMaxLength[8] + 1 },
+          { width: objectMaxLength[9] + 1 },
+          { width: objectMaxLength[10] + 1 },
+          { width: objectMaxLength[11] + 1 },
+          { width: objectMaxLength[12] + 1 },
+          { width: objectMaxLength[13] + 1 },
+          { width: objectMaxLength[14] + 1 },
+          { width: objectMaxLength[15] + 1 },
+          { width: objectMaxLength[16] + 1 },
+          { width: objectMaxLength[17] + 1 },
+          { width: objectMaxLength[18] + 1 },
+          { width: objectMaxLength[19] + 1}
+        ];
+
+        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+        worksheet['!cols'] = wscols;
+        return worksheet;
   }
 
-  public shareBlob(blob: Blob, fullFilename: string, fileType: FileType): void {
-
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    reader.onloadend = () => {
-      Plugins.FileSharer.share({
-        filename: fullFilename,
-        base64Data: reader.result.toString().replace(fileType.replace, ''),
-        contentType: fileType.contentType,
-      }).then(() => {
-        // do sth
-      }).catch(error => {
-        throw error;
-      });
-    };
-  }
-
-  public saveBuffer(buffer: any, filename: string, fileType: FileType): void {
-    const fullFilename = filename + '_' + DateHelper.getFormattedTime() + fileType.extension;
+  public saveBuffer(buffer: any, filename: string, fileType: FileType, isFullFileName = false): void {
+    const fullFilename = isFullFileName ? filename : filename + '_' + DateHelper.getFormattedTime() + fileType.extension;
     const data: Blob = new Blob([buffer], { type: fileType.contentType });
 
-    if (this.isMobile) {
-      this.saveBlobMobileNew(data, fullFilename, fileType);
-      // this.shareBlob(data, fullFilename, fileType);
+    FileSaver.saveAs(data, fullFilename);
+  }
+
+
+  public base64ToBlob(b64Data, contentType = '', sliceSize = 512): Blob {
+    b64Data = b64Data.replace(/\s/g, ''); // IE compatibility...
+    let byteCharacters = atob(b64Data);
+    let byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        let slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        let byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+        let byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+    return new Blob(byteArrays, {type: contentType});
+  }
+
+
+  // Extras
+  public getFileNameFromHeader(headers: HttpHeaders) {
+    let fileName = '';
+    const contentDisposition = headers.get('Content-Disposition');
+    if (contentDisposition) {
+      const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+      const matches = fileNameRegex.exec(contentDisposition);
+      if (matches != null && matches[1]) {
+        fileName = matches[1].replace(/['"]/g, '');
+        fileName = fileName.replace('=?utf-8?B?', '').split('?')[0];
+        console.log(fileName);
+        try {
+          fileName = this.b64DecodeUnicode(fileName);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+    return fileName;
+  }
+
+  public b64DecodeUnicode(str: string): string {
+    if (window && 'atob' in window && 'decodeURIComponent' in window) {
+        return decodeURIComponent(Array.prototype.map.call(atob(str), (c) => {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
     } else {
-      FileSaver.saveAs(data, fullFilename);
+        console.warn('b64DecodeUnicode requirements: window.atob and window.decodeURIComponent functions');
+        return null;
     }
-  }
-
-  public saveBlobMobile(blob: Blob, fullFilename: string): void {
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    reader.onloadend = () => {
-      const result = reader.result as string;
-      try {
-        Filesystem.writeFile({
-          path: fullFilename,
-          data: result,
-          directory: FilesystemDirectory.Documents
-        }).then(() => {
-          Filesystem.getUri({
-            directory: FilesystemDirectory.Documents,
-            path: fullFilename
-          }).then(() => {
-            this.commonService.showSnackBar(fullFilename + ' guardado');
-          }, (error) => {
-            this.commonService.showSnackBar('Error, no se pudo guardar el archivo');
-          });
-        });
-      } catch (error) {
-        this.commonService.showSnackBar('Error, no se pudo guardar el archivo');
-      }
-    };
-  }
-
-  public saveBlobMobileNew(blob: Blob, fullFilename: string, fileType: FileType): void {
-    try {
-      this.readAsBinaryString(blob).then((result) => {
-        this.fileWrite(result, fullFilename, fileType);
-      });
-      this.commonService.showSnackBar(fullFilename + ' guardado');
-    } catch (error) {
-      this.commonService.showSnackBar('Error, no se pudo guardar el archivo');
-    }
-  }
-
-  fileWrite(dataString: string, fullFilename: string, fileType: FileType) {
-    Plugins.Filesystem.writeFile({
-      path: fullFilename,
-      data: dataString.replace(fileType.replace, ''),
-      directory: FilesystemDirectory.Documents
-    });
-  }
-
-  readAsBinaryString(file: Blob): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = (event) => {
-        resolve(reader.result as string);
-      };
-      reader.onerror = (event) => {
-        reject(reader.error);
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  public async takePhotoAsync() {
-    const options = {
-      resultType: CameraResultType.Uri
-    };
-
-    const originalPhoto = await Camera.getPhoto(options);
-    const photoInTempStorage = await Filesystem.readFile({ path: originalPhoto.path });
-
-    const date = new Date(),
-      time = date.getTime(),
-      filename = time + '.jpeg';
-
-    await Filesystem.writeFile({
-      data: photoInTempStorage.data,
-      path: filename,
-      directory: FilesystemDirectory.Data
-    });
-
-    const finalPhotoUri = await Filesystem.getUri({
-      directory: FilesystemDirectory.Data,
-      path: filename
-    });
-
-    const photoPath = Capacitor.convertFileSrc(finalPhotoUri.uri);
-    console.log(photoPath);
-  }
-
-  public takePhoto() {
-    const options = {
-      resultType: CameraResultType.Uri
-    };
-    Camera.getPhoto(options).then(
-      photo => {
-        Filesystem.readFile({
-          path: photo.path
-        }).then(
-          result => {
-            const date = new Date(),
-              time = date.getTime(),
-              filename = time + '.jpeg';
-            Filesystem.writeFile({
-              data: result.data,
-              path: filename,
-              directory: FilesystemDirectory.Data
-            }).then(
-              () => {
-                Filesystem.getUri({
-                  directory: FilesystemDirectory.Data,
-                  path: filename
-                }).then(
-                  newResult => {
-                    const path = Capacitor.convertFileSrc(newResult.uri);
-                    console.log(path);
-                  },
-                  err => {
-                    console.log(err);
-                  }
-                );
-              },
-              err => {
-                console.log(err);
-              }
-            );
-          },
-          err => {
-            console.log(err);
-          }
-        );
-      },
-      err => {
-        console.log(err);
-      }
-    );
   }
 }
+
 
 export interface FileType {
   contentType: string;
   replace: string;
   extension: string;
 }
-
-// original takePhoto: https://www.joshmorony.com/using-the-capacitor-filesystem-api-to-store-photos/
-//   takePhoto() {
-//     const options = {
-//       resultType: CameraResultType.Uri
-//     };
-//     Camera.getPhoto(options).then(
-//       photo => {
-//         Filesystem.readFile({
-//           path: photo.path
-//         }).then(
-//           result => {
-//             let date = new Date(),
-//               time = date.getTime(),
-//               fileName = time + ".jpeg";
-//             Filesystem.writeFile({
-//               data: result.data,
-//               path: fileName,
-//               directory: FilesystemDirectory.Data
-//             }).then(
-//               () => {
-//                 Filesystem.getUri({
-//                   directory: FilesystemDirectory.Data,
-//                   path: fileName
-//                 }).then(
-//                   result => {
-//                     let path = Capacitor.convertFileSrc(result.uri);
-//                     console.log(path);
-//                   },
-//                   err => {
-//                     console.log(err);
-//                   }
-//                 );
-//               },
-//               err => {
-//                 console.log(err);
-//               }
-//             );
-//           },
-//           err => {
-//             console.log(err);
-//           }
-//         );
-//       },
-//       err => {
-//         console.log(err);
-//       }
-//     );
-// }
-
-  /// NOTA: Add plugin fileshare in Android Studio. MainActivity
-
-  // import android.os.Bundle;
-  // import com.byteowls.capacitor.filesharer.FileSharerPlugin;
-  // import com.getcapacitor.BridgeActivity;
-  // import com.getcapacitor.Plugin;
-
-  // import java.util.ArrayList;
-  // import java.util.List;
-
-  // public class MainActivity extends BridgeActivity {
-  //   @Override
-  //   public void onCreate(Bundle savedInstanceState) {
-  //     super.onCreate(savedInstanceState);
-
-  //     List<Class<? extends Plugin>> additionalPlugins = new ArrayList<>();
-  //     // Additional plugins you've installed go here
-  //     // Ex: additionalPlugins.add(TotallyAwesomePlugin.class);
-  //     additionalPlugins.add(FileSharerPlugin.class);
-
-  //     // Initializes the Bridge
-  //     this.init(savedInstanceState, additionalPlugins);
-  //   }
-  // }

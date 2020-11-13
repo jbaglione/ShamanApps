@@ -1,7 +1,10 @@
 import { FormControl } from '@angular/forms';
 import { Component, ViewChild, ViewChildren, QueryList, OnInit} from '@angular/core';
-import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/material';
-import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryComponent } from 'ngx-gallery';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryComponent } from '@kolkov/ngx-gallery';
 
 import { OperativaClientesService } from '../../operativa-clientes.service';
 import { Electro } from '../../models/electro.model';
@@ -39,12 +42,12 @@ export class ElectrosComponent implements OnInit  {
 
   @ViewChildren(NgxGalleryComponent) query: QueryList<NgxGalleryComponent>;
 
-  @ViewChild(MatSort, {static: false}) set matSort(ms: MatSort) {
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
     this.sort = ms;
     this.setDataSourceAttributes();
   }
 
-  @ViewChild(MatPaginator, {static: false}) set matPaginator(mp: MatPaginator) {
+  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
     this.paginator = mp;
     this.setDataSourceAttributes();
   }
@@ -70,8 +73,10 @@ export class ElectrosComponent implements OnInit  {
   }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim();
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    if (filterValue) {
+      filterValue = filterValue.trim();
+      filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    }
     this.mtElectros.filter = filterValue;
   }
 

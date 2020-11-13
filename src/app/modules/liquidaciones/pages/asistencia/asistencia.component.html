@@ -1,0 +1,92 @@
+<div class="padding-container">
+    <div class="mat-elevation-z8">
+        <div class="auto-container">
+            <table mat-table [dataSource]="mtAsistencia" matSort #table>
+                <ng-container matColumnDef="fecMovimiento" sticky>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+                    <td mat-cell *matCellDef="let element">{{element.fecMovimiento | date: 'dd/MM/yyyy'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="diaSemana">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Día</th>
+                    <td mat-cell *matCellDef="let element">{{element.diaSemana }}</td>
+                </ng-container>
+                <ng-container matColumnDef="pacFecHorInicio">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Inicio Pactado</th>
+                    <td mat-cell *matCellDef="let element">{{element.pacFecHorInicio | date: 'HH:mm'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="pacFecHorFinal">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Final Pactado</th>
+                    <td mat-cell *matCellDef="let element">{{element.pacFecHorFinal | date: 'HH:mm'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="horasPactadas">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Horas Pactadas">Horas Pac</th>
+                    <td mat-cell *matCellDef="let element">{{element.horasPactadas | number: '2.2-2'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="relFecHorInicio">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Inicio Real</th>
+                    <td mat-cell *matCellDef="let element">{{element.relFecHorInicio | date: 'HH:mm'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="minTarde">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Minutos Tarde</th>
+                    <td mat-cell *matCellDef="let element">{{element.minTarde | date: 'HH:mm'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="tarde">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tarde</th>
+                    <td mat-cell *matCellDef="let element">
+                        <label [style]="formatearHora(element.anticipado)">
+                        {{element.tarde | date: 'HH:mm'}}
+                      </label>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="relFecHorFinal">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Final Real</th>
+                    <td mat-cell *matCellDef="let element">{{element.relFecHorFinal | date: 'HH:mm'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="minAnticipado">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Minutos Anticipado</th>
+                    <td mat-cell *matCellDef="let element">{{element.minAnticipado | date: 'HH:mm'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="anticipado">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Anticipado</th>
+                    <td mat-cell *matCellDef="let element">
+                        <label [style]="formatearHora(element.anticipado)">
+                      {{element.anticipado | date: 'HH:mm'}}
+                      </label>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="motivoDescuento">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Condicional</th>
+                    <td mat-cell *matCellDef="let element">{{element.motivoDescuento}}</td>
+                </ng-container>
+                <ng-container matColumnDef="virTpoDescontable">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tiempo</th>
+                    <td mat-cell *matCellDef="let element">
+                        <label [style]="formatearHora(element.virTpoDescontable)">
+                        {{element.virTpoDescontable | date: 'HH:mm'}}
+                      </label>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="horasTrabajadas">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Horas Trabajadas">Horas Tra.</th>
+                    <td mat-cell *matCellDef="let element">{{element.horasTrabajadas | number: '2.2-2'}}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="dcAsistencia "></tr>
+                <tr mat-row *matRowDef="let row; columns: dcAsistencia; "></tr>
+            </table>
+        </div>
+
+        <div>
+            <mat-paginator #paginator [pageSizeOptions]="[7, 10, 25, 100] " *ngIf="mtAsistencia.data.length != 0" class="mat-paginator-sticky" [showFirstLastButtons]="true"></mat-paginator>
+        </div>
+        <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; height: 200px;">
+            <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+            </mat-progress-spinner>
+        </div>
+
+        <div style="text-align: center; padding-top: 40px; padding-bottom: 40px;" *ngIf="!isLoading && mtAsistencia.data.length === 0">
+            NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
+        </div>
+    </div>
+    <!-- <app-barra class="chart"></app-barra> -->
+</div>

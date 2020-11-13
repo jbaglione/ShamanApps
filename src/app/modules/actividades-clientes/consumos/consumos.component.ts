@@ -1,11 +1,14 @@
 import { Component, ViewChild, OnInit, Input } from '@angular/core';
-import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
 
 import { AuthenticationService } from '../../security/authentication.service';
 import { ActividadesClientesService } from '../actividades-clientes.service';
 import { ClienteConsumo } from 'src/app/models/cliente-consumo';
-import { listable } from 'src/app/models/listable.model';
+import { Listable } from 'src/app/models/listable.model';
 import { MatTableLoadingService } from '@app/modules/shared/services/mat-table-loading.service';
 import { VendedorService } from '@app/modules/shared/services/vendedor.service';
 
@@ -31,7 +34,7 @@ export class ConsumosComponent implements OnInit {
   vendedorSelect: FormControl;
 
   // Listados para combos
-  vendedores: listable[] = [{ descripcion: 'Todos', id: '0' }];
+  vendedores: Listable[] = [{ descripcion: 'Todos', id: '0' }];
 
   // Datos para grilla
   dcClienteConsumos = [
@@ -50,12 +53,12 @@ export class ConsumosComponent implements OnInit {
   private paginator: MatPaginator;
   private sort: MatSort;
 
-  @ViewChild(MatSort, {static: false}) set matSort(ms: MatSort) {
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
     this.sort = ms;
     this.setDataSourceAttributes();
   }
 
-  @ViewChild(MatPaginator, {static: false}) set matPaginator(mp: MatPaginator) {
+  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
     this.paginator = mp;
     this.setDataSourceAttributes();
   }
@@ -69,8 +72,8 @@ export class ConsumosComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userAcceso = this.authenticationService.getAccesosCurrentUser().toString();
-    this.userId = this.authenticationService.currentUserValue.id;
+    this.userAcceso = this.authenticationService.currentAcceso.toString();
+    this.userId = this.authenticationService.currentUser.id;
     this.modoGenerico = this.clienteId == 0;
 
     this.descripcionInput = new FormControl('');
@@ -98,8 +101,10 @@ export class ConsumosComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim();
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    if (filterValue) {
+      filterValue = filterValue.trim();
+      filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    }
     this.mtClienteConsumos.filter = filterValue;
   }
 

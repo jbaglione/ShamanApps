@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppConfig } from '@app/configs/app.config';
-import { listable } from '@app/models/listable.model';
+import { Listable } from '@app/models/listable.model';
 import { shareReplay } from 'rxjs/operators';
 
 
@@ -10,19 +10,18 @@ import { shareReplay } from 'rxjs/operators';
   providedIn: 'root'
 })
 
-
     export class VendedorService {
 
     constructor(private http: HttpClient) { }
 
-    private listUrl: string = AppConfig.endpoints.api + 'Vendedores';
+    private listUrl: string = AppConfig.settings.endpoints.api + 'Vendedores';
 
-    private vendedor$: Observable<listable[]>;
+    private vendedor$: Observable<Listable[]>;
 
 
-    getVendedores(): Observable<listable[]> {
+    getVendedores(): Observable<Listable[]> {
         if (!this.vendedor$) {
-            this.vendedor$ = this.http.get<listable[]>(this.listUrl).pipe(shareReplay());
+            this.vendedor$ = this.http.get<Listable[]>(this.listUrl).pipe(shareReplay());
         }
 
          // if products cache exists return it

@@ -1,11 +1,14 @@
 import { Component, ViewChild, OnInit, Input } from '@angular/core';
-import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { AuthenticationService } from '../../../security/authentication.service';
 import { ClientesGestion } from 'src/app/models/clientes-gestion';
 import { ActividadesClientesService } from '../../actividades-clientes.service';
 import { GestionDetailComponent } from '../gestion-detail/gestion-detail.component';
-import { listable } from 'src/app/models/listable.model';
+import { Listable } from 'src/app/models/listable.model';
 import { FormControl } from '@angular/forms';
 import { MatTableLoadingService } from '@app/modules/shared/services/mat-table-loading.service';
 import { VendedorService } from '@app/modules/shared/services/vendedor.service';
@@ -34,11 +37,11 @@ export class GestionesComponent implements OnInit {
   chkResumir: boolean;
 
   // Listados para combos
-  tiposFechas: listable [] = [
+  tiposFechas: Listable [] = [
     { descripcion: 'Realizadas', id: '0' },
     { descripcion: 'Programadas', id: '1' }
   ];
-  vendedores: listable[] = [{ descripcion: 'Todos', id: '0' }];
+  vendedores: Listable[] = [{ descripcion: 'Todos', id: '0' }];
 
   // Datos para grilla
   dcClientesGestiones: string[] = [
@@ -54,12 +57,12 @@ export class GestionesComponent implements OnInit {
   private paginator: MatPaginator;
   private sort: MatSort;
 
-  @ViewChild(MatSort, {static: false}) set matSort(ms: MatSort) {
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
     this.sort = ms;
     this.setDataSourceAttributes();
   }
 
-  @ViewChild(MatPaginator, {static: false}) set matPaginator(mp: MatPaginator) {
+  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
     this.paginator = mp;
     this.setDataSourceAttributes();
   }
@@ -73,8 +76,8 @@ export class GestionesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userAcceso = this.authenticationService.getAccesosCurrentUser().toString();
-    this.userId = this.authenticationService.currentUserValue.id;
+    this.userAcceso = this.authenticationService.currentAcceso.toString();
+    this.userId = this.authenticationService.currentUser.id;
     this.modoGenerico = this.clienteId == 0;
 
 
@@ -103,8 +106,10 @@ export class GestionesComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim();
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    if (filterValue) {
+      filterValue = filterValue.trim();
+      filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    }
     this.mtClientesGestiones.filter = filterValue;
   }
 

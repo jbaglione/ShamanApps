@@ -40,6 +40,9 @@ export class ErrorService {
           }
         }
         errorMessage.friendly = errorMessage.original;
+      } else if (error.status == 422) {
+        errorMessage.original = error.error;
+        errorMessage.friendly = error.error;
       } else if (error.status >= 401 && error.status < 500) {
         errorMessage.original = error.error.detail;
         errorMessage.friendly = errorMessage.original;

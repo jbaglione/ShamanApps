@@ -33,4 +33,69 @@ img:hover {
 
 .gallery {
     width: 100% !important;
+    min-height: 150px !important;
+    max-height: 250px !important;
+    background-color: whitesmoke !important;
+    padding-left: 10px !important;
+    padding-top: 0px !important;
+    padding-right: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.mat-row:hover {
+    cursor: pointer !important;
+}
+
+[mat-row].remove-background {
+    background: none !important;
+}
+
+.date-form-field {
+    width: 178px;
+}
+
+
+/* .content-button-guardar-mobile {
+    visibility: collapse;
+} */
+
+.content-button-guardar-mobile {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    float: right;
+}
+
+.button-guardar {
+    margin: 5px;
+}
+
+@media(max-width: 600px) {
+    .mat-form-field {
+        width: 46%;
+    }
+    .mat-column-fecha {
+        flex: 0 0 0 0;
+    }
+    .long-form-field {
+        width: 95%;
+        min-width: 95%;
+    }
+    .date-form-field {
+        width: 46%;
+    }
+    .very-short-form-field {
+        max-width: 46%;
+    }
+    .btnGuardar {
+        width: 95%;
+    }
+    .content-button-guardar-mobile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        float: none;
+    }
 }

@@ -1,17 +1,23 @@
 import { FormControl } from '@angular/forms';
 import { Component, ViewChild, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatTableDataSource, MatSort, MatDialog, MatPaginator, MatButton } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
-import { NgxGalleryImage, NgxGalleryOptions, NgxGalleryComponent } from 'ngx-gallery';
+import { NgxGalleryImage, NgxGalleryOptions, NgxGalleryComponent } from '@kolkov/ngx-gallery';
 
 import { FacturacionService } from '../../facturacion.service';
 import { ComprobanteServicio, ComprobanteServicioForExcel } from '../../models/comprobante-servicio';
 import { CommonService } from '@app/modules/shared/services/common.service';
-import { ExportMatTableToXlxs } from '@app/modules/shared/helpers/export-mat-table-to-xlxs';
 import { DownloadHelper } from '@app/modules/shared/helpers/download';
 import { ServicioRenglonComponent } from '../servicio-renglones/servicio-renglones.component';
 import { FileService } from '@app/modules/shared/services/files.service';
+import { DescUrl } from '@app/models/DescUrl';
+import { DialogComponent } from '@app/modules/shared/dialog/dialog.component';
+import { DatePipe } from '@angular/common';
+import { ProgressBarService } from '@app/modules/shared/services/progress-bar.service';
 
 @Component({
   selector: 'app-comprobante-servicios',
@@ -41,35 +47,35 @@ export class ComprobanteServiciosComponent implements OnInit {
     'importeBase',
     'recargos',
     'importe',
-    'verImagenesServicios',
+    'viewFilesServicios',
     'calculo'
   ];
   mtComprobanteServicios: MatTableDataSource<ComprobanteServicio> = new MatTableDataSource();
   private paginator: MatPaginator;
   private sort: MatSort;
 
-  allImagesUrl: string[];
+  allFilesUrl: DescUrl[];
   getRequests = [];
 
-  @ViewChild(MatSort, {static: false}) set matSort(ms: MatSort) {
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
     this.sort = ms;
     this.setDataSourceAttributes();
   }
-
   @ViewChildren(NgxGalleryComponent) query: QueryList<NgxGalleryComponent>;
 
-  @ViewChild(MatPaginator, {static: false}) set matPaginator(mp: MatPaginator) {
+  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
     this.paginator = mp;
     this.setDataSourceAttributes();
   }
-
+  messageError = ''; // no mostrar mensaje, Javi. 'Ocurrio un error al obtener los archivos de los siguiente servicios: ';
   constructor(
     private facturacionService: FacturacionService,
     private commonService: CommonService,
     public dialog: MatDialog,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private fileService: FileService
+    private fileService: FileService,
+    private progressBarService: ProgressBarService
   ) {
     this.commonService.setTitulo('Servicios');
     activatedRoute.params.subscribe(params => {
@@ -88,14 +94,16 @@ export class ComprobanteServiciosComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    if (filterValue != null && filterValue != '') {
+    if (filterValue) {
+      filterValue = filterValue.trim();
       filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-      this.mtComprobanteServicios.filter = filterValue;
     }
+    this.mtComprobanteServicios.filter = filterValue;
   }
 
   getComprobanteServicios() {
-    this.allImagesUrl = [];
+    const datePipe = new DatePipe('en-US');
+    this.allFilesUrl = [];
     const that = this;
     that.isLoading = true;
     that.facturacionService
@@ -107,10 +115,22 @@ export class ComprobanteServiciosComponent implements OnInit {
         comprobanteServicios.forEach(function (servicio) {
           servicio.galleryOptions = that.buildGalleryOptionsObject(servicio);
           servicio.galleryImages = new Array<NgxGalleryImage>();
-          servicio.servicioImagenes.forEach(function (servicioImagen) {
-            servicio.galleryImages.push(that.buildGalleryImage(servicioImagen.fullPath));
-            that.allImagesUrl.push(servicioImagen.fullPath);
-          });
+          if (servicio.ordenesFiles) {
+            servicio.servicioImagenes.forEach(function (servicioImagen) {
+              servicio.galleryImages.push(that.buildGalleryImage(servicioImagen.fullPath));
+              that.allFilesUrl.push(
+                new DescUrl(
+                  servicioImagen.fullPath,
+                  `Incidente: ${servicio.nroIncidente}, Fecha: ${datePipe.transform(servicio.formatedFecha, 'dd/MM/yyyy')}`)
+                  );
+            });
+          } else if (servicio.ordenPdfFullPath) {
+            that.allFilesUrl.push(
+              new DescUrl(
+                servicio.ordenPdfFullPath,
+                `Incidente: ${servicio.nroIncidente}, Fecha: ${datePipe.transform(servicio.formatedFecha, 'dd/MM/yyyy')}`)
+                );
+          }
         });
         that.isLoading = false;
         this.mtComprobanteServicios = new MatTableDataSource(comprobanteServicios);
@@ -194,9 +214,30 @@ export class ComprobanteServiciosComponent implements OnInit {
     });
   }
 
-  verRenglones(servicioId: number, nroInterno: number) {
+  openGalleryByElement(element: ComprobanteServicio) {
+    let getImageOk = false;
+    this.query.forEach(function (value, index, array) {
+      if (element.galleryImages[0].big == value.bigImages[0]) {
+        // si no refresca la imagen, modificar en: node_modules\@kolkov\ngx-gallery\__ivy_ngcc__\fesm5\kolkov-ngx-gallery.js
+        // NgxGalleryPreviewComponent.prototype._show = function()
+        // this.getSafeUrl(this.images[this.index]); ==> this.getSafeUrl(this.images[this.index] + '?time=' + new Date().getTime());
+        // Si lo modificamos desde aca, falla la linea this.getFileType(this.images[this.index]);
+        value.openPreview(0);
+        getImageOk = true;
+      }
+    });
+    if (!getImageOk) {
+      this.openResultadoPdf(element.ordenPdfFullPath);
+      this.commonService.showSnackBar('La imagen no se encontro');
+    }
+  }
 
-    const dialogRef = this.dialog.open(ServicioRenglonComponent, {
+  openResultadoPdf(fullPath: string) {
+    window.open(fullPath + '?time=' + new Date().getTime(), '_blank');
+  }
+
+  verRenglones(servicioId: number, nroInterno: number) {
+    this.dialog.open(ServicioRenglonComponent, {
       width: '95vw',
       maxWidth: '700px',
       data: { comprobaneId: this.comprobanteId, servicioId: servicioId, nroInterno: nroInterno }
@@ -207,8 +248,47 @@ export class ComprobanteServiciosComponent implements OnInit {
     this.fileService.exportMatTable(new ComprobanteServicioForExcel(), this.mtComprobanteServicios, 'comprobanteServicios');
   }
 
-  downloadAllImages() {
-    DownloadHelper.downloadAllInZip(this.allImagesUrl, 'imagenes.zip', this.commonService);
+  downloadAllImagesClient() {
+    this.setIsLoading(true);
+    DownloadHelper.setIsLoadingEvent.subscribe((event: boolean) => this.setIsLoading(false));
+
+    DownloadHelper.downloadAllInZipV2(this.allFilesUrl, 'imagenes.zip', this.commonService, this.dialog, this.messageError);
   }
 
+  downloadAllImagesServer() {
+    this.setIsLoading(true);
+    this.facturacionService
+      .getComprobanteServiciosZip(this.comprobanteId)
+      .subscribe(filesZipped => {
+        this.setIsLoading(false);
+        if (filesZipped) {
+          filesZipped.errors = ''; // No mostrar errores, pedido de Javi.
+          if (filesZipped.errors) {
+            this.dialog.open(DialogComponent, {
+              width: '350px',
+              data: {
+                title: 'Advertencia', content: '<p>' + this.messageError + '<br />'
+                  + filesZipped.errors + '</p>',
+                yesText: 'OK', noText: ''
+              }
+            }).afterClosed().subscribe(resultDialog => {
+              saveAs(this.fileService.base64ToBlob(filesZipped.file, ''), 'imagenes.zip');
+            });
+          } else {
+            saveAs(this.fileService.base64ToBlob(filesZipped.file, ''), 'imagenes.zip');
+          }
+        }
+      });
+    }
+
+    setIsLoading(isDownloading: boolean, info = '' ) {
+      if (isDownloading) {
+        this.isDownloading = true;
+        this.progressBarService.activarProgressBar(info);
+      } else {
+        this.isDownloading = false;
+        this.progressBarService.desactivarProgressBar();
+      }
+
+    }
 }

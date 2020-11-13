@@ -12,6 +12,7 @@ export interface Comprobante {
   porcentajeAGIP: number;
   importeAGIP: number;
   importe: number;
+  tipoProceso: string;
 }
 
 export interface ExportableBlob {

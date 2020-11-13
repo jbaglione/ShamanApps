@@ -6,7 +6,8 @@
 
 <div [hidden]="!modoGenerico">
     <mat-form-field class="ml-5 mr-5">
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+        <button matPrefix mat-icon-button><mat-icon>search</mat-icon></button>
     </mat-form-field>
     <mat-form-field class="ml-5 mr-5 short-form-field">
         <input matInput [matDatepicker]="picker1" placeholder="Fecha" [formControl]="desde" name="dpDesde">
@@ -51,25 +52,25 @@
         <ng-container matColumnDef="dominioId">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Patente</mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Patente:</span> {{element.movil == null?'': element.movil.descripcion}}
+                <span class="mobile-label">Patente:</span> {{element.dominioId}}
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="chofer">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Chofer</mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Chofer:</span> {{element.chofer == null?'': element.chofer.descripcion}}
+                <span class="mobile-label">Chofer:</span> {{element.chofer}}
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="medico">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Medico</mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Medico:</span> {{element.medico == null?'': element.medico.descripcion}}
+                <span class="mobile-label">Medico:</span> {{element.medico}}
             </mat-cell>
         </ng-container>
         <ng-container matColumnDef="enfermero">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Enfermero</mat-header-cell>
             <mat-cell *matCellDef="let element">
-                <span class="mobile-label">Enfermero:</span> {{element.enfermero == null?'': element.enfermero.descripcion}}
+                <span class="mobile-label">Enfermero:</span> {{element.enfermero}}
             </mat-cell>
         </ng-container>
         condicion

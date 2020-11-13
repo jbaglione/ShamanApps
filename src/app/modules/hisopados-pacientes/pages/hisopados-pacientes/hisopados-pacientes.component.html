@@ -1,0 +1,91 @@
+<div class="padding-container">
+    <div class="padding-container">
+        <mat-form-field class="ml-5 mr-5 short-form-field-50-50">
+            <input matInput [matDatepicker]="picker1" placeholder="Fecha Desde" [formControl]="desde" name="dpDesde">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="ml-5 mr-5 short-form-field-50-50">
+            <input matInput [matDatepicker]="picker2" placeholder="Fecha Hasta" [formControl]="hasta" name="dpHasta">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="ml-5 mr-5 long-form-field-50-100">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+            <button matPrefix mat-icon-button><mat-icon>search</mat-icon></button>
+        </mat-form-field>
+        <div class="boxMobile">
+            <button mat-raised-button type="submit" (click)="getHisopadosPacientes()" [disabled]="isLoading" class="boxMobileChild">Buscar</button>
+        </div>
+        <!-- <div fxLayout="row" fxLayoutAlign="end center">
+        <mat-form-field class="ml-5 mr-5" fxFlex="30" fxFlex.xs="100">
+            <mat-icon matPrefix>filter_list</mat-icon>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar grilla" type="text" [formControl]="descripcionInput" name="Descripcion">
+        </mat-form-field>
+        <br>
+    </div> -->
+
+        <div class="mat-elevation-z8 table-custom-margin">
+            <div class="auto-container">
+                <table mat-table *ngIf="!isLoading" [dataSource]="mtHisopadosPacientes" matSort #table>
+                    <ng-container matColumnDef="nroIncidente" sticky>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Incidente</th>
+                        <td mat-cell *matCellDef="let element">{{element.nroIncidente}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="fecIncidente">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+                        <td mat-cell *matCellDef="let element">{{element.fecIncidente | date: 'dd/MM/yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="sintoma">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sintoma</th>
+                        <td mat-cell *matCellDef="let element">{{element.sintoma}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="diagnostico">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Diagnostico</th>
+                        <td mat-cell *matCellDef="let element">{{element.diagnostico}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="archivo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Archivo</th>
+                        <ng-container *matCellDef="let element">
+                            <td mat-cell *ngIf="element.resultadoPdfFullPath && element.flgResultado == 1">
+                                <div>
+                                    <div class="display-content-mobile" style="margin-left: -10px;">
+                                        <button (click)="openResultadoPdf(element.resultadoPdfFullPath)" mat-icon-button matTooltip="Ver resultado del laboratorio."><mat-icon>picture_as_pdf</mat-icon></button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td mat-cell *ngIf="!element.resultadoPdfFullPath && element.flgResultado == 1">
+                                <ngx-gallery [options]="element.galleryOptions" [images]="element.galleryImages" class="ngx-gallery"></ngx-gallery>
+                                <div *ngIf="element.resultadoJPG != null ">
+                                    <div class="display-content-mobile" style="margin-left: -10px;">
+                                        <button (click)="openGalleryByElement(element)" mat-icon-button matTooltip="Ver."><mat-icon>photo_library</mat-icon></button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td mat-cell *ngIf="element.flgResultado == 0">
+                                <div>
+                                    <div class="display-content-mobile" style="margin-left: -10px;">
+                                        <button (click)="downloadConstanciaAtencion(element)" mat-icon-button matTooltip="Obtener constancia de atención."><mat-icon>description</mat-icon></button>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="dcHisopadosPacientes"></tr>
+                    <tr mat-row *matRowDef="let row; columns: dcHisopadosPacientes; "></tr>
+                </table>
+            </div>
+            <mat-paginator *ngIf="!isLoading" [pageSizeOptions]="[7, 10, 25, 100]" [hidden]="mtHisopadosPacientes.data.length == 0 || isLoading" class="mat-paginator-sticky"></mat-paginator>
+
+            <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; height: 200px; background-color:white">
+                <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+                </mat-progress-spinner>
+            </div>
+
+            <div style="text-align: center; padding-top: 40px; padding-bottom: 40px;" *ngIf="!isLoading && mtHisopadosPacientes.data.length === 0">
+                NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
+            </div>
+        </div>
+    </div>
+</div>

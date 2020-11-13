@@ -1,0 +1,24 @@
+table {
+    width: 100%;
+}
+
+.mat-column-nroIncidente,
+.mat-column-nroIncidente {
+    max-width: 78px;
+}
+
+.mat-column-fecIncidente,
+.mat-column-fecIncidente {
+    padding-left: 12px;
+}
+
+.warn {
+    color: red;
+    font-weight: bold;
+}
+
+@media(max-width: 767px) {
+    .mat-column-nroIncidente {
+        border-right: 1px solid #e0e0e0;
+    }
+}

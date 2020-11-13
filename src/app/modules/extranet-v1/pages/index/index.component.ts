@@ -20,10 +20,10 @@ export class IndexComponent implements OnInit {
   ngOnInit() {
     this.activateRoute.params.subscribe(params => {
       this.page = this.activateRoute.snapshot.params['page'];
-      const micrositioV1 = this.authenticationService.currentUserValue.micrositiosV1.find(m => m.codigo.toString() == this.page);
+      const micrositioV1 = this.authenticationService.currentUser.micrositiosV1.find(m => m.codigo.toString() == this.page);
       this.commonService.setTitulo(micrositioV1.titulo);
       const urlPage = micrositioV1.urlV1;
-      const token = this.authenticationService.currentUserValue.tokenInfo.accessToken;
+      const token = this.authenticationService.currentUser.tokenInfo.accessToken;
       this.urlPageTrusted = urlPage + (urlPage.includes('?') ? '&' : '?') +  'token=' + token;
     });
   }

@@ -15,10 +15,10 @@ export class LoggingService {
   constructor(private httpClient: HttpClient, private authenticationService: AuthenticationService) { }
 
   logError(message: string, stack: string, apiEndpoint: string, isServerError: boolean) {
-    let currentUser = this.authenticationService.currentUserValue;
+    let currentUser = this.authenticationService.currentUser;
     let that = this;
 
-    this.httpClient.get(AppConfig.proxyCORSUrl  + AppConfig.getApiURL).subscribe(data => {
+    this.httpClient.get(AppConfig.settings.proxyCORSUrl  + AppConfig.settings.getApiURL).subscribe(data => {
       that.messageToSend = {
         channel: '#extranet',
         text: ((isServerError) ? 'SERVER' :  'CLIENT') + ' ERROR- ' + message,
@@ -45,8 +45,7 @@ export class LoggingService {
       };
 
       let messageToSend = JSON.stringify(that.messageToSend);
-      that.httpClient.post(AppConfig.proxyCORSUrl + AppConfig.urlWebHook + AppConfig.keyWebHook,  messageToSend, options).subscribe();
-
+      // that.httpClient.post(AppConfig.settings.proxyCORSUrl + AppConfig.settings.urlWebHook + AppConfig.settings.keyWebHook,  messageToSend, options).subscribe();
     });
   }
 }

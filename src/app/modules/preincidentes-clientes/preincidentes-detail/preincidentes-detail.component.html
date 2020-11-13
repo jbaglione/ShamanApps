@@ -1,0 +1,284 @@
+<div class="container" fxLayout="column" fxLayoutAlign="space-evenly stretch">
+    <h1 mat-dialog-title>{{tituloPopUp}}</h1>
+    <div class="spinner-wrapper" *ngIf="cargandoDatos$ | async ; else formulario">
+        <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="80">
+        </mat-progress-spinner>
+    </div>
+
+    <ng-template #formulario>
+        <mat-dialog-content style="border-top: 1px solid #dadce0; width: auto;">
+            <form class="example-form" [formGroup]="preincidenteServicioFormGroup" novalidate="novalidate">
+                <br>
+                <table class="full-width" cellspacing="0">
+                    <tr>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5 short-form-field">
+                                <input matInput [matDatepicker]="picker3" placeholder="Fecha" formControlName="fecha" name="dpFecha">
+                                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                <mat-datepicker #picker3></mat-datepicker>
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.fecha.valid">
+                                    Debe ingresar una fecha valida.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 form-field">
+                                <input matInput placeholder="Nro. Servicio" formControlName="nroServicio" type="number" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.nroServicio.valid">
+                                    Ingrese una Nro. Servicio valido.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5 long-form-field">
+                                <mat-select placeholder="Localidad" formControlName="localidad">
+                                    <mat-option *ngFor="let item of localidades" [value]="item.id">
+                                        {{item.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.localidad.valid">
+                                    Debe especificar una Localidad.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <!-- <div *ngIf="preincidenteServicioFormGroup.controls.latitud.touched && preincidenteServicioFormGroup.controls.latitud.touched && (!preincidenteServicioFormGroup.controls.latitud.dirty || !preincidenteServicioFormGroup.controls.longitud.dirty)">
+                                <p style="color: red">* Establesca la latitud y longitud usando el mapa</p>
+                            </div>
+                            <div *ngIf="preincidenteServicioFormGroup.controls.latitud.dirty && preincidenteServicioFormGroup.controls.longitud.dirty">
+                                <div>Latitud: {{preincidenteServicioFormGroup.controls.latitud.value}}</div>
+                                <div>Longitud: {{preincidenteServicioFormGroup.controls.longitud.value}}</div>
+                            </div> -->
+                            <div>
+                                <div><label style="color: rgba(0, 0, 0, 0.42)">Latitud: </label><label [ngStyle]="{'color': preincidentes.id !== 0 ? 'rgba(0, 0, 0, 0.42)' : 'black' }">{{preincidenteServicioFormGroup.controls.latitud.value}}</label></div>
+                                <div><label style="color: rgba(0, 0, 0, 0.42)">Longitud: </label><label [ngStyle]="{'color': preincidentes.id !== 0 ? 'rgba(0, 0, 0, 0.42)' : 'black' }">{{preincidenteServicioFormGroup.controls.longitud.value}}</label></div>
+                            </div>
+                            <!-- <mat-form-field class="ml-5 mr-5 long-form-field">
+                                <div>Latitude: {{preincidenteServicioFormGroup.controls.latitude}}</div>
+                                <div>Longitude: {{preincidenteServicioFormGroup.controls.longitude}}</div>
+                                <input matInput placeholder="Partido" formControlName="partidoId" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.partidoId.valid">
+                                    Ingrese un Partido valido.
+                                </mat-error>
+                            </mat-form-field> -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5 long-form-field">
+                                <input matInput placeholder="Calle" formControlName="calle" class="uppercase" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.calle.valid">
+                                    Ingrese una Calle valida.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5 very-short-form-field">
+                                <input matInput placeholder="Altura" formControlName="altura" type="number" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.altura.valid">
+                                    Ingrese una Altura valida.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 very-short-form-field">
+                                <input matInput placeholder="Piso" formControlName="piso" type="number" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.piso.valid">
+                                    Ingrese un Piso valido.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 very-short-form-field">
+                                <input matInput placeholder="Depto" formControlName="depto" class="uppercase" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.depto.valid">
+                                    Ingrese un Depto valido.
+                                </mat-error>
+                            </mat-form-field>
+                            <button mat-icon-button type="button" aria-label="Toggle sidenav" (click)="openMaps()" style="width: 20px;" [disabled]="preincidentes.id !== 0">
+                              <!-- <mat-icon *ngIf="preincidenteServicioFormGroup.controls.latitud.touched && preincidenteServicioFormGroup.controls.latitud.touched && (!preincidenteServicioFormGroup.controls.latitud.dirty || !preincidenteServicioFormGroup.controls.longitud.dirty)" aria-label="Mapa" style="color: red" >room</mat-icon>
+                              <mat-icon *ngIf="!preincidenteServicioFormGroup.controls.latitud.touched || !preincidenteServicioFormGroup.controls.latitud.touched || (preincidenteServicioFormGroup.controls.latitud.dirty && preincidenteServicioFormGroup.controls.longitud.dirty)" aria-label="Mapa">room</mat-icon> -->
+                              <mat-icon aria-label="Mapa">room</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <td></td>
+                        <td>
+                            <mat-label>Lat: {{preincidenteServicioFormGroup.controls.latitud.value}}</mat-label>
+                            <mat-label>Lon: {{preincidenteServicioFormGroup.controls.longitud.value}}</mat-label>
+                        </td>
+                    </tr> -->
+                    <tr>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5 long-form-field">
+                                <input matInput placeholder="Entre Calle 1" formControlName="entreCalle1" class="uppercase" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.entreCalle1.valid">
+                                    Ingrese una Entre Calle 1 valida.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5 long-form-field">
+                                <input matInput placeholder="Entre Calle 2" formControlName="entreCalle2" class="uppercase" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.entreCalle2.valid">
+                                    Ingrese una Entre Calle 2 valida.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <mat-form-field class="ml-5 mr-5" style="width: 95%;">
+                                <input matInput placeholder="Referencia" formControlName="referencia" class="uppercase" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.referencia.valid">
+                                    Ingrese una Referencia valida.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5 long-form-field">
+                                <input matInput placeholder="Sintomas" formControlName="sintoma" class="uppercase" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.sintoma.valid">
+                                    Ingrese Sintomas validos.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5 very-short-form-field">
+                                <mat-select placeholder="Grado" formControlName="grado">
+                                    <mat-option *ngFor="let item of grados" [value]="item.id">
+                                        {{item.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.grado.valid">
+                                    Debe especificar el Grado.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 very-short-form-field">
+                                <mat-select placeholder="Sexo" formControlName="sexo">
+                                    <mat-option *ngFor="let item of sexos" [value]="item">
+                                        {{item}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.sexo.valid">
+                                    Debe especificar el Sexo.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 very-short-form-field">
+                                <input matInput placeholder="Edad" formControlName="edad" type="number" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.edad.valid">
+                                    Ingrese una Edad valida.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5 long-form-field">
+                                <input matInput placeholder="Nombres" formControlName="nombre" class="uppercase" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.nombre.valid">
+                                    Ingrese nombres validos.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5 long-form-field">
+                                <input matInput placeholder="Apellido" formControlName="apellido" class="uppercase" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.apellido.valid">
+                                    Ingrese un apellido valido.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5">
+                                <input matInput placeholder="Nro. Afiliado" formControlName="nroAfiliado" [textMask]="{mask: clienteInfo.maskAfiliadoReal}" class="uppercase" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.nroAfiliado.valid">
+                                    Ingrese un Nro. Afiliado valido. {{clienteInfo.maskAfiliadoEjemplo? 'Ej.: ' + clienteInfo.maskAfiliadoEjemplo: ''}}
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 very-short-form-field">
+                                <mat-select placeholder="Iva" formControlName="iva">
+                                    <mat-option *ngFor="let item of iva" [value]="item.id">
+                                        {{item.descripcion}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.iva.valid">
+                                    Debe especificar el Iva.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 very-short-form-field">
+                                <mat-label>Plan</mat-label>
+                                <input type="text" matInput formControlName="plan" [matAutocomplete]="auto" class="uppercase">
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnPlanes">
+                                    <mat-option *ngFor="let planSel of filteredPlanes | async" [value]="planSel">
+                                        {{planSel.descripcion}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5 very-short-form-field">
+                                <input matInput placeholder="CoPago" formControlName="coPago" type="number  | currency" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.coPago.valid">
+                                    Ingrese un valor de CoPago valido.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5">
+                                <input matInput placeholder="Telefono" formControlName="telefono" type="number" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.telefono.valid">
+                                    Ingrese un Telefono valido.
+                                    <!-- Ej: "(011) 11111111" "(0111) 1111111" "(01111) 111111" -->
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2>
+                            <mat-form-field class="ml-5 mr-5" style="width: 95%;">
+                                <textarea matInput placeholder="Observaciones" formControlName="observaciones" rows=3 class="uppercase"></textarea>
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.observaciones.valid">
+                                    Ingrese una observaciones valida.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                    </tr>
+
+                    <!--tr>
+                         <td>
+                            <mat-form-field class="ml-5 mr-5 long-form-field">
+                                <input matInput placeholder="Longitud" formControlName="longitud" type="number" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.longitud.valid">
+                                    Ingrese una Longitud valida.
+                                </mat-error>
+                            </mat-form-field>
+                        </td>
+                        <td>
+                            <mat-form-field class="ml-5 mr-5 long-form-field">
+                                <input matInput placeholder="Latitud" formControlName="latitud" type="number" />
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.latitud.valid">
+                                    Ingrese una Latitud valida.
+                                </mat-error>
+                            </mat-form-field>
+                        </td> <td>
+                            <div class="ml-5 mr-5">
+                                <mat-label>{{preincidenteServicioFormGroup.controls.latitud.value}}</mat-label>
+                                <mat-error *ngIf="!preincidenteServicioFormGroup.controls.latitud.valid">
+                                    Ingrese una Latitud valida.
+                                </mat-error>
+                            </div>
+                        </td>
+                    </tr>-->
+                </table>
+                <!-- <div ngfor><strong>Form validation errors:</strong> <pre>{{ preincidenteServicioFormGroup.errors | json }}</pre></div> -->
+                <!-- <div *ngFor="let control of preincidenteServicioFormGroup.controls">
+                  <strong>Form validation errors:</strong> <pre>{{ control.errors | json }}</pre>
+              </div> -->
+            </form>
+        </mat-dialog-content>
+        <mat-dialog-actions style="float:right">
+            <button mat-raised-button color="accent" (click)="onNoClick()">{{preincidentes.id === 0?'Cancelar':'Cerrar'}}</button>
+            <button *ngIf="preincidentes.id === 0" mat-raised-button (click)="crearPreIncidentes()">Crear</button>
+        </mat-dialog-actions>
+    </ng-template>
+</div>

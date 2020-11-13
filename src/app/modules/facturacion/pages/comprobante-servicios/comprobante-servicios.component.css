@@ -48,11 +48,11 @@
 }
 
 .mat-column-formatedFecha {
-    flex: 0 0 80px;
+    flex: 0 0 90px;
 }
 
 .mat-column-conceptoId {
-    flex: 0 0 80px;
+    flex: 0 0 60px;
 }
 
 .mat-column-nroInterno {
@@ -80,11 +80,11 @@
 }
 
 .mat-column-desde {
-    flex: 0 0 12%;
+    flex: 0 0 *px;
 }
 
 .mat-column-hasta {
-    flex: 0 0 12%;
+    flex: 0 0 *px;
 }
 
 .mat-column-kmt {
@@ -107,19 +107,30 @@
     flex: 0 0 7%;
 }
 
-.mat-column-verImagenesServicios {
-    flex: 0 0 70px;
+.mat-column-viewFilesServicios {
+    flex: 0 0 60px;
 }
 
 .mat-column-calculo {
-    flex: 0 0 55px;
+    flex: 0 0 50px;
 }
 
 ::ng-deep .mat-tooltip {
     position: absolute;
 }
 
+.buttons {
+    margin-left: 5px !important;
+    margin-right: 5px !important;
+}
+
 @media(max-width: 600px) {
+    .buttons {
+        width: 100%;
+        margin-bottom: 5px;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+    }
     .mobile-label {
         width: 85px;
         display: inline-block;
@@ -191,7 +202,7 @@
     .mat-column-importe {
         flex: auto !important;
     }
-    .mat-column-verImagenesServicios {
+    .mat-column-viewFilesServicios {
         flex: auto !important;
     }
     .mat-column-abrir {

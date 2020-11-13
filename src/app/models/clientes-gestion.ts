@@ -1,11 +1,11 @@
-import { listable } from './listable.model';
+import { Listable } from './listable.model';
 import { ClienteAdjuntos } from './clienteAdjuntos.model';
 
 export class ClientesGestion {
     id: number;
     clienteId: number;
     razonSocial: string;
-    tipoGestion: listable;
+    tipoGestion: Listable;
     observaciones: string;
     // pdfgestion:byte[];
     fecha: Date | string;
@@ -13,17 +13,18 @@ export class ClientesGestion {
     fulldescription: string;
     adjunto: ClienteAdjuntos;
 
-    constructor(
-              id: number = 0,
-              clienteId: number = 0,
-              razonSocial = '',
-              tipoGestion: listable = new listable('', ''),
-              observaciones: string = '',
-              fecha: Date | string = new Date(),
-              fechaRecontacto: Date | string = new Date(),
-              fulldescription: string = '',
-              adjunto: ClienteAdjuntos = new ClienteAdjuntos()
-              ) {
+    constructor
+        (
+            id: number = 0,
+            clienteId: number = 0,
+            razonSocial = '',
+            tipoGestion: Listable = new Listable('', ''),
+            observaciones: string = '',
+            fecha: Date | string = new Date(),
+            fechaRecontacto: Date | string = new Date(),
+            fulldescription: string = '',
+            adjunto: ClienteAdjuntos = new ClienteAdjuntos()
+        ) {
         this.id = id;
         this.clienteId = clienteId;
         this.razonSocial = razonSocial;

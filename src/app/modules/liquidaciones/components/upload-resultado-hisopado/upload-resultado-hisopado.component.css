@@ -1,0 +1,21 @@
+::ng-deep .mat-horizontal-stepper-header {
+    pointer-events: none !important;
+}
+
+.span-with-icon-aligns {
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    margin-right: 6px;
+}
+
+@media(min-width: 600px) {
+    .align-steper-in-full {
+        margin-left: 25px;
+        margin-right: -10px;
+    }
+}

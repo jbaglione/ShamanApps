@@ -1,0 +1,89 @@
+.main-toolbar {
+    position: fixed;
+    z-index: 4;
+    background-color: #ffffff;
+    height: 55px !important;
+    /* Flex */
+    justify-content: space-between;
+    // z-index: 0;
+}
+
+.main-toolbar-mobile {
+    height: 48px !important;
+    padding: 8px 6px 8px 16px;
+    transform: translate3d(0, 0, 0);
+    transition: transform linear 200ms;
+    top: 0;
+    // z-index: 0;
+    &.hide {
+        transform: translate3d(0, -100%, 0);
+    }
+}
+
+.logo {
+    vertical-align: middle;
+    width: 184px;
+    height: 38px;
+}
+
+.logo-mobile {
+    width: 140px !important;
+    height: 28px !important;
+}
+
+.title {
+    vertical-align: middle;
+    color: #2b51a1;
+    font-size: 18px;
+    padding-left: 10px;
+}
+
+.rigth-section {
+    display: flex;
+}
+
+.action-buttons .mat-icon-button {
+    width: 52px;
+}
+
+.action-buttons .mat-icon-button .mat-icon {
+    color: #6e7275;
+    font-size: 32px;
+}
+
+.user-info {
+    /* Flex */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.user-info .user-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 26px;
+    color: #6e7275;
+}
+
+.user-info .user-name {
+    font-size: 13px;
+    color: #959595;
+    margin-left: 10px;
+}
+
+.user-info .separator {
+    font-size: 20px;
+    color: black;
+}
+
+.user-info-mobile {
+    display: none;
+}
+
+.logout-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 28px;
+    color: #2b51a1;
+    padding-top: 3px;
+}

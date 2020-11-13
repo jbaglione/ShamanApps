@@ -1,0 +1,128 @@
+<div class="padding-container">
+    <div class="mat-elevation-z8">
+        <div class="auto-container">
+            <table mat-table [dataSource]="mtIncidentes" matSort #table>
+                <ng-container matColumnDef="fecIncidente" sticky>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+                    <td mat-cell *matCellDef="let element">{{element.fecIncidente}}</td>
+                </ng-container>
+                <ng-container matColumnDef="nroIncidente" sticky>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nº Incidente</th>
+                    <td mat-cell *matCellDef="let element" matTooltip="Ver detalle del incidente">
+                        <button (click)="detalle(element)" class="like-link" mat-icon-button>{{element.nroIncidente}}</button>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="iva">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>IVA</th>
+                    <td mat-cell *matCellDef="let element">{{element.iva}}</td>
+                </ng-container>
+                <ng-container matColumnDef="iibb">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>IIBB</th>
+                    <td mat-cell *matCellDef="let element">{{element.iibb}}</td>
+                </ng-container>
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                    <td mat-cell *matCellDef="let element">{{element.nombre}}</td>
+                </ng-container>
+                <ng-container matColumnDef="localidadDesde">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Desde</th>
+                    <td mat-cell *matCellDef="let element">{{element.localidadDesde}}</td>
+                </ng-container>
+                <ng-container matColumnDef="localidadHasta">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Hasta</th>
+                    <td mat-cell *matCellDef="let element">{{element.localidadHasta}}</td>
+                </ng-container>
+                <ng-container matColumnDef="kilometros">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Kilometros</th>
+                    <td mat-cell *matCellDef="let element">{{element.kilometros}}</td>
+                </ng-container>
+                <ng-container matColumnDef="retorno">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Retorno">Retorno</th>
+                    <td mat-cell *matCellDef="let element">{{element.retorno}}</td>
+                </ng-container>
+                <ng-container matColumnDef="turno">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Turno">Turno</th>
+                    <td mat-cell *matCellDef="let element">{{element.turno}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="tpoEspera">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Espera">Espera</th>
+                    <td mat-cell *matCellDef="let element">{{element.tpoEspera}}</td>
+                </ng-container>
+                <ng-container matColumnDef="conceptoFacturacionId">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Concepto</th>
+                    <td mat-cell *matCellDef="let element">{{element.conceptoFacturacionId}}</td>
+                </ng-container>
+                <ng-container matColumnDef="coPago">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-align-right">CoPago</th>
+                    <td mat-cell *matCellDef="let element" class="cell-align-right">{{element.coPago | currency}}</td>
+                </ng-container>
+                <ng-container matColumnDef="deriva">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Deriva</th>
+                    <td mat-cell *matCellDef="let element">{{element.deriva}}</td>
+                </ng-container>
+                <ng-container matColumnDef="importe">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-align-right">Importe</th>
+                    <td mat-cell *matCellDef="let element" class="cell-align-right">
+                        <label [style]="element.importe == 0 && element.flgCapitado == 0? 'color: red; font-weight: bold;' : ''">{{element.importe | currency}}</label>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="rem">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Remito">Remito</th>
+                    <td mat-cell *matCellDef="let element">{{element.rem}}</td>
+                </ng-container>
+                <ng-container matColumnDef="conf">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="Estado">Estado</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button (click)="revisar(element)" class="oldGold" mat-icon-button [color]='estadosDesc[element.conf].color' [matTooltip]='estadosDesc[element.conf].descripcion'>
+                          <mat-icon>{{estadosDesc[element.conf].icon}}</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="archivoOrden">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Orden</th>
+                    <td mat-cell *matCellDef="let element; let i = index">
+                        <ngx-gallery [options]="element.galleryOptions" [images]="element.galleryImages" class="ngx-gallery"></ngx-gallery>
+                        <div *ngIf="element.archivoOrden != null ">
+                            <div class="display-content-mobile" style="margin-left: -10px;">
+                                <button (click)="openImage(element)" mat-icon-button matTooltip="Ver."><mat-icon>photo_library</mat-icon></button>
+                                <button (click)="eliminarAdjuntoActual(element)" mat-icon-button matTooltip="Elimina el archivo actual y permite cargar otro.">
+                                  <mat-icon >delete</mat-icon>
+                               </button>
+                            </div>
+                        </div>
+                        <div *ngIf="(element.archivoOrden == null || element.archivoOrden == '') && element.conceptoFacturacionId != 'HIS'" class="display-content-mobile">
+                            <button mat-icon-button type="button" (click)="myInput.click()" style="min-width: 25px;" matTooltip="Subir una orden.">
+                              <mat-icon>cloud_upload</mat-icon>
+                              <input type="file" #myInput (change)="onFileChange($event, element)" accept="image/*" />
+                            </button>
+                        </div>
+                        <div *ngIf="(element.archivoOrden == null || element.archivoOrden == '') && element.conceptoFacturacionId == 'HIS'" class="display-content-mobile">
+                            <div class="display-content-mobile" style="margin-left: -10px;">
+                                <button (click)="uploadResultadoHisopado(element)" mat-icon-button matTooltip="Subir resultado de hisopado."><mat-icon>cloud_upload</mat-icon></button>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="dcIncidentes "></tr>
+                <tr mat-row *matRowDef="let row; columns: dcIncidentes; "></tr>
+            </table>
+        </div>
+
+
+        <div>
+            <mat-paginator #paginator [pageSizeOptions]="[7, 10, 25, 100] " *ngIf="mtIncidentes.data.length != 0" class="mat-paginator-sticky" [showFirstLastButtons]="true"></mat-paginator>
+        </div>
+        <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; height: 200px;">
+            <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+            </mat-progress-spinner>
+        </div>
+
+        <div style="text-align: center; padding-top: 40px; padding-bottom: 40px;" *ngIf="!isLoading && mtIncidentes.data.length === 0">
+            NO SE ENCONTRARON RESULTADOS PARA LA BUSQUEDA
+        </div>
+    </div>
+</div>

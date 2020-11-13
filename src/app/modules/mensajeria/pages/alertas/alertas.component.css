@@ -1,0 +1,80 @@
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #2b51a1;
+  color: white;
+  font-weight: 500;
+  height: 50px;
+}
+
+.tittle {
+  margin-left: 25px;
+  font-size: 25px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.mat-button-icon-small .mat-icon {
+  font-size: 25px;
+  /* width: 28px;
+  height: 28px; */
+}
+
+.alertas-wrapper {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: 0px 0px;
+  /* height: 100%; */
+}
+
+.mat-icon {
+  font-size: 30px;
+}
+
+.alerta-item {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  margin: 10px 20px;
+  align-items:center;
+  font-weight: 500;
+  /* margin: 40px 20px 10px 20px; */
+}
+
+.mensaje-item-img {
+  flex-shrink: 0;
+  font-size: 30px;;
+  width: 40px;
+  height: 40px;
+  color: grey;
+}
+
+.sin-alertas {
+   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%; 
+  height: 70%;
+  color:#DCDCDC;
+}
+
+.sin-alertas .mat-icon {
+  font-size: 150px !important;
+  width: 150px;
+  height: 150px;
+}
+
+.sin-alertas p {
+  font-size: 20px;
+  font-weight: 500;
+}

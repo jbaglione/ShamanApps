@@ -1,8 +1,8 @@
 import { Adjunto } from './adjunto.model';
-import { NgxGalleryOptions, NgxGalleryImage } from 'ngx-gallery';
+import { NgxGalleryOptions, NgxGalleryImage } from '@kolkov/ngx-gallery';
 
 export class Registracion {
-  id: number;
+  id: string;
   usuario: string;
   fecha: Date | string;
   hora: string;
@@ -11,7 +11,7 @@ export class Registracion {
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
   constructor(
-    id: number = 0,
+    id: string = '0',
     usuario: string = '',
     fecha: Date | string = new Date(),
     hora: string = '',

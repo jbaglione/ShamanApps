@@ -48,7 +48,7 @@ export class CustomTooltip implements ITooltipAngularComp {
 
     private params: any;
     private valueToDisplay: string;
-    private isHeader: boolean;
+    public isHeader: boolean;
     private isGroupedHeader: boolean;
 
     agInit(params): void {

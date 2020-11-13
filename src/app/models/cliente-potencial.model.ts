@@ -1,7 +1,7 @@
 import { Rubro } from './rubro.model';
 import { CondicionIVA } from './condicionIVA.model';
 import { Localidad } from './localidad.model';
-import { listable } from './listable.model';
+import { Listable } from './listable.model';
 import { extend } from 'webdriver-js-extender';
 // import { Exportable } from './exportable.interface';
 import { ExportMatTableToXlxs } from '@app/modules/shared/helpers/export-mat-table-to-xlxs';
@@ -29,7 +29,7 @@ export class ClientePotencial {
   estado: number; // todo: potencial = 1, activo = 2, inactivo = 3, 4 = Suspendido
   credencialID: string; // todo: potencial no tienen codigocliente
   importeMensual: number;
-  motivoSuspension: listable;
+  motivoSuspension: Listable;
   potencialExito: number;
   usuarioShamanId: string;
   constructor
@@ -56,7 +56,7 @@ export class ClientePotencial {
       estado: number = 0, // todo: potencial = 1, activo = 2, inactivo = 3
       credencialID: string = '', // todo: potencial no tienen codigocliente
       importeMensual: number = 0,
-      motivoSuspension: listable = new listable('', ''),
+      motivoSuspension: Listable = new Listable('', ''),
       potencialExito: number = 0,
       usuarioShamanId: string = ''
     ) {

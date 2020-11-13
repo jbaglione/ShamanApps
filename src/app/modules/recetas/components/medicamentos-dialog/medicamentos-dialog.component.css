@@ -1,0 +1,7 @@
+::ng-deep .mat-horizontal-stepper-header-container {
+    display: none !important;
+}
+
+table {
+    width: 100%;
+}

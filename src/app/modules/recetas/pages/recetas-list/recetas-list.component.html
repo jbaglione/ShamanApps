@@ -1,0 +1,56 @@
+<div class="padding-container">
+    <div>
+        <button mat-raised-button class="mb-10" (click)="verReceta('nuevo')">Nueva Receta</button>
+    </div>
+    <div class="mt-10">
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar..." type="text" name="Descripcion">
+            <button matPrefix mat-icon-button><mat-icon>search</mat-icon></button>
+        </mat-form-field>
+    </div>
+    <div class="mat-elevation-z8">
+        <mat-table [dataSource]="mtRecetas" matSort>
+            <ng-container matColumnDef="nroReceta">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Nº Receta</mat-header-cell>
+                <mat-cell *matCellDef="let element" class="mat-cell-first">
+                    <button (click)="verReceta(element.id)" mat-icon-button class="mat-cell-button circle primary-light-bg" style="width: 29px !important; height: 29px !important;">{{element.nroReceta}}</button>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="fecReceta">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</mat-header-cell>
+                <mat-cell mat-cell *matCellDef="let element">
+                    <span class="mobile-label">Fecha:</span>{{element.fecReceta | date: 'dd/MM/yyyy'}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="cliente">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.clienteIdString}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="nroAfiliado">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Nº Afiliado</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.nroAfiliado}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="plan">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Plan</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.planIdString}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="nombre">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Paciente</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.nombre}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="diagnostico">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Diagnostico</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.diagnostico}}</mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="dcRecetas"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: dcRecetas;" class="remove-background" (mouseover)="onMouseOver(row)" [ngClass]="{'mat-elevation-z8' : row.id == rowid}" (click)="verReceta(row.id)"></mat-row>
+        </mat-table>
+        <div style="text-align: center; padding-top: 40px; padding-bottom: 40px;" *ngIf="!isLoading && mtRecetas.data.length === 0">
+            NO SE ENCONTRARON RECETAS
+        </div>
+        <mat-paginator [pageSizeOptions]="[7, 10, 25, 100]"></mat-paginator>
+    </div>
+</div>

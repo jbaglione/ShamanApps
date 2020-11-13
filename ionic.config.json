@@ -1,7 +1,0 @@
-{
-    "name": "ExtranetApps",
-    "integrations": {
-        "capacitor": {}
-    },
-    "type": "angular"
-}

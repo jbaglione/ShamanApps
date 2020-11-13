@@ -1,0 +1,24 @@
+{
+    "endpoints": {
+        "security": "https://extranet.paramedic.com.ar/extranet-security/security/",
+        "api": "https://extranet.paramedic.com.ar/extranet-api/api/",
+        "apiShaman": "https://zzz",
+        "oldExranet": "https://telmed.paramedicapps.com.ar/old-version-test/",
+        "gestionApi": "https://telmed.paramedicapps.com.ar/api/"
+    },
+
+    "vademecums": [
+        { "id": 1, "descripcion": "https://ar.prvademecum.com/" },
+        { "id": 2, "descripcion": "https://trazabilidad.pami.org.ar/trazamed/consultaCatalogoByGTIN.tz" }
+    ],
+
+    "apiKey": "AIzaSyBoHQDbkKRsgwwhEnAuD4hJupG_PjN1noY",
+    "snackBarDuration": 3700,
+
+    "urlWebHook": "https://hooks.slack.com/services/",
+    "keyWebHook": "TMPQUADN0/BR04XU2MC/RClEuCAuIK9CRByz7YaCKbEU",
+    "getApiURL": "https://api.ipify.org?format=json",
+
+    "proxyCORSUrl": "https://cors-anywhere.herokuapp.com/",
+    "version": "2.8.8-rc"
+}

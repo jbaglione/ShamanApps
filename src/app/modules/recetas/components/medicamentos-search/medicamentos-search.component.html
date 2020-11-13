@@ -1,0 +1,20 @@
+<button mat-icon-button type="button" [mat-dialog-close]=" " style="float: right; margin-top: 0px !important; ">
+    <mat-icon class="icon-center">close_circle</mat-icon>
+</button>
+<div mat-dialog-title>Vademecum</div>
+<mat-form-field class="ml-5 mr-5" style="width: fit-content;">
+    <mat-select placeholder="Fuente Vademecum" [formControl]="vedemecumSelect" (selectionChange)="vademecumChange($event.value)">
+        <mat-option *ngFor="let item of vademecums" [value]="item">
+            {{item.descripcion}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<mat-dialog-content>
+    <div>
+        <iframe [src]="urlFinal | safe" class="frame" #iframe></iframe>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <textarea #myText (paste)="onPaste($event)" (input)="onInput(myText.value)" placeholder="Pegue aqui la información del medicamento para obtenerlo" style="width: 95%;"></textarea>
+</mat-dialog-actions>

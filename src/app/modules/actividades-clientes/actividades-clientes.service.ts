@@ -3,7 +3,7 @@ import { AppConfig } from '../../configs/app.config';
 import { Observable, of, throwError as observableThrowError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ClientesGestion } from 'src/app/models/clientes-gestion';
-import { listable } from 'src/app/models/listable.model';
+import { Listable } from 'src/app/models/listable.model';
 import { ClienteConsumo } from 'src/app/models/cliente-consumo';
 import { ClientePotencial } from 'src/app/models/cliente-potencial.model';
 import { ClienteReclamo } from 'src/app/models/cliente-reclamo';
@@ -24,12 +24,12 @@ export class ActividadesClientesService {
   clienteName: string;
 
   constructor(private httpClient: HttpClient, public notificationService: NotificationService) {
-    this.actividadesApiUrl = AppConfig.endpoints.api + 'ActividadesClientes';
-    this.gestionesApiUrl = AppConfig.endpoints.api + 'ClienteGestiones';
-    this.consumosApiUrl = AppConfig.endpoints.api + 'ClienteConsumos';
-    this.reclamosApiUrl = AppConfig.endpoints.api + 'ClienteReclamos';
-    this.cuentaCorrienteApiUrl = AppConfig.endpoints.api + 'ClienteCuentaCorriente';
-    this.vendedoresApiUrl = AppConfig.endpoints.api + 'Vendedores';
+    this.actividadesApiUrl = AppConfig.settings.endpoints.api + 'ActividadesClientes';
+    this.gestionesApiUrl = AppConfig.settings.endpoints.api + 'ClienteGestiones';
+    this.consumosApiUrl = AppConfig.settings.endpoints.api + 'ClienteConsumos';
+    this.reclamosApiUrl = AppConfig.settings.endpoints.api + 'ClienteReclamos';
+    this.cuentaCorrienteApiUrl = AppConfig.settings.endpoints.api + 'ClienteCuentaCorriente';
+    this.vendedoresApiUrl = AppConfig.settings.endpoints.api + 'Vendedores';
   }
 
   public GetClientePotencial(clienteId: number): Observable<ClientePotencial> {
@@ -69,9 +69,9 @@ export class ActividadesClientesService {
     );
   }
 
-  public GetTiposGestion(): Observable<listable> {
+  public GetTiposGestion(): Observable<Listable> {
     const url = `${this.gestionesApiUrl}/GetTiposGestion`;
-    return this.httpClient.get<listable>(url).pipe(
+    return this.httpClient.get<Listable>(url).pipe(
       tap(() => console.log('fetched GetTiposGestion')),
     );
   }

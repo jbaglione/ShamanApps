@@ -1,5 +1,6 @@
+import { NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { PanelOperativoImagen } from './index';
-import { NgxGalleryOptions, NgxGalleryImage } from 'ngx-gallery';
+
 
 export interface PanelOperativo {
     iD: number;

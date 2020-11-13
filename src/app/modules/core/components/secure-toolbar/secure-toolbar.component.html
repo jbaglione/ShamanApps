@@ -1,0 +1,57 @@
+<mat-toolbar role="heading" class="mat-elevation-z4 main-toolbar" ngClass.xs="main-toolbar-mobile" [class.hide]="isVisible">
+  <div class="left-section">
+    <span>
+      <button mat-icon-button type="button" aria-label="Toggle sidenav" (click)="menu_click()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+    </span>
+    <img src="./assets/images/logo.png"  class="logo" ngClass.xs="logo-mobile" />
+    <span class="title">{{ title }}</span>
+  </div>
+  <div class="action-buttons" *ngIf="mediaObserver.isActive('xs')">
+    <button mat-icon-button (click)="messages_click()">
+      <mat-icon class="user-icon" matBadge="{{ cantidadMensajesPendientes }}" matBadgePosition="after" matBadgeColor="primary" matBadgeHidden= "{{ cantidadMensajesPendientes == 0 }}">email</mat-icon>
+    </button>
+    <button mat-icon-button (click)="notifications_click()">
+      <mat-icon class="user-icon" matBadge="{{ cantidadAlertasPendientes }}" matBadgePosition="after" matBadgeColor="primary" matBadgeHidden= "{{ cantidadAlertasPendientes== 0 }}">notification_important</mat-icon>
+    </button>
+    <button mat-icon-button [matMenuTriggerFor]="loginmenu">
+      <mat-icon class="logout-icon">more_vert</mat-icon>
+    </button>
+    <mat-menu #loginmenu="matMenu">
+      <span mat-menu-item disabled style="color: black;">
+        <strong>{{ userName }}</strong>
+      </span>
+      <button mat-menu-item (click)="logout_click()">
+        <span class="mat-button-wrapper">
+          <mat-icon class="logout-icon" matTooltip="Cerrar sesión">power_settings_new</mat-icon >
+          Cerrar sesión
+        </span>
+      </button>
+    </mat-menu>
+  </div>
+  <div class="user-info" *ngIf="mediaObserver.isActive('gt-xs')">
+    <button mat-icon-button (click)="messages_click()">
+      <mat-icon class="user-icon" matBadge="{{ cantidadMensajesPendientes }}" matBadgePosition="before" matBadgeColor="primary" matBadgeHidden= "{{ cantidadMensajesPendientes == 0 }}">email</mat-icon>
+    </button>
+    <button mat-icon-button (click)="notifications_click()">
+        <mat-icon class="user-icon" matBadge="{{ cantidadAlertasPendientes }}" matBadgePosition="before" matBadgeColor="primary" matBadgeHidden= "{{ cantidadAlertasPendientes== 0 }}">notification_important</mat-icon>
+    </button>
+    <!-- <mat-icon class="user-icon">person</mat-icon> -->
+    <button mat-icon-button [matMenuTriggerFor]="loginmenuGtXs">
+      <mat-icon class="user-icon">person</mat-icon>
+    </button>
+    <mat-menu #loginmenuGtXs="matMenu">
+      <button mat-menu-item (click)="configuracion_click()">
+        <span class="mat-button-wrapper">
+          Configuración
+        </span>
+      </button>
+    </mat-menu>
+    <span class="user-name"> {{ userName }}</span>
+    <span class="separator">&nbsp;|&nbsp;</span>
+    <button mat-icon-button (click)="logout_click()">
+      <mat-icon class="logout-icon" matTooltip="Cerrar sesion" >power_settings_new</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>

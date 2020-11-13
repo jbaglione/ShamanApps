@@ -1,43 +1,22 @@
-import { InjectionToken } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '@env/environment';
+import { IAppConfig } from '@app/configs/app.config.model';
 
-export let APP_CONFIG = new InjectionToken('app.config');
+@Injectable()
+export class AppConfig {
+    static settings: IAppConfig;
+    constructor(private http: HttpClient) {}
+    load() {
+        const jsonFile = `assets/config/config.${environment.name}.json`;
+        return new Promise<void>((resolve, reject) => {
+            this.http.get(jsonFile).toPromise().then((response: IAppConfig) => {
+               AppConfig.settings = <IAppConfig>response;
+               resolve();
+            }).catch((response: any) => {
+               reject(`Could not load file '${jsonFile}': ${JSON.stringify(response)}`);
+            });
+        });
+    }
+}
 
-export const AppConfig: any = {
-  endpoints: {
-    // localhost
-    security: 'https://localhost:44377/security/',
-    apiShaman: 'https://localhost:44318/api/',
-    // api: 'https://localhost:44319/api/',
-    // oldExranet: 'http://localhost:2128/',
-
-    // // test
-    //  security: 'http://192.168.5.115:5005/security/',
-    //  api: 'http://192.168.5.115:5006/api/',
-    //  oldExranet: 'http://192.168.5.115:5000/'
-
-    // QA
-    // security: 'https://telmed.paramedicapps.com.ar/extranet-v2-security-test/security/',
-    // api: 'https://telmed.paramedicapps.com.ar/extranet-v2-api-test/api/',
-    oldExranet: 'https://telmed.paramedicapps.com.ar/old-version-test/'
-
-    // Produccion
-    // site: http://paramedicapps.com.ar:5567/'
-    // api: 'http://paramedicapps.com.ar:5566/api/',
-    // security: 'http://paramedicapps.com.ar:5568/security/',
-    // oldExranet: 'http://paramedicapps.com.ar:58885/'
-
-    // Server Local Pilar
-    // api: 'http://192.168.5.95:5566/api/',
-  },
-  // votesLimit: 3,
-  // topHeroesLimit: 4,
-  snackBarDuration: 3700,
-
-  urlWebHook: 'https://hooks.slack.com/services/',
-  keyWebHook: 'TT0T9SN07/BT18GDRML/46yjXnY4HTkkv2urBebYIq4I',
-  getApiURL: 'https://api.ipify.org?format=json',
-  proxyCORSUrl: 'https://cors-anywhere.herokuapp.com/',
-
-
-  version: '1.2.0-beta'
-};

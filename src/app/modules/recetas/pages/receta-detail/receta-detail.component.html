@@ -1,0 +1,123 @@
+<div class="wrapper-go-to-back">
+    <button class="mat-button-icon-small" mat-icon-button type="button" mat-button (click)="backPage()" matTooltip="Retroceder a la página anterior.">
+      <mat-icon>arrow_back</mat-icon>
+  </button>
+    <span class="sub-title">Recetas</span>
+</div>
+
+<div class="padding-container">
+    <div class="mat-elevation-z6 table-custom-margin">
+        <div class="padding-container">
+            <form [formGroup]="recetaForm">
+                <div *ngIf="this.isSaving" style="display: flex; justify-content: center; align-items: center; height: 200px;">
+                    <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+                    </mat-progress-spinner>
+                    <h1 style="margin: 10px">GUARDANDO RECETA</h1>
+                </div>
+                <div fxLayout="column" [hidden]="this.isSaving">
+                    <div>
+                        <div style="margin-bottom: 10px;">
+                            <mat-form-field class="ml-5 mr-5 very-short-form-field-50-50">
+                                <input matInput placeholder="Receta Nº" formControlName="nroReceta">
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 short-form-field-50-50">
+                                <input matInput [matDatepicker]="picker3" placeholder="Fecha" formControlName="fecha" name="dpFecha">
+                                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                <mat-datepicker #picker3></mat-datepicker>
+                                <mat-error *ngIf="!recetaForm.controls.fecha.valid">
+                                    Debe ingresar una fecha valida.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 medium-form-field-50-100">
+                                <input type="text" placeholder="Cliente" matInput formControlName="cliente" class="uppercase" [matAutocomplete]="autoCli" (blur)='searchClienteByDescripcion($event)'>
+                                <mat-autocomplete #autoCli="matAutocomplete" [displayWith]="displayFnClientes" (optionSelected)='setCliente()'>
+                                    <!-- <mat-option *ngIf="isSearching" class="is-loading"><mat-spinner diameter="20"></mat-spinner></mat-option> -->
+                                    <mat-option *ngFor="let cliente of filteredClientes | async" [value]="cliente">
+                                        {{cliente.clienteId}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error *ngIf="recetaForm.controls['cliente'].hasError('required')">
+                                    Ingrese un cliente
+                                </mat-error>
+                                <mat-error *ngIf="recetaForm.controls['cliente'].hasError('incorrect')">
+                                    Por favor seleccione un cliente valido
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 medium-form-field-50-100">
+                                <input matInput placeholder="Nº Afiliado" formControlName="nroAfiliado" type="text" (change)='nroAfiliadoChange($event)' (keydown)='nroAfiliadoKeyDown($event)' class="uppercase">
+                                <button matSuffix mat-icon-button (click)="openSearchClientesIntegrantes()" [disabled]="recetaForm.controls.cliente.invalid">
+                                  <mat-icon>search</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 medium-form-field-50-100">
+                                <mat-label>Plan</mat-label>
+                                <input type="text" matInput formControlName="plan" [matAutocomplete]="autoPlan" class="uppercase" (blur)='searchPlanByDescripcion($event)'>
+                                <mat-autocomplete #autoPlan="matAutocomplete" [displayWith]="displayFnPlanes">
+                                    <mat-option *ngFor="let planSel of filteredPlanes | async" [value]="planSel">
+                                        {{planSel.descripcion}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error *ngIf="recetaForm.controls['plan'].hasError('required')">
+                                    Ingrese un plan
+                                </mat-error>
+                                <mat-error *ngIf="recetaForm.controls['plan'].hasError('incorrect')">
+                                    Por favor seleccione un plan valido
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 long-form-field-50-100">
+                                <input matInput placeholder="Paciente" formControlName="paciente" class="uppercase">
+                            </mat-form-field>
+                            <mat-form-field class="ml-5 mr-5 long-form-field-50-100">
+                                <input matInput placeholder="Email" formControlName="email" type="email" class="lowercase">
+                                <!-- [errorStateMatcher]="matcher" -->
+                                <mat-error *ngIf="recetaForm.controls['email'].hasError('email') && !recetaForm.controls['email'].hasError('required')">
+                                    Por favor, ingrese una dirección de correo electrónico válida
+                                </mat-error>
+                                <mat-error *ngIf="recetaForm.controls['email'].hasError('required')">
+                                    Ingrese un Email
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <app-medicamentos-list [medicamentos]=receta.medicamentos [recetaId]=receta.id></app-medicamentos-list>
+                        </div>
+                        <mat-form-field class="very-long-form-field" style="margin-top: 10px;">
+                            <textarea matInput placeholder="Diagnóstico" formControlName="diagnostico" #ta_diagnostico cdkTextareaAutosize #autosize="cdkTextareaAutosize" class="uppercase"></textarea>
+                            <!-- <mat-hint align="start"><strong>Diagnostico</strong> </mat-hint> -->
+                            <mat-error *ngIf="recetaForm.controls['diagnostico'].hasError('required')">
+                                Ingrese un Diagnóstico
+                            </mat-error>
+                        </mat-form-field>
+                        <div class="long-form-field" style="margin-left: 10px; display: inline-block;">
+                            Tratamiento Prolongado:
+                            <mat-radio-group formControlName="flgTratamientoProlongado" style="padding-bottom:15px;">
+                                <mat-radio-button [value]="0" style="margin-left: 10px;">NO</mat-radio-button>
+                                <mat-radio-button [value]="1" style="margin-left: 10px;">SI</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="boxMobile" *ngIf="receta.id == 0 || !editDisabled">
+                            <button mat-raised-button (click)="guardarReceta()" [disabled]="!recetaForm.valid || isLoading || isSaving || medicamentosComponent?.mtMedicamentos?.data?.length == 0" class="mat-elevation-z3 boxMobileChild ml-5 mr-5">Guardar</button>
+                            <button mat-button (click)="generearRecetaPdf()" matTooltip="Generear Receta en Pdf." [disabled]="!recetaForm.valid || isLoading || isSaving || medicamentosComponent?.mtMedicamentos?.data?.length == 0 || receta.id == 0" class="button-with-icon-aligns button-with-icon mat-elevation-z3 boxMobileChild ml-5 mr-5">
+                            <span class="span-with-icon-aligns" aria-hidden="true" >
+                              <mat-icon>save_alt</mat-icon>
+                            </span>
+                            <span>Descargar</span>
+                          </button>
+                            <button mat-button (click)="sendRecetaPdf()" matTooltip="Enviar la receta al email del paciente." [disabled]="!recetaForm.valid || isLoading || isSaving || medicamentosComponent?.mtMedicamentos?.data?.length == 0 || receta.id == 0" class="button-with-icon-aligns button-with-icon mat-elevation-z3 boxMobileChild ml-5 mr-5">
+                            <span class="span-with-icon-aligns" aria-hidden="true" >
+                              <mat-icon>attach_email</mat-icon>
+                            </span>
+                            <span>Enviar</span>
+                          </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- DEBUG -->
+                <!-- <pre>{{recetaForm.get('nroReceta').valid}}</pre>
+                <pre>{{recetaForm.get('cliente').valid}}</pre> -->
+            </form>
+        </div>
+    </div>
+</div>

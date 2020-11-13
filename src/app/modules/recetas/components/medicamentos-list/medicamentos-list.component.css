@@ -1,0 +1,63 @@
+[hidden] {
+    display: none !important;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+table {
+    width: 100%;
+    margin-top: 1px;
+}
+
+.mat-column-nroRenglon {
+    padding-right: 4px;
+}
+
+.mat-column-nombre {
+    padding-left: 8px;
+    flex: 0 0 150px;
+}
+
+.mat-column-droga,
+.mat-column-presentacion {
+    padding-left: 8px;
+    flex: 0 0 150px;
+}
+
+.mat-column-observaciones {
+    padding-left: 8px;
+    flex: 0 0 300px;
+}
+
+.mat-column-cantidad {
+    padding-left: 8px;
+    flex: 0 0 85px;
+}
+
+img:hover {
+    width: 100px;
+    height: 100px;
+}
+
+.mat-row:hover {
+    cursor: pointer !important;
+}
+
+[mat-row].remove-background {
+    background: none !important;
+}
+
+::ng-deep .my-panel {
+    overflow: hidden !important;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+@media(max-width: 600px) {
+    .mat-column-nroRenglon {
+        border-right: 1px solid #e0e0e0;
+    }
+}

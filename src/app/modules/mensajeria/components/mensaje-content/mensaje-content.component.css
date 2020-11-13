@@ -1,0 +1,42 @@
+.mat-card {
+  margin: 50px;
+}
+
+.mat-card-mobile {
+  margin: 10px 0 0 0 !important;
+  box-shadow: none !important;
+}
+
+.mat-icon {
+  font-size: 50px;
+}
+
+.mat-card-title {
+  margin-top: 5px;
+  margin-bottom: 16px;
+}
+
+.contenido {
+  margin: 40px 20px 10px 20px;
+}
+
+.sin-mensajes {
+ width: 100%;
+ height: 100%;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ color:#DCDCDC;
+}
+
+.sin-mensajes .mat-icon {
+ font-size: 150px !important;
+ width: 150px;
+ height: 150px;
+}
+
+.sin-mensajes p {
+ font-size: 20px;
+ font-weight: 500;
+}

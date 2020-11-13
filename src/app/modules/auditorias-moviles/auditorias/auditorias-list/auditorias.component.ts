@@ -4,10 +4,10 @@ import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/m
 import { AuditoriasMovilesService } from '../../auditorias-moviles.service';
 import { AuthenticationService } from '../../../security/authentication.service';
 import { Auditoria } from '../../models/auditoria';
-import { listable } from 'src/app/models/listable.model';
+import { AuditoriaDetailComponent } from '../auditoria-detail/auditoria-detail.component';
+import { Listable } from 'src/app/models/listable.model';
 import { FormControl } from '@angular/forms';
 import { MatTableLoadingService } from '@app/modules/shared/services/mat-table-loading.service';
-import { AuditoriaCabeceraComponent } from '../auditoria-cabecera/auditoria-cabecera.component';
 
 @Component({
   selector: 'app-auditorias-moviles-auditorias',
@@ -30,7 +30,7 @@ export class AuditoriasComponent implements OnInit {
   hasta: FormControl;
   vendedorSelect: FormControl;
 
-  vendedores: listable[] = [{ descripcion: 'Todos', id: '0' }];
+  vendedores: Listable[] = [{ descripcion: 'Todos', id: '0' }];
 
   // Datos para grilla
   dcAuditoriasMoviles: string[] = [
@@ -65,8 +65,8 @@ export class AuditoriasComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userAcceso = '3'; // this.authenticationService.getAccesosCurrentUser().toString();
-    this.userId = this.authenticationService.currentUserValue.id;
+    this.userAcceso = this.authenticationService.currentAcceso.toString();
+    this.userId = this.authenticationService.currentUser.id;
     this.modoGenerico = this.movilId === 0;
 
     this.descripcionInput = new FormControl('');
@@ -94,8 +94,10 @@ export class AuditoriasComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim();
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    if (filterValue) {
+      filterValue = filterValue.trim();
+      filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    }
     this.mtAuditoriasMoviles.filter = filterValue;
   }
 
@@ -151,7 +153,7 @@ export class AuditoriasComponent implements OnInit {
 
   verAuditoria(id: any = 0, element: Auditoria = null): void {
 
-    const dialogRef = this.dialog.open(AuditoriaCabeceraComponent, {
+    const dialogRef = this.dialog.open(AuditoriaDetailComponent, {
       width: '95vw',
       maxWidth: '700px',
       data: { id: id, clienteId: this.movilId, acceso: this.userAcceso, elemento: element }

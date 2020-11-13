@@ -6,7 +6,6 @@ export interface Usuario {
   nombre: string;
   email: string;
   tokenInfo: TokenInfo;
-  acceso: string;
   accesos: Acceso[];
   micrositiosV1: AccesoMicrositio[] ;
 }

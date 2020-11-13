@@ -1,0 +1,29 @@
+.mat-column-concepto {
+    flex: 0 0 *px;
+}
+
+.mat-column-importe {
+    flex: 0 0 100px;
+}
+
+.align-currency {
+    justify-content: flex-end;
+}
+
+table {
+    width: 100%;
+}
+
+.medium-form-field {
+    min-width: 48%;
+}
+
+.long-form-field {
+    min-width: 98%;
+}
+
+@media(max-width: 600px) {
+    .medium-form-field {
+        min-width: 98%;
+    }
+}

@@ -4,7 +4,8 @@
 
 <div [hidden]="!modoGenerico">
     <mat-form-field class="ml-5 mr-5">
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+        <button matPrefix mat-icon-button><mat-icon>search</mat-icon></button>
     </mat-form-field>
     <mat-form-field class="ml-5 mr-5" style="max-width: 120px;">
         <mat-select placeholder="Fecha" [formControl]="tipoFechaGestionSelect">

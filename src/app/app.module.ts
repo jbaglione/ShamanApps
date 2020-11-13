@@ -1,17 +1,18 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { MAT_DATE_LOCALE } from '@angular/material';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from '@app/app.component';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { CoreModule } from '@app/modules/core/core.module';
-import { DeviceDetectorModule } from 'ngx-device-detector';
-import { FileService } from '@app/modules/shared/services/files.service';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { AppConfig } from './configs/app.config';
 import { AgGridModule } from 'ag-grid-angular';
 
+export function initializeApp(appConfig: AppConfig) {
+  return () => appConfig.load();
+}
 
 @NgModule({
   declarations: [
@@ -25,16 +26,16 @@ import { AgGridModule } from 'ag-grid-angular';
       preventDuplicates: true,
       countDuplicates: true
     }),
-    IonicModule.forRoot(),
     AppRoutingModule,
     CoreModule,
-    DeviceDetectorModule.forRoot(),
     AgGridModule.withComponents([])
   ],
   providers: [
-    FileService,
-    // { provide: MAT_DATE_LOCALE, useValue: 'es-AR' }
-    { provide: MAT_DATE_LOCALE, useValue: 'es-AR' , useClass: IonicRouteStrategy }
+    { provide: MAT_DATE_LOCALE, useValue: 'es-AR' },
+    AppConfig,
+    { provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [AppConfig], multi: true }
   ],
   bootstrap: [
     AppComponent

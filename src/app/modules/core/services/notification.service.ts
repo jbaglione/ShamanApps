@@ -22,4 +22,10 @@ export class NotificationService {
       this.toastrService.error(message, '', { enableHtml: true });
     });
   }
+
+  showAlert(message: string): void {
+    this.zone.run(() => {
+      this.toastrService.show(message, '', { enableHtml: true, timeOut: 0, closeButton: true, tapToDismiss: false }, 'toast-alerta');
+    });
+  }
 }

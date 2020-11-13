@@ -1,0 +1,31 @@
+table {
+    width: 100%;
+}
+
+.mat-column-fecMovimiento {
+    padding-right: 4px;
+}
+
+.mat-column-motivoDescuento {
+    min-width: 150px;
+}
+
+.display-content-mobile {
+    display: flex;
+}
+
+@media(max-width: 600px) {
+    .display-content-mobile {
+        display: contents;
+    }
+    .table-custom-margin {
+        margin-right: -18px !important;
+        margin-left: -18px !important;
+    }
+    .mat-column-fecMovimiento {
+        border-right: 1px solid #e0e0e0;
+    }
+    td.mat-column-motivoDescuento {
+        min-width: 0px;
+    }
+}

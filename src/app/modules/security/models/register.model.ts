@@ -4,4 +4,5 @@ export interface UsuarioRegister {
   email: string;
   clienteLabel: string;
   cliente: string;
+  nroDoc: string;
 }

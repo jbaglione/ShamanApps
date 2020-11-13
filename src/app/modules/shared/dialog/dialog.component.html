@@ -1,13 +1,7 @@
 <h1 mat-dialog-title>{{data.title}}</h1>
-<div mat-dialog-content>
-    <!-- <p>What's your favorite animal?</p> -->
-    <!-- <mat-form-field>
-        <input matInput [(ngModel)]="data.animal">
-    </mat-form-field> -->
-    {{data.content}}
-</div>
-<div mat-dialog-actions>
-    <button mat-raised-button color="accent" (click)="onNoClick()">No Graciass</button>
-    <button mat-raised-button color="accent" [mat-dialog-close]="true" cdkFocusInitial>Ok</button>
+<div mat-dialog-content style="border-top: 1px solid #dadce0;" [innerHtml]="data.content | safeHtml"></div>
+<mat-dialog-actions style="justify-content: flex-end;">
+    <button *ngIf="data.noText != null && data.noText != undefined && data.noText.length > 0" mat-raised-button color="accent" (click)="onNoClick()">{{data.noText}}</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>{{data.yesText}}</button>
     <!-- <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button> -->
-</div>
+</mat-dialog-actions>

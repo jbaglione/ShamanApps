@@ -1,0 +1,31 @@
+.toolbar {
+  z-index: 1;
+  position: sticky;
+  height: 48px;
+  width: 100%;
+  top:0;
+  background-color: #2b51a1;
+  color: white;
+  font-weight: 500;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tittle {
+  margin-left: 25px;
+  font-size: 25px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.mat-button-icon-small .mat-icon {
+  font-size: 25px;
+  /* width: 28px;
+  height: 28px; */
+}

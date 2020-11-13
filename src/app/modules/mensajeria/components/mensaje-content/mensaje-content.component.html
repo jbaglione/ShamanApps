@@ -1,0 +1,22 @@
+<div *ngIf="mensaje != null; else sinMensajes">
+  <mat-card ngClass.xs="mat-card-mobile">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>person</mat-icon>
+      <mat-card-title>{{ mensaje.emisor }}</mat-card-title>
+      <mat-card-subtitle>{{ mensaje.fecha | date: "dd/MM/yyyy HH:mm" }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <div class="contenido">
+      <p [innerHTML]="mensaje.contenidoRtf"></p>
+    </div>
+  </mat-card>
+</div>
+
+<ng-template #sinMensajes>
+  <div class="sin-mensajes" *ngIf="(cantidadMensajes$ | async) != 0">
+    <div>
+      <mat-icon>email</mat-icon>
+    </div>
+    <p>Seleccione un mensaje</p>
+  </div>
+</ng-template>

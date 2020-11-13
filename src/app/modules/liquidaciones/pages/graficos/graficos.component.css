@@ -1,0 +1,39 @@
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-container>div {
+    width: 48%;
+    margin: 15px;
+    min-width: 289px;
+}
+
+h2 {
+    text-align: center;
+    padding: 5px;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 18px !important;
+}
+
+p {
+    text-align: center;
+    padding: 5px;
+    color: rgba(77, 77, 77, 0.87);
+    font-size: 0.75rem;
+    margin-top: -25px;
+}
+
+@media(max-width: 800px) {
+    .flex-container>div {
+        width: 47%;
+        margin: 7px;
+    }
+}
+
+@media(max-width: 600px) {
+    .flex-container>div {
+        width: 100%;
+        margin: 7px;
+    }
+}

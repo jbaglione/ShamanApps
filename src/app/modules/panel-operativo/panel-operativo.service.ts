@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 import { AppConfig } from 'src/app/configs/app.config';
 import { PanelOperativo } from './models/panel-operativo.model';
 import { shareReplay } from 'rxjs/operators';
 import { IncidentesViajes } from './models/incidentes-viajes.model';
 import { MovilesSugerencias } from './models/moviles-sugerencias.model';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Injectable()
 export class PanelOperativoService {
@@ -20,8 +20,8 @@ export class PanelOperativoService {
     private httpClient: HttpClient,
     public snackBar: MatSnackBar
   ) {
-    this.panelOperativoApiUrl = AppConfig.endpoints.apiShaman + 'gruposoperativos';
-    this.incidentesSucesosApiUrl = AppConfig.endpoints.apiShaman + 'IncidentesSucesos';
+    this.panelOperativoApiUrl = AppConfig.settings.endpoints.apiShaman + 'gruposoperativos';
+    this.incidentesSucesosApiUrl = AppConfig.settings.endpoints.apiShaman + 'IncidentesSucesos';
   }
 
   private handleError<T>(
@@ -99,7 +99,7 @@ export class PanelOperativoService {
 
   private showSnackBar(name): void {
     const config: any = new MatSnackBarConfig();
-    config.duration = AppConfig.snackBarDuration;
+    config.duration = AppConfig.settings.snackBarDuration;
     this.snackBar.open(name, 'OK', config);
   }
 }

@@ -1,0 +1,9 @@
+<button class="mat-button-icon-small" mat-icon-button type="button" mat-button [matMenuTriggerFor]="sortMenu" matTooltip="Ordenar">
+    <mat-icon>sort</mat-icon>
+  </button>
+  <mat-menu #sortMenu="matMenu">
+    <button mat-menu-item (click)= "sort_click(sortItem)" *ngFor="let sortItem of sortItems">
+      <span>{{sortItem.field}}</span>
+      <mat-icon>{{sortItem.matIcon}}</mat-icon>
+    </button>
+  </mat-menu>

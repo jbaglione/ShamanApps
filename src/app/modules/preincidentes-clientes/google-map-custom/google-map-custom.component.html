@@ -1,0 +1,14 @@
+<mat-dialog-content>
+    <mat-form-field class="ml-5 mr-5" style="width: 98%;">
+        <input matInput type="text" placeholder="Buscar una ubicación" #search>
+    </mat-form-field>
+    <google-map [zoom]="zoom" (mapClick)="handleClick($event)" width=100% heigth=100% [center]="markerPosition">
+        <map-marker [position]="markerPosition"></map-marker>
+    </google-map>
+
+    <h5>Dirección: {{address}}</h5>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right">
+    <button mat-raised-button color="accent" (click)="onNoClick()">Cerrar</button>
+    <button mat-raised-button (click)="saveLocation()">Aceptar</button>
+</mat-dialog-actions>

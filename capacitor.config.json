@@ -1,7 +1,0 @@
-{
-    "appId": "io.ionic.starter",
-    "appName": "ExtranetApp V1",
-    "bundledWebRuntime": false,
-    "npmClient": "npm",
-    "webDir": "dist/ExtranetApps-angular"
-}

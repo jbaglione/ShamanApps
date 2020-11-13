@@ -1,0 +1,35 @@
+.inbox-wrapper {
+  padding: 0;
+  margin: 0;
+  display: block;
+  position: relative;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  min-height: 100%;
+}
+
+.side-list {
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  width: 350px;
+  overflow-y: auto;
+  border-right: 1px solid rgba(0,0,0,.12);
+}
+
+.side-list-mobile {
+  position: relative !important;;
+  width: 100% !important;
+  overflow-y: unset !important;
+  border-right: none;
+}
+
+section {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 350px;
+  right: 0;
+  overflow-y: auto;
+}

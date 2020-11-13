@@ -1,0 +1,66 @@
+<h1 mat-dialog-title>Buscar un integrante del cliente seleccionado</h1>
+<mat-dialog-content style="border-top: 1px solid #dadce0; width: auto;">
+    <form class="example-form" [formGroup]="clientesIntegrantesFormGroup" novalidate="novalidate">
+        <div style="padding: 15px">
+            <mat-form-field class="ml-5 mr-5 medium-form-field-50-100">
+                <input matInput placeholder="Nº Afiliado" formControlName="nroAfiliado" type="text" (focus)="setupFilter('nroAfiliado')" (keyup)="applyFilter($event.target.value)" class="uppercase">
+            </mat-form-field>
+            <mat-form-field class="ml-5 mr-5 medium-form-field-50-100">
+                <input matInput placeholder="Apellido" formControlName="apellido" type="text" (focus)="setupFilter('apellido')" (keyup)="applyFilter($event.target.value)" class="uppercase">
+            </mat-form-field>
+            <mat-form-field class="ml-5 mr-5 medium-form-field-50-100">
+                <input matInput placeholder="Nombre" formControlName="nombre" type="text" (focus)="setupFilter('nombre')" (keyup)="applyFilter($event.target.value)" class="uppercase">
+            </mat-form-field>
+            <mat-form-field class="ml-5 mr-5 medium-form-field-50-100">
+                <input matInput placeholder="DNI" formControlName="dni" type="number" (focus)="setupFilter('dni')" (keyup)="applyFilter($event.target.value)">
+            </mat-form-field>
+
+            <div class="boxMobile">
+                <button mat-raised-button type="submit" (click)="getData()" class="boxMobileChild">Consultar</button>
+                <!-- [disabled]="isLoading" -->
+            </div>
+        </div>
+    </form>
+    <mat-divider></mat-divider>
+
+    <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; height: 200px;">
+        <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50">
+        </mat-progress-spinner>
+    </div>
+    <!-- Cuerpo -->
+    <div *ngIf="!isLoading" class="auto-container">
+        <table mat-table [dataSource]="mtClientesIntegrantes" matSort #table>
+            <ng-container matColumnDef="nroAfiliado" sticky>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Nº Afiliado</th>
+                <td mat-cell *matCellDef="let element">{{element.nroAfiliado}}</td>
+            </ng-container>
+            <ng-container matColumnDef="apellido">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Apellido</th>
+                <td mat-cell *matCellDef="let element">{{element.apellido}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>nombre</th>
+                <td mat-cell *matCellDef="let element">{{element.nombre}}</td>
+            </ng-container>
+            <ng-container matColumnDef="dni">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>DNI</th>
+                <td mat-cell *matCellDef="let element">{{element.dni}}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="dcClientesIntegrantes"></tr>
+            <tr mat-row *matRowDef="let element; columns: dcClientesIntegrantes;" (click)="selClienteIntegrante(element)" [style.background]="highlightedRows.indexOf(element) != -1 ? 'lightblue' : ''" (mouseover)="onMouseOver(element)" [ngClass]="{'mat-elevation-z3' : element.nroAfiliado == rowNroAfiliado}"></tr>
+            <!--  -->
+        </table>
+        <mat-paginator [pageSizeOptions]="[7, 10, 25, 100] " [hidden]="mtClientesIntegrantes.data.length == 0 || (matTableLoadingService.activo$ | async)"></mat-paginator>
+        <app-mat-table-loading></app-mat-table-loading>
+        <app-mat-table-not-found [activo]="mtClientesIntegrantes.data.length === 0 && !(matTableLoadingService.activo$ | async)"></app-mat-table-not-found>
+
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions style="float:right" class="display-content-mobile">
+    <div class="display-content-mobile">
+        <button mat-raised-button color="accent" class="buttons" (click)="onNoClick() ">Cancelar</button>
+        <button mat-raised-button class="buttons" [disabled]="this.highlightedRows.length == 0" (click)="retornarClienteIntegrante()">Seleccionar</button>
+    </div>
+</mat-dialog-actions>

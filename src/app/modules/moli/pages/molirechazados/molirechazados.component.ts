@@ -1,7 +1,10 @@
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component, ViewChild, ViewChildren, QueryList, ElementRef, OnInit } from '@angular/core';
-import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { MoliService } from '../../moli.service';
 import { MoliRechazado, MoliRechazadoForExcel } from '../../models/moli-rechazado';
@@ -37,14 +40,16 @@ export class MoliRechazadosComponent implements OnInit {
   private paginator: MatPaginator;
   private sort: MatSort;
 
-  @ViewChild(MatSort, {static: false}) set matSort(ms: MatSort) {
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
     this.sort = ms;
     this.setDataSourceAttributes();
   }
 
-  @ViewChild(MatPaginator, {static: false}) set matPaginator(mp: MatPaginator) {
+  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
     this.paginator = mp;
-    this.paginator.pageSizeOptions = [7, 10, 25, 100];
+    if (this.paginator) {
+      this.paginator.pageSizeOptions = [7, 10, 25, 100];
+    }
     this.setDataSourceAttributes();
   }
 
@@ -70,8 +75,10 @@ export class MoliRechazadosComponent implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim();
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    if (filterValue) {
+      filterValue = filterValue.trim();
+      filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    }
     this.mtMoliRechazados.filter = filterValue;
   }
 

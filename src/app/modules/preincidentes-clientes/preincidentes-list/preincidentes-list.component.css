@@ -1,0 +1,129 @@
+.very-short-form-field {
+    max-width: 80px;
+}
+
+.short-form-field {
+    max-width: 110px;
+}
+
+.long-form-field {
+    min-width: 300px;
+}
+
+.mat-column-nroServicio {
+    flex: 0 0 120px;
+}
+
+.mat-column-fecha {
+    flex: 0 0 110px;
+}
+
+.mat-column-grado {
+    flex: 0 0 70px;
+}
+
+.grado-cell {
+    margin-left: 10px;
+    margin-right: -10px;
+}
+
+.mat-column-nroAfiliado {
+    flex: 0 0 100px;
+}
+
+.mat-column-paciente {
+    flex: 0 0 180px;
+}
+
+.mat-column-virDomicilio {
+    flex: 0 0 180px;
+}
+
+.mat-column-sintoma {
+    flex: 0 0 140px;
+}
+
+.mat-column-estado {
+    flex: 0 0 70px;
+}
+
+.mat-column-estado {
+    flex: 0 0 *px;
+}
+
+
+/* [mat-row]:hover {
+    cursor: pointer !important;
+} */
+
+.mat-row:hover {
+    background-color: rgb(237, 246, 253);
+    cursor: pointer;
+}
+
+[mat-row].remove-background {
+    background: none;
+}
+
+.mat-success {
+    background-color: #fff;
+    color: #27ae60;
+}
+
+@media(max-width: 600px) {
+    .mobile-label {
+        width: 85px;
+        display: inline-block;
+        font-weight: bold;
+    }
+    .mat-header-row {
+        display: none;
+    }
+    .mat-row {
+        flex-direction: column;
+        align-items: start;
+        padding: 8px 24px;
+    }
+    .mat-footer-row,
+    .mat-row {
+        min-height: 26px !important;
+        padding-bottom: 0px !important;
+    }
+    .mat-cell-first {
+        padding-left: 0px !important;
+    }
+    .mat-cell-button {
+        width: auto !important;
+    }
+    .mat-column-nroServicio {
+        flex: auto !important;
+    }
+    .mat-column-fecha {
+        flex: auto !important;
+    }
+    .mat-column-grado {
+        flex: auto !important;
+    }
+    .grado-cell {
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+    }
+    .mat-column-nroAfiliado {
+        flex: auto !important;
+    }
+    .mat-column-paciente {
+        flex: auto !important;
+    }
+    .mat-column-virDomicilio {
+        flex: auto !important;
+    }
+    .mat-column-sintoma {
+        flex: auto !important;
+    }
+    .mat-column-estado {
+        flex: auto !important;
+    }
+    .mat-column-observaciones {
+        flex: auto !important;
+    }
+}

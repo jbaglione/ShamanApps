@@ -1,6 +1,7 @@
 <br>
 <mat-form-field>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." [formControl]="descripcionInput" name="Descripcion">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar..." type="text" [formControl]="descripcionInput" name="Descripcion">
+    <button matPrefix mat-icon-button><mat-icon>search</mat-icon></button>
 </mat-form-field>
 <mat-form-field class="ml-5 mr-5">
     <input matInput [matDatepicker]="picker1" placeholder="Fecha Desde" [formControl]="desde" name="dpDesde">
@@ -13,9 +14,10 @@
     <mat-datepicker #picker2></mat-datepicker>
 </mat-form-field>
 
-<button mat-raised-button type="submit" (click)="getMoliRealizados()" [disabled]="isLoading">Buscar</button>
-<!-- <button mat-raised-button color="accent" (click)="ExportTOExcel()">Exportar</button> -->
-<button mat-raised-button color="accent" (click)="exportToExcel()">Exportar</button>
+<div class="boxMobile">
+    <button mat-raised-button type="submit" (click)="getMoliRealizados()" [disabled]="isLoading" class="ml-5 mr-5 boxMobileChild">Buscar</button>
+    <button mat-raised-button color="accent" (click)="exportToExcel()" class="ml-5 mr-5 boxMobileChild">Exportar</button>
+</div>
 <br>
 
 <div class="mat-elevation-z8">

@@ -11,27 +11,7 @@
 }
 
 .mat-column-fecha {
-    flex: 0 0 110px;
-}
-
-.mat-column-dominioId {
-    flex: 0 0 110px;
-}
-
-.mat-column-chofer {
-    flex: 0 0 130px;
-}
-
-.mat-column-medico {
-    flex: 0 0 130px;
-}
-
-.mat-column-enfermero {
-    flex: 0 0 130px;
-}
-
-.mat-column-condicion {
-    flex: 0 0 80px;
+    flex: 0 0 75px;
 }
 
 .mat-column-edit {

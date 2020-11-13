@@ -1,7 +1,10 @@
 import { FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { MatTableDataSource, MatSort, MatDialog, MatPaginator } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { FacturacionService } from '../../facturacion.service';
 import { Comprobante } from '../../models/comprobante';
@@ -40,12 +43,12 @@ export class ComprobantesComponent  implements OnInit {
   private paginator: MatPaginator;
   private sort: MatSort;
 
-  @ViewChild(MatSort, {static: false}) set matSort(ms: MatSort) {
+  @ViewChild(MatSort) set matSort(ms: MatSort) {
     this.sort = ms;
     this.setDataSourceAttributes();
   }
 
-  @ViewChild(MatPaginator, {static: false}) set matPaginator(mp: MatPaginator) {
+  @ViewChild(MatPaginator) set matPaginator(mp: MatPaginator) {
     this.paginator = mp;
     this.setDataSourceAttributes();
   }
@@ -71,10 +74,11 @@ export class ComprobantesComponent  implements OnInit {
   }
 
   applyFilter(filterValue: string) {
-    if (filterValue != null && filterValue != '') {
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-    this.mtComprobantes.filter = filterValue;
+    if (filterValue) {
+      filterValue = filterValue.trim();
+      filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
     }
+    this.mtComprobantes.filter = filterValue;
   }
 
   getComprobantes() {

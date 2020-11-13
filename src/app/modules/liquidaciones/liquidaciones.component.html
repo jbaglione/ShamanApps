@@ -1,0 +1,24 @@
+<app-filter-liquidaciones *ngIf="showComponent" [esEmpresa]="esEmpresa" [isLoading]="isLoading" (getDataEvent)="getData($event)" (exportToExcelEvent)="exportToExcel()" (applyFilterEvent)="applyFilter($event)">
+</app-filter-liquidaciones>
+<mat-tab-group dynamicHeight (selectedTabChange)="selectedTabChange($event)" animationDuration="0">
+    <mat-tab label="Prestaciones">
+        <div>
+            <app-prestaciones *ngIf="showComponent" (setIsLoadingEvent)="setIsLoadingPresentaciones($event)" (setIsWorkingEvent)="setIsWorkingEvent($event)" [esEmpresa]="esEmpresa"></app-prestaciones>
+        </div>
+    </mat-tab>
+    <mat-tab label="Resumen">
+        <div>
+            <app-resumen *ngIf="showComponent" (setIsLoadingEvent)="setIsLoadingResumen($event)"></app-resumen>
+        </div>
+    </mat-tab>
+    <mat-tab label="Asistencia" *ngIf="!esEmpresa">
+        <div>
+            <app-asistencia *ngIf="showComponent" (setIsLoadingEvent)="setIsLoadingAsistencia($event)"></app-asistencia>
+        </div>
+    </mat-tab>
+    <mat-tab label="Graficos" *ngIf="!esEmpresa">
+        <div>
+            <app-graficos *ngIf="showComponent" (setIsLoadingEvent)="setIsLoadingGraficos($event)"></app-graficos>
+        </div>
+    </mat-tab>
+</mat-tab-group>
