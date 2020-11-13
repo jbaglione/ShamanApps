@@ -70,14 +70,14 @@ export class PanelOperativoService {
   public GetSugerenciaDespacho$(pDespachar: number, pGdo: number, pLoc: number, pCli: number, pCliIte: number,
                                 pLatitud: number, pLongitud: number, pFlgGeoEmpresas: boolean): Observable<MovilesSugerencias[]> {
     const params = new HttpParams()
-      .set('pDespachar', pDespachar.toString())
-      .set('pGdo', pGdo.toString())
-      .set('pLoc', pLoc.toString())
-      .set('pCli', pCli.toString())
-      .set('pCliIte', pCliIte.toString())
-      .set('pLatitud', pLatitud.toString())
-      .set('pLongitud', pLongitud.toString())
-      .set('pGeoEmp', pFlgGeoEmpresas.toString());
+      .set('Despachar', pDespachar.toString())
+      .set('Grado', pGdo.toString())
+      .set('Localidad', pLoc.toString())
+      .set('Cliente', pCli.toString())
+      .set('CliIte', pCliIte.toString())
+      .set('Latitud', pLatitud.toString())
+      .set('Longitud', pLongitud.toString())
+      .set('GeoEmp', pFlgGeoEmpresas.toString());
 
     const url = `${this.panelOperativoApiUrl}/GetSugerenciaDespacho`;
     return this.httpClient.get<MovilesSugerencias[]>(url, { params });
