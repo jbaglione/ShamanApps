@@ -24,7 +24,7 @@ export class JwtInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(this.attachTokenToRequest(request))
+    return next.handle(this.attachSimpleTokenToRequest(request))
             .pipe(
               tap((event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) {
@@ -61,7 +61,7 @@ export class JwtInterceptor implements HttpInterceptor {
                     this.tokenSubject.next(user);
                     localStorage.setItem( this.authenticationService.CURRENT_USER, JSON.stringify(user) );
                     console.log('Token refreshed...');
-                    return next.handle(this.attachTokenToRequest(request));
+                    return next.handle(this.attachSimpleTokenToRequest(request));
                 }
                 return <any>this.authenticationService.logout();
               }),
@@ -79,12 +79,13 @@ export class JwtInterceptor implements HttpInterceptor {
             filter(user => user != null),
             take(1),
             switchMap(user => {
-              return next.handle(this.attachTokenToRequest(request));
+              return next.handle(this.attachSimpleTokenToRequest(request));
             })
           );
         }
   }
 
+  // TODO: revisar nueva app de seguridad.
   private attachTokenToRequest(request: HttpRequest<any>) {
     const currentUser = this.authenticationService.currentUserValue;
 
@@ -93,6 +94,20 @@ export class JwtInterceptor implements HttpInterceptor {
         setHeaders: {
           Authorization: `${currentUser.tokenInfo.tokenType} ${currentUser.tokenInfo.accessToken}`,
           PageId: (this.authenticationService.getCurrentPageId() != null ) ? this.authenticationService.getCurrentPageId().toString() : '0'
+        }
+      });
+    } else {
+      return request.clone();
+    }
+  }
+  private attachSimpleTokenToRequest(request: HttpRequest<any>) {
+    const currentUser = this.authenticationService.currentUserValue;
+
+    if (currentUser && currentUser.tokenInfo) {
+      return request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${currentUser.tokenInfo.accessToken}`
+          // PageId: (this.authenticationService.getCurrentPageId() != null ) ? this.authenticationService.getCurrentPageId().toString() : '0'
         }
       });
     } else {

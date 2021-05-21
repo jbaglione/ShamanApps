@@ -6,13 +6,14 @@ import { AppConfig } from '@app/configs/app.config';
 import { Usuario, GrupoAccesosMicrositios, ForgotPasswordResult } from './models/index';
 import * as jwt_decode from 'jwt-decode';
 import { UsuarioRegister } from './models/register.model';
+import { UsuarioLogin } from './models/usuario-login.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   public readonly CURRENT_USER: string = 'currentUser';
   private readonly LOGIN_STATUS: string = 'loginStatus';
   private loginStatus = new BehaviorSubject<boolean>(this.checkloginstatus());
-  private userName    = new BehaviorSubject<string>(this.currentUserValue != null ? this.currentUserValue.username : '');
+  private userName = new BehaviorSubject<string>(this.currentUserValue != null ? this.currentUserValue.username : '');
 
   constructor( private httpClient: HttpClient) { }
 
@@ -34,8 +35,17 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string) {
+
+
+    let usuarioLogin: UsuarioLogin = {
+      username,
+      email: username,
+      password,
+      serial: AppConfig.endpoints.serial
+    };
+
     return this.httpClient
-      .post<Usuario>(`${AppConfig.endpoints.security}users/Authenticate`, { username, password })
+      .post<Usuario>(`${AppConfig.endpoints.security}usuario/loginExtranet`, usuarioLogin)
       .pipe(
         map(user => {
           if (user && user.tokenInfo && user.tokenInfo.accessToken) {
@@ -55,7 +65,7 @@ export class AuthenticationService {
     const refreshToken: string = usuario.tokenInfo.refreshToken;
 
     return this.httpClient
-      .post<any>(`${AppConfig.endpoints.security}users/RefreshToken`, { token, refreshToken })
+      .post<any>(`${AppConfig.endpoints.security}usuario/RefreshToken`, { token, refreshToken })
       .pipe(
         map(user => {
           if (user && user.tokenInfo && user.tokenInfo.accessToken) {
@@ -75,7 +85,7 @@ export class AuthenticationService {
 
   loginByToken(token: string) {
     return this.httpClient
-      .post<any>(`${AppConfig.endpoints.security}users/authenticateByToken`, { token })
+      .post<any>(`${AppConfig.endpoints.security}usuario/authenticateByToken`, { token })
       .pipe(
         map(user => {
           // login successful if there's a jwt token in the response
@@ -98,23 +108,24 @@ export class AuthenticationService {
   }
 
   getGruposMicrositios(): Observable<GrupoAccesosMicrositios[]> {
-    return this.httpClient
-      .get<GrupoAccesosMicrositios[]>(`${AppConfig.endpoints.security}users/micrositios`)
-      .pipe(
-        map(grupoMicrositios => {
-          const currentUser = this.currentUserValue;
-          currentUser.micrositiosV1 = [];
-          grupoMicrositios.forEach(gm => {
-            gm.accesosMicrositios.forEach(am => {
-              if (am.urlV1 != '') {
-                currentUser.micrositiosV1.push(am);
-              }
-            });
-          });
-          localStorage.setItem(this.CURRENT_USER, JSON.stringify(currentUser));
-          return grupoMicrositios;
-        })
-      );
+    return null;
+    // this.httpClient
+    //   .get<GrupoAccesosMicrositios[]>(`${AppConfig.endpoints.security}usuario/micrositios`)
+    //   .pipe(
+    //     map(grupoMicrositios => {
+    //       const currentUser = this.currentUserValue;
+    //       currentUser.micrositiosV1 = [];
+    //       grupoMicrositios.forEach(gm => {
+    //         gm.accesosMicrositios.forEach(am => {
+    //           if (am.urlV1 != '') {
+    //             currentUser.micrositiosV1.push(am);
+    //           }
+    //         });
+    //       });
+    //       localStorage.setItem(this.CURRENT_USER, JSON.stringify(currentUser));
+    //       return grupoMicrositios;
+    //     })
+    //   );
   }
 
   getTokenExpirationDate(token: string): Date {
@@ -145,7 +156,7 @@ export class AuthenticationService {
 
   forgotPassword(pEmail: string): Observable<ForgotPasswordResult> {
     return this.httpClient
-      .post<ForgotPasswordResult>(`${AppConfig.endpoints.security}users/ForgotPassword`, { email: pEmail })
+      .post<ForgotPasswordResult>(`${AppConfig.endpoints.security}usuario/ForgotPassword`, { email: pEmail })
       .pipe(
         map(forgotPasswordResult => {
           return forgotPasswordResult;
@@ -157,7 +168,7 @@ export class AuthenticationService {
     const body = JSON.stringify(register);
     const headerOptions = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.httpClient
-      .post<void>(`${AppConfig.endpoints.security}users/Register`, body, { headers: headerOptions });
+      .post<void>(`${AppConfig.endpoints.security}usuario/Register`, body, { headers: headerOptions });
   }
 
   getAccesosCurrentUser(): number {

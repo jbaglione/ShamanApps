@@ -5,8 +5,10 @@ export let APP_CONFIG = new InjectionToken('app.config');
 export const AppConfig: any = {
   endpoints: {
     // localhost
-    security: 'https://localhost:44377/security/',
-    apiShaman: 'https://localhost:44318/api/',
+    security: 'http://localhost:65000/security/',
+    apiShaman: 'http://localhost:65000/shaman/',
+    apiPresupuestos: 'http://localhost:65000/presupuestos/',
+    serial: "SERIAL-1234",
     // api: 'https://localhost:44319/api/',
     // oldExranet: 'http://localhost:2128/',
 
@@ -28,6 +30,8 @@ export const AppConfig: any = {
 
     // Server Local Pilar
     // api: 'http://192.168.5.95:5566/api/',
+
+
   },
   // votesLimit: 3,
   // topHeroesLimit: 4,
